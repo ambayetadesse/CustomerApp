@@ -1,0 +1,110 @@
+<ion-content #pageTop scrollEvents="true" [appHideHeader]="hideheader" (ionScroll)="onScroll($event)">
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+  <ion-row class="info-row" #hideheader>
+    <ion-col size="2" class="ion-padding-start">
+      <img src="./assets/delivery.png" />
+    </ion-col>
+    <ion-col size="8">
+      <ion-text color="dark">
+        <span>Now</span><br />
+        <b>MTK Delivery</b>
+        <ion-icon name="chevron-down-outline" color="primary"></ion-icon>
+      </ion-text>
+    </ion-col>
+    <ion-col size="2">
+      <ion-button fill="clear">
+        <ion-icon name="person-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-col>
+  </ion-row>
+
+  <ion-row class="sticky-row">
+    <ion-col size="2">
+      <ion-buttons>
+        <ion-menu-button></ion-menu-button>
+      </ion-buttons>
+    </ion-col>
+    <ion-col size="6">
+      <ion-text class="ion-padding-start" color="medium"
+        [ngClass]="{'location-visible': showLocationDetail, 'location-hidden': !showLocationDetail}">
+        MTK Delivery</ion-text>
+    </ion-col>
+    <ion-col size="4">
+      <ion-buttons>
+        <ion-button (click)="filterByMenu()" ion-button full clear icon-left>
+          <ion-icon slot="start" name="options-outline"></ion-icon>
+        </ion-button>
+        <ion-button>
+          <ion-badge *ngIf="cart.length > 0">{{ cartItemCount | async }}</ion-badge>
+          <ion-icon slot="icon-only" name="cart"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </ion-col>
+  </ion-row>
+  <form [formGroup]="regform">
+    <ion-item *ngIf="menu">
+      <ion-select multiple="true" (ionChange)="selectMenu($event)" interface="popover" formControlName="menu"
+        placeholder="select menu">
+        <ion-select-option *ngFor="let menu of listOfCatagory" value="{{menu.id}}">
+          {{menu.categoryName}}({{menu.count}})
+        </ion-select-option>
+      </ion-select>
+    </ion-item>
+  </form>
+  <ion-row class="search-row">
+    <ion-searchbar (keyup)="filter($event)" [(ngModel)]="term" showCancelButton="never"
+      placeholder="Dishes, restaurants or cuisines"></ion-searchbar>
+  </ion-row>
+  
+<ion-item lines="none">
+  <ion-text color="dark"><b style="padding-left: 10px">Restaurant </b></ion-text>
+  <ion-label></ion-label>
+  <ion-select interface="popover" (ionChange)="selectOpenClose($event)" placeholder="Open or Close">
+    <ion-select-option value="open">Open</ion-select-option>
+    <ion-select-option value="close">Close</ion-select-option>
+  </ion-select>
+</ion-item>
+  <ion-row class="meal-row" *ngFor="let item of listOfRestaurant |filter:term "
+    (click)="openLink(item.accountId,item.id)">
+    <ion-col size="6" class="border-bottom">
+      <div class="meal-image" [style.background-image]="'url(' + item.Photo + ')'"></div>
+    </ion-col>
+    <ion-col size="6">
+      <ion-text color="dark"><b>{{item.Name }}</b></ion-text><br />
+      <span>
+        <ion-icon name="star" color="secondary"></ion-icon>
+        <ion-text color="secondary"> {{ item.Type }} </ion-text>
+        <ion-text color="primary">{{item.StartWorkingHour|date:'short'}}</ion-text>
+        <hr>
+        <ion-text color="primary">{{item.EndWorkingHour|date:'short'}}</ion-text>
+      </span>
+      <br />
+      <!-- <span>
+        <ion-icon name="location-outline"></ion-icon> {{ item.Location }}
+      </span> [ngStyle]="{'background-color':person.country === 'UK' ? 'green' : 'red' }"-->
+      <ion-row>
+      <button style="border-radius: 5px;margin: .25rem .5rem .25rem 0;" [ngClass]="{'green' :item.status==='open', 'red': item.status==='close'}">
+        {{item.status}}
+      </button>
+        <div *ngFor="let catagories of item.Category">
+          <button style="
+              background-color: #2185d0;
+              border-color: #2185d0;
+              color: #fff;
+              border-radius: 0.28571429rem;
+              margin: .25rem .5rem .25rem 0;
+            ">
+            {{catagories.categoryName}}
+          </button>
+        </div>
+      </ion-row>
+    </ion-col>
+  </ion-row>
+  <ion-fab horizontal="end" vertical="bottom" slot="fixed">
+    <ion-fab-button color="light" (click)="pageScroller()">
+      <ion-icon md="chevron-up-outline" ios="chevron-up-circle-outline"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>

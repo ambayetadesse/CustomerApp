@@ -1,0 +1,27 @@
+ion-button{
+    margin-left: 100px;
+}
+ion-content {
+    ion-grid {
+        ion-row {
+            ion-fab {
+                margin: 0 -6px -1px 66px;
+                width: 25px;
+                height: 25px;
+                ion-fab-button {
+                    width: 25px;
+                    height: 25px;
+                    --background: linear-gradient(to bottom, #007bff, #007bff, #007bff, #007bff, #007bff, #007bff, #007bff);
+                ion-icon{
+                    height: 19px;
+                    width: 16px;
+                }
+                }
+            }
+        }
+        ion-row.marginTop {
+            margin: 5px;
+        }
+    }  
+    
+}

@@ -1,0 +1,7 @@
+{
+  "name": "MTK-Delivery",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

@@ -1,0 +1,44 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Profile</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid style="margin-left: 90px">
+    <ion-row>
+      <ion-col size="3" class="thumbnail">
+        <ion-fab vertical="bottom" horizontal="right">
+          <ion-fab-button (click)="onPickImage()">
+            <!-- <ion-icon name="add"></ion-icon> -->
+            <ion-icon name="camera-sharp"></ion-icon>
+          </ion-fab-button>
+        </ion-fab>
+        <ion-avatar style="height: 81px;
+        width: 85px;">
+          <ion-img role="button" class="image" (click)="onPickImage()" [src]="base64textString"
+            *ngIf="base64textString"></ion-img>
+        </ion-avatar>
+        <input hidden type="file" accept="image/jpeg" *ngIf="usePicker" #filePicker (change)="onFileChosen($event)" />
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <ion-label style="margin-left: 94px;
+  font-weight: bold;">{{this.fullName}}</ion-label>
+  <ion-item lines="none" (click)="account()">
+    <ion-icon color="primary" name="person-outline"></ion-icon>
+    <ion-label>&nbsp;&nbsp;&nbsp;Account details</ion-label>
+  </ion-item>
+  <ion-item lines="none" (click)="setting()">
+    <ion-icon color="primary" name="settings-outline"></ion-icon>
+    <ion-label>&nbsp;&nbsp;&nbsp;Settings</ion-label>
+  </ion-item>
+  <ion-item lines="none" (click)="contact()">
+    <ion-icon color="primary" name="call-sharp"></ion-icon>
+    <ion-label>&nbsp;&nbsp;&nbsp;Contact Us</ion-label>
+  </ion-item>
+  <ion-button (click)="logout()">loginout</ion-button>
+</ion-content>

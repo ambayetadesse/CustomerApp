@@ -1,0 +1,43 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start"> 
+      <ion-back-button defaultHref="login"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Sign in </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form [formGroup]="regform">
+      <h1 style="text-align: center">Sign up with Your Phone Number</h1>
+      <ion-grid>
+        <ion-row>
+          <ion-label style="text-align: center;margin-left: 12px;" for="phone">Phone Number</ion-label><br />
+        </ion-row>
+       <ion-row>
+           <ngx-intl-tel-input  
+           [cssClass]="'custom'"
+            [preferredCountries]="preferredCountries"
+            [enableAutoCountrySelect]="true"
+             [enablePlaceholder]="true" 
+             [searchCountryFlag]="true"
+            [searchCountryField]="[SearchCountryField.Iso2, SearchCountryField.Name]"
+             [selectFirstCountry]="true"
+            [selectedCountryISO]="CountryISO.Ethiopia"
+             [maxLength]="15" [phoneValidation]="true"
+            [separateDialCode]="true"
+             [numberFormat]="PhoneNumberFormat.National" name="phone"
+            formControlName="phone" 
+            [(ngModel)]="phoneNumber">
+          </ngx-intl-tel-input>
+       </ion-row>
+       <ion-row>
+          <ion-button  expand="full" (click)="signIn(phoneNumber)">Sign In</ion-button>
+        </ion-row>
+       </ion-grid>
+    </form>
+  <ion-content >
+    <div id="recaptcha-container" style="margin-left: 43px;
+    margin-top: 20px;"></div>
+    </ion-content>
+</ion-content>

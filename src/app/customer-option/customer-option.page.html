@@ -1,0 +1,23 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>What do you want to do ?</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+<ion-list>
+  <ion-item>
+    <ion-button expand="full"  fill="clear" (click)="reOrder()"> Re-Order</ion-button>
+  </ion-item>
+  <ion-item>
+    <ion-button expand="full"  fill="clear" (click)="CancelOrder()">Cancel Order</ion-button>
+  </ion-item>
+  <ion-item>
+    <ion-button fill="clear" (click)="viewOrder(id)"> View order  </ion-button>
+  </ion-item>
+</ion-list>
+<ion-footer>
+  <ion-button expand="full" fill="clear" (click)="close()">
+    <ion-icon name="close-outline"></ion-icon>&nbsp;&nbsp; Cancel</ion-button>
+</ion-footer>
+</ion-content>

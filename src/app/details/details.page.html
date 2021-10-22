@@ -1,0 +1,55 @@
+<ion-header>
+  <ion-toolbar color="light">
+    <ion-buttons slot="start">
+      <ion-button fill="solid" shape="round" color="light" (click)="backToHome()">
+        <ion-icon slot="icon-only" name="arrow-back" color="primary"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>{{this.name }}</ion-title>
+    <ion-buttons slot="end">
+      <!-- <ion-button fill="solid" shape="round" color="light">
+        <ion-icon slot="icon-only" name="share-outline" color="primary"></ion-icon>
+      </ion-button>
+      <ion-button fill="solid" shape="round" color="light">
+        <ion-icon slot="icon-only" name="search-outline" color="primary"></ion-icon>
+      </ion-button> -->
+      <ion-button (click)="onClick()">
+        <ion-badge *ngIf="cart.length > 0">{{ cartItemCount | async }}</ion-badge>
+        <ion-icon slot="icon-only" name="cart"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" scrollEvents="true" (ionScroll)="onScroll($event)" [appParallax]="img">
+  <div #img class="header-image" [style.background-image]="'url(' + picture + ')'">
+  </div>
+  <ion-row class="sticky-row">
+    <ion-slides [options]="opts">
+      <ion-slide *ngFor="let entry of listOfCategory; let i = index;">
+        <ion-button (click)="activeCategory = i" [class.active-category]="activeCategory == i" fill="clear"
+          (click)="selectCategory(i,entry.id)">
+          {{ entry.categoryName }}
+        </ion-button>
+      </ion-slide>
+    </ion-slides>
+  </ion-row>
+  <ion-row *ngFor="let meal of listOfFood ; let i=index" class="ion-padding meal-row">
+    <ion-col size="4" class="border-bottom">
+      <div class="meal-image" [style.background-image]="'url(' + meal.picture + ')'"></div>
+    </ion-col>
+    <ion-col size="5" class="border-bottom">
+      <ion-label>
+        {{ meal.name }}
+        <p>{{ meal.description }}</p>
+      </ion-label>
+      <ion-text color="dark"><b>{{ meal.price | currency:'ETB' }}</b></ion-text>
+    </ion-col>
+    <ion-col size="3" class="border-bottom">
+      <ion-button fill="solid" (click)="addToCart(meal,i)" [disabled]="setDisabled(meal)">
+       <ion-icon  [name]="meal.isSelect?'checkmark':'add'"></ion-icon> 
+      </ion-button>
+    </ion-col>
+  </ion-row>
+
+</ion-content>

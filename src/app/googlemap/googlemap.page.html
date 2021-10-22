@@ -1,0 +1,22 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-button  fill="solid"  shape="round" color="light" (click)="backToHome()" >
+        <ion-icon slot="icon-only" name="arrow-back" color="primary"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <!-- <ion-button style="margin-left: 40px;
+    margin-bottom: 9px;
+    margin-top: 11px;" (click)="loadMap()" shape="round" color="dark">
+      <ion-icon  slot="start" name="locate"></ion-icon>
+      Where I Am
+    </ion-button> -->
+  </ion-toolbar>
+
+</ion-header>
+<div class="app-page">
+  <div #map id="map-canvas"></div>
+  <div class="map-loader-container" *ngIf="!mapLoaded">
+      <div class="map-loader"></div>
+  </div>
+</div>
