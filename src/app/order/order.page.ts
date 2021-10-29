@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Account, Food, Order, OrderDetail, Restaurant } from 'src/Table/table';
 import { AccountService } from '../Service/account.service';
@@ -7,7 +7,7 @@ import { OrderDetailService } from '../Service/order-detail.service';
 import { OrderService } from '../Service/order.service';
 import LocationPicker from "location-picker";
 import { SharedService } from '../Service/shared.service';
-import { AlertController, ModalController } from '@ionic/angular';
+import { AlertController, IonContent, ModalController } from '@ionic/angular';
 import { RestaurantService } from '../Service/restaurant.service';
 import { CustomerOptionPage } from '../customer-option/customer-option.page';
 import { CallNumber } from '@ionic-native/call-number/ngx';
@@ -49,6 +49,11 @@ export class OrderPage implements OnInit {
   driverName: any;
   a: number;
   orderStatuses: string;
+  @ViewChild('pageTop') pageTop: IonContent;
+  showLocationDetail = false;
+  public pageScroller() {
+    this.pageTop.scrollToTop();
+  }
   constructor(private foodService: FoodService,
     private orderService: OrderService,
     private accountService: AccountService,
@@ -92,7 +97,10 @@ export class OrderPage implements OnInit {
       this.listOfOrderDetails = res;
     })
   }
-
+  onScroll(ev) {
+    const offset = ev.detail.scrollTop;
+    this.showLocationDetail = offset > 40;
+  }
   getOrder() {
     this.listOfOrder = [];
     this.orderService.getAllOrder().subscribe(res => {
@@ -117,6 +125,7 @@ export class OrderPage implements OnInit {
               restaurantName: resName.name
             };
             this.listOfOrder.push(data);
+            console.log(this.listOfOrder.length)
             this.listOfOrder.sort((a, b) => new Date(b.DateTime).getTime() - new Date(a.DateTime).getTime());
             // this.viewOrder(element.id)
           });
@@ -162,9 +171,10 @@ export class OrderPage implements OnInit {
                 CustomerId: element.customer,
                 Vehicle: element.vehicle,
                 orderLocation: element.orderLocation,
-                restaurantName: this.listOfRestaurant.find(c => c.accountId == element.restaurantId).name
+                restaurantName: this.listOfRestaurant.find(c => c.id === +element.restaurantId).name
               }
               this.listOfOrderProcessing.push(data);
+              console.log(this.listOfOrderProcessing.length)
               this.listOfOrderProcessing.sort((a, b) => new Date(b.DateTime).getTime() - new Date(a.DateTime).getTime());
             })
           }
@@ -195,9 +205,10 @@ export class OrderPage implements OnInit {
               Driver: element.driver,
               Vehicle: element.vehicle,
               orderLocation: element.orderLocation,
-              restaurantName: this.listOfRestaurant.find(c => c.accountId == element.restaurantId).name
+              restaurantName: this.listOfRestaurant.find(c => c.id === +element.restaurantId).name
             }
             this.listOfOrderCompeleted.push(data);
+            console.log(this.listOfOrderCompeleted.length)
             this.listOfOrderCompeleted.sort((a, b) => new Date(b.DateTime).getTime() - new Date(a.DateTime).getTime());
             console.log(this.listOfOrderCompeleted);
           })
@@ -228,9 +239,10 @@ export class OrderPage implements OnInit {
               Driver: element.driver,
               Vehicle: element.vehicle,
               orderLocation: element.orderLocation,
-              restaurantName: this.listOfRestaurant.find(c => c.accountId == element.restaurantId).name
+              restaurantName: this.listOfRestaurant.find(c => c.id === +element.restaurantId).name
             }
             this.listOfOrderCancelled.push(data);
+            console.log(this.listOfOrderCancelled.length)
             this.listOfOrderCancelled.sort((a, b) => new Date(b.DateTime).getTime() - new Date(a.DateTime).getTime());
             console.log(this.listOfOrderCancelled);
           })
