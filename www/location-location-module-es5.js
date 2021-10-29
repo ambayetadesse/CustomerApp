@@ -46,90 +46,69 @@
       /* harmony import */
 
 
-      var rxjs_internal_operators_map__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(
-      /*! rxjs/internal/operators/map */
-      "q3Kh");
-      /* harmony import */
-
-
-      var rxjs_internal_operators_map__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(rxjs_internal_operators_map__WEBPACK_IMPORTED_MODULE_3__);
-      /* harmony import */
-
-
-      var angularfire2_firestore__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(
-      /*! angularfire2/firestore */
-      "CqG3");
-      /* harmony import */
-
-
-      var angularfire2_firestore__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(angularfire2_firestore__WEBPACK_IMPORTED_MODULE_4__);
-      /* harmony import */
-
-
-      var _common_bad_input__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(
+      var _common_bad_input__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(
       /*! ../common/bad-input */
       "XEKg");
       /* harmony import */
 
 
-      var _common_not_found_error__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(
+      var _common_not_found_error__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(
       /*! ../common/not-found-error */
       "5Jak");
       /* harmony import */
 
 
-      var _common_app_error__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(
+      var _common_app_error__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(
       /*! ../common/app-error */
       "/GcI");
+      /* harmony import */
+
+
+      var _angular_common_http__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(
+      /*! @angular/common/http */
+      "tk/3");
 
       var RestaurantService = /*#__PURE__*/function () {
-        function RestaurantService(db) {
+        function RestaurantService(http) {
           _classCallCheck(this, RestaurantService);
 
-          this.db = db;
-          this.restaurantCollectionList = db.collection('Restaurant');
+          this.http = http;
+          this.APIURL = 'http://localhost:49347/api';
         }
 
         _createClass(RestaurantService, [{
           key: "create",
-          value: function create(restaurantObj) {
-            return this.restaurantCollectionList.add(restaurantObj);
+          value: function create(val) {
+            return this.http.post(this.APIURL + '/Restaurant', val);
           }
         }, {
           key: "getAllRestaurant",
           value: function getAllRestaurant() {
-            this.restaurantList = this.restaurantCollectionList.snapshotChanges().pipe(Object(rxjs_internal_operators_map__WEBPACK_IMPORTED_MODULE_3__["map"])(function (actions) {
-              return actions.map(function (a) {
-                var data = a.payload.doc.data();
-                var id = a.payload.doc.id;
-                return Object.assign({
-                  id: id
-                }, data);
-              });
-            }));
-            return this.restaurantList;
-          }
-        }, {
-          key: "getRestaurant",
-          value: function getRestaurant(id) {
-            return this.restaurantCollectionList.doc(id).valueChanges();
+            var restaurant = this.http.get(this.APIURL + '/Restaurant');
+            return restaurant;
           }
         }, {
           key: "updateRestaurant",
-          value: function updateRestaurant(restaurantObj, id) {
-            return this.restaurantCollectionList.doc(id).update(restaurantObj)["catch"](this.handleError);
+          value: function updateRestaurant(val) {
+            return this.http.put(this.APIURL + '/Restaurant/', val);
           }
         }, {
           key: "removeRestaurant",
           value: function removeRestaurant(id) {
-            return this.restaurantCollectionList.doc(id)["delete"]()["catch"](this.handleError);
+            return this.http["delete"](this.APIURL + '/Restaurant/' + id).toPromise();
           }
         }, {
           key: "handleError",
           value: function handleError(error) {
-            if (error.status === 400) return rxjs__WEBPACK_IMPORTED_MODULE_2__["Observable"]["throw"](new _common_bad_input__WEBPACK_IMPORTED_MODULE_5__["BadInput"](error.json()));
-            if (error.status === 404) return rxjs__WEBPACK_IMPORTED_MODULE_2__["Observable"]["throw"](new _common_not_found_error__WEBPACK_IMPORTED_MODULE_6__["NotFoundError"]());
-            return rxjs__WEBPACK_IMPORTED_MODULE_2__["Observable"]["throw"](new _common_app_error__WEBPACK_IMPORTED_MODULE_7__["AppError"](error));
+            if (error.status === 400) {
+              return rxjs__WEBPACK_IMPORTED_MODULE_2__["Observable"]["throw"](new _common_bad_input__WEBPACK_IMPORTED_MODULE_3__["BadInput"](error.json()));
+            }
+
+            if (error.status === 404) {
+              return rxjs__WEBPACK_IMPORTED_MODULE_2__["Observable"]["throw"](new _common_not_found_error__WEBPACK_IMPORTED_MODULE_4__["NotFoundError"]());
+            }
+
+            return rxjs__WEBPACK_IMPORTED_MODULE_2__["Observable"]["throw"](new _common_app_error__WEBPACK_IMPORTED_MODULE_5__["AppError"](error));
           }
         }]);
 
@@ -138,7 +117,7 @@
 
       RestaurantService.ctorParameters = function () {
         return [{
-          type: angularfire2_firestore__WEBPACK_IMPORTED_MODULE_4__["AngularFirestore"]
+          type: _angular_common_http__WEBPACK_IMPORTED_MODULE_6__["HttpClient"]
         }];
       };
 
@@ -388,7 +367,7 @@
       /* harmony default export */
 
 
-      __webpack_exports__["default"] = "#map {\n  width: 100%;\n  height: 580px;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi4uXFwuLlxcLi5cXGxvY2F0aW9uLnBhZ2Uuc2NzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFDRTtFQUNFLFdBQUE7RUFDQSxhQUFBO0FBQUoiLCJmaWxlIjoibG9jYXRpb24ucGFnZS5zY3NzIiwic291cmNlc0NvbnRlbnQiOlsiXHJcbiAgI21hcCB7XHJcbiAgICB3aWR0aDogMTAwJTtcclxuICAgIGhlaWdodDogNTgwcHg7XHJcbn1cclxuIl19 */";
+      __webpack_exports__["default"] = "#map {\n  width: 100%;\n  height: 580px;\n}\n\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi4uXFwuLlxcLi5cXGxvY2F0aW9uLnBhZ2Uuc2NzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFDRTtFQUNFLFdBQVc7RUFDWCxhQUFhO0FBQWpCIiwiZmlsZSI6ImxvY2F0aW9uLnBhZ2Uuc2NzcyIsInNvdXJjZXNDb250ZW50IjpbIlxyXG4gICNtYXAge1xyXG4gICAgd2lkdGg6IDEwMCU7XHJcbiAgICBoZWlnaHQ6IDU4MHB4O1xyXG59XHJcbiJdfQ== */";
       /***/
     },
 
@@ -767,8 +746,8 @@
 
             this.RestaurantLocation = this.sharedService.RestaurantLocation.value;
             var pos = {
-              lat: this.RestaurantLocation.lat,
-              lng: this.RestaurantLocation.lon
+              lat: this.RestaurantLocation.latitude,
+              lng: this.RestaurantLocation.longtude
             };
             var data = {
               position: pos,

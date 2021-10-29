@@ -1654,7 +1654,7 @@ let ProfilePage = class ProfilePage {
     getAccount() {
         this.accountService.getAllAccount().subscribe(res => {
             this.listOfAccount = res;
-            this.base64textString = res.find(c => c.id == localStorage.getItem("userId")).photo;
+            this.base64textString = res.find(c => c.id == +localStorage.getItem("userId")).photo;
             this.fullName = res.find(c => c.id == localStorage.getItem("userId")).FullName;
         });
     }
@@ -1669,19 +1669,18 @@ let ProfilePage = class ProfilePage {
     }
     logout() {
         return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, function* () {
-            this.authServices.logOutUser().then(() => {
-                localStorage.setItem("userId", null);
-                localStorage.setItem("fullName", null);
-                localStorage.setItem("active", null);
-                localStorage.setItem("roleType", null);
-                this.router.navigateByUrl('login');
-            }, (error) => Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, function* () {
+            localStorage.setItem("userId", null);
+            localStorage.setItem("fullName", null);
+            localStorage.setItem("active", null);
+            localStorage.setItem("roleType", null);
+            this.router.navigateByUrl('login');
+            (error) => Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, function* () {
                 const alert = yield this.alertCtrl.create({
                     message: error.message,
                     buttons: [{ text: 'ok', role: 'cancel' }],
                 });
                 yield alert.present();
-            }));
+            });
         });
     }
     onPickImage() {
@@ -1700,18 +1699,18 @@ let ProfilePage = class ProfilePage {
         })
             .then(image => {
             this.base64textString = 'data:image/png;base64,' + image.base64String;
-            let accounts = this.listOfAccount.find(c => c.id == localStorage.getItem("userId"));
+            let accounts = this.listOfAccount.find(c => c.id == +localStorage.getItem("userId"));
             let data = {
                 email: accounts.email,
                 phonenumber: accounts.phonenumber,
                 password: accounts.password,
-                FullName: accounts.FullName,
-                FirstTimeLocation: accounts.FirstTimeLocation,
+                fullName: accounts.fullName,
+                locationId: accounts.locationId,
                 active: accounts.active,
                 type: accounts.type,
                 photo: this.base64textString
             };
-            this.accountService.updateAccount(data, accounts.id);
+            this.accountService.updateAccount(data);
         })
             .catch(error => {
             console.log(error);
@@ -2992,7 +2991,7 @@ ProfilePageRoutingModule = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ("ion-button {\n  margin-left: 100px;\n}\n\nion-content ion-grid ion-row ion-fab {\n  margin: 0 -6px -1px 66px;\n  width: 25px;\n  height: 25px;\n}\n\nion-content ion-grid ion-row ion-fab ion-fab-button {\n  width: 25px;\n  height: 25px;\n  --background: linear-gradient(to bottom, #007bff, #007bff, #007bff, #007bff, #007bff, #007bff, #007bff);\n}\n\nion-content ion-grid ion-row ion-fab ion-fab-button ion-icon {\n  height: 19px;\n  width: 16px;\n}\n\nion-content ion-grid ion-row.marginTop {\n  margin: 5px;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi4uXFwuLlxcLi5cXHByb2ZpbGUucGFnZS5zY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBO0VBQ0ksa0JBQUE7QUFDSjs7QUFJWTtFQUNJLHdCQUFBO0VBQ0EsV0FBQTtFQUNBLFlBQUE7QUFEaEI7O0FBRWdCO0VBQ0ksV0FBQTtFQUNBLFlBQUE7RUFDQSx1R0FBQTtBQUFwQjs7QUFDZ0I7RUFDSSxZQUFBO0VBQ0EsV0FBQTtBQUNwQjs7QUFJUTtFQUNJLFdBQUE7QUFGWiIsImZpbGUiOiJwcm9maWxlLnBhZ2Uuc2NzcyIsInNvdXJjZXNDb250ZW50IjpbImlvbi1idXR0b257XHJcbiAgICBtYXJnaW4tbGVmdDogMTAwcHg7XHJcbn1cclxuaW9uLWNvbnRlbnQge1xyXG4gICAgaW9uLWdyaWQge1xyXG4gICAgICAgIGlvbi1yb3cge1xyXG4gICAgICAgICAgICBpb24tZmFiIHtcclxuICAgICAgICAgICAgICAgIG1hcmdpbjogMCAtNnB4IC0xcHggNjZweDtcclxuICAgICAgICAgICAgICAgIHdpZHRoOiAyNXB4O1xyXG4gICAgICAgICAgICAgICAgaGVpZ2h0OiAyNXB4O1xyXG4gICAgICAgICAgICAgICAgaW9uLWZhYi1idXR0b24ge1xyXG4gICAgICAgICAgICAgICAgICAgIHdpZHRoOiAyNXB4O1xyXG4gICAgICAgICAgICAgICAgICAgIGhlaWdodDogMjVweDtcclxuICAgICAgICAgICAgICAgICAgICAtLWJhY2tncm91bmQ6IGxpbmVhci1ncmFkaWVudCh0byBib3R0b20sICMwMDdiZmYsICMwMDdiZmYsICMwMDdiZmYsICMwMDdiZmYsICMwMDdiZmYsICMwMDdiZmYsICMwMDdiZmYpO1xyXG4gICAgICAgICAgICAgICAgaW9uLWljb257XHJcbiAgICAgICAgICAgICAgICAgICAgaGVpZ2h0OiAxOXB4O1xyXG4gICAgICAgICAgICAgICAgICAgIHdpZHRoOiAxNnB4O1xyXG4gICAgICAgICAgICAgICAgfVxyXG4gICAgICAgICAgICAgICAgfVxyXG4gICAgICAgICAgICB9XHJcbiAgICAgICAgfVxyXG4gICAgICAgIGlvbi1yb3cubWFyZ2luVG9wIHtcclxuICAgICAgICAgICAgbWFyZ2luOiA1cHg7XHJcbiAgICAgICAgfVxyXG4gICAgfSAgXHJcbiAgICBcclxufSJdfQ== */");
+/* harmony default export */ __webpack_exports__["default"] = ("ion-button {\n  margin-left: 100px;\n}\n\nion-content ion-grid ion-row ion-fab {\n  margin: 0 -6px -1px 66px;\n  width: 25px;\n  height: 25px;\n}\n\nion-content ion-grid ion-row ion-fab ion-fab-button {\n  width: 25px;\n  height: 25px;\n  --background: linear-gradient(to bottom, #007bff, #007bff, #007bff, #007bff, #007bff, #007bff, #007bff);\n}\n\nion-content ion-grid ion-row ion-fab ion-fab-button ion-icon {\n  height: 19px;\n  width: 16px;\n}\n\nion-content ion-grid ion-row.marginTop {\n  margin: 5px;\n}\n\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi4uXFwuLlxcLi5cXHByb2ZpbGUucGFnZS5zY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBO0VBQ0ksa0JBQWtCO0FBQ3RCOztBQUNBO0VBSWdCLHdCQUF3QjtFQUN4QixXQUFXO0VBQ1gsWUFBWTtBQUQ1Qjs7QUFMQTtFQVFvQixXQUFXO0VBQ1gsWUFBWTtFQUNaLHVHQUFhO0FBQ2pDOztBQVhBO0VBWW9CLFlBQVk7RUFDWixXQUFXO0FBRy9COztBQWhCQTtFQW1CWSxXQUFXO0FBQ3ZCIiwiZmlsZSI6InByb2ZpbGUucGFnZS5zY3NzIiwic291cmNlc0NvbnRlbnQiOlsiaW9uLWJ1dHRvbntcclxuICAgIG1hcmdpbi1sZWZ0OiAxMDBweDtcclxufVxyXG5pb24tY29udGVudCB7XHJcbiAgICBpb24tZ3JpZCB7XHJcbiAgICAgICAgaW9uLXJvdyB7XHJcbiAgICAgICAgICAgIGlvbi1mYWIge1xyXG4gICAgICAgICAgICAgICAgbWFyZ2luOiAwIC02cHggLTFweCA2NnB4O1xyXG4gICAgICAgICAgICAgICAgd2lkdGg6IDI1cHg7XHJcbiAgICAgICAgICAgICAgICBoZWlnaHQ6IDI1cHg7XHJcbiAgICAgICAgICAgICAgICBpb24tZmFiLWJ1dHRvbiB7XHJcbiAgICAgICAgICAgICAgICAgICAgd2lkdGg6IDI1cHg7XHJcbiAgICAgICAgICAgICAgICAgICAgaGVpZ2h0OiAyNXB4O1xyXG4gICAgICAgICAgICAgICAgICAgIC0tYmFja2dyb3VuZDogbGluZWFyLWdyYWRpZW50KHRvIGJvdHRvbSwgIzAwN2JmZiwgIzAwN2JmZiwgIzAwN2JmZiwgIzAwN2JmZiwgIzAwN2JmZiwgIzAwN2JmZiwgIzAwN2JmZik7XHJcbiAgICAgICAgICAgICAgICBpb24taWNvbntcclxuICAgICAgICAgICAgICAgICAgICBoZWlnaHQ6IDE5cHg7XHJcbiAgICAgICAgICAgICAgICAgICAgd2lkdGg6IDE2cHg7XHJcbiAgICAgICAgICAgICAgICB9XHJcbiAgICAgICAgICAgICAgICB9XHJcbiAgICAgICAgICAgIH1cclxuICAgICAgICB9XHJcbiAgICAgICAgaW9uLXJvdy5tYXJnaW5Ub3Age1xyXG4gICAgICAgICAgICBtYXJnaW46IDVweDtcclxuICAgICAgICB9XHJcbiAgICB9ICBcclxuICAgIFxyXG59Il19 */");
 
 /***/ })
 

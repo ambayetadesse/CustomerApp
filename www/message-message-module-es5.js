@@ -187,7 +187,7 @@
 
             var data = {
               msgcontent: this.newMsg,
-              date: new Date().getTime(),
+              date: new Date(),
               userId: this.customerId,
               driverId: this.driverId,
               sessionId: localStorage.getItem("userId")
@@ -196,7 +196,9 @@
             this.listOfMessage.sort(function (a, b) {
               return new Date(a.date).getTime() - new Date(b.date).getTime();
             });
-            this.messageService.create(data);
+            this.messageService.create(data).subscribe(function (res) {
+              alert(res.toString());
+            });
             this.newMsg = '';
             setTimeout(function () {
               _this2.content.scrollToBottom(200);
@@ -937,60 +939,37 @@
       /* harmony import */
 
 
-      var angularfire2_firestore__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(
-      /*! angularfire2/firestore */
-      "CqG3");
-      /* harmony import */
-
-
-      var angularfire2_firestore__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(angularfire2_firestore__WEBPACK_IMPORTED_MODULE_2__);
-      /* harmony import */
-
-
-      var rxjs_internal_operators_map__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(
-      /*! rxjs/internal/operators/map */
-      "q3Kh");
-      /* harmony import */
-
-
-      var rxjs_internal_operators_map__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(rxjs_internal_operators_map__WEBPACK_IMPORTED_MODULE_3__);
+      var _angular_common_http__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(
+      /*! @angular/common/http */
+      "tk/3");
 
       var MessageService = /*#__PURE__*/function () {
-        function MessageService(db) {
+        function MessageService(http) {
           _classCallCheck(this, MessageService);
 
-          this.db = db;
-          this.messageCollectionList = db.collection('Message');
+          this.http = http;
+          this.APIURL = 'http://localhost:49347/api';
         }
 
         _createClass(MessageService, [{
           key: "create",
-          value: function create(message) {
-            return this.messageCollectionList.add(message);
+          value: function create(val) {
+            return this.http.post(this.APIURL + '/Message', val);
           }
         }, {
           key: "getAllMessage",
           value: function getAllMessage() {
-            this.messageList = this.messageCollectionList.snapshotChanges().pipe(Object(rxjs_internal_operators_map__WEBPACK_IMPORTED_MODULE_3__["map"])(function (actions) {
-              return actions.map(function (a) {
-                var data = a.payload.doc.data();
-                var id = a.payload.doc.id;
-                return Object.assign({
-                  id: id
-                }, data);
-              });
-            }));
-            return this.messageList;
+            return this.http.get(this.APIURL + '/Message');
           }
         }, {
           key: "updateMessage",
-          value: function updateMessage(funObj, id) {
-            return this.messageCollectionList.doc(id).update(funObj);
+          value: function updateMessage(val) {
+            return this.http.put(this.APIURL + '/Message/', val);
           }
         }, {
           key: "removeMessage",
           value: function removeMessage(id) {
-            return this.messageCollectionList.doc(id)["delete"]();
+            return this.http["delete"](this.APIURL + '/Message/' + id).toPromise();
           }
         }]);
 
@@ -999,7 +978,7 @@
 
       MessageService.ctorParameters = function () {
         return [{
-          type: angularfire2_firestore__WEBPACK_IMPORTED_MODULE_2__["AngularFirestore"]
+          type: _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpClient"]
         }];
       };
 
@@ -1140,7 +1119,7 @@
       /* harmony default export */
 
 
-      __webpack_exports__["default"] = ".message {\n  padding: 10px;\n  border-radius: 10px;\n  margin-bottom: 4px;\n  white-space: pre-wrap;\n}\n\n.other-message {\n  background: var(--ion-color-tertiary);\n  color: #fff;\n}\n\n.my-message {\n  background: var(--ion-color-secondary);\n  color: #fff;\n}\n\n.time {\n  color: #dfdfdf;\n  float: right;\n  font-size: small;\n}\n\n.msg-btn {\n  --padding-start:0.5em;\n  --padding-end:0.5em;\n  margin-top: 10px;\n}\n\n.message-input {\n  width: 100%;\n  border: 1px solid var(--ion-color-medium);\n  border-radius: 10px;\n  background: #fff;\n  resize: none;\n  padding-left: 10px;\n  padding-right: 10px;\n}\n\nion-fab {\n  width: 100%;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi4uXFwuLlxcLi5cXG1lc3NhZ2UucGFnZS5zY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBO0VBQ0MsYUFBQTtFQUNBLG1CQUFBO0VBQ0Esa0JBQUE7RUFDQSxxQkFBQTtBQUNEOztBQUNBO0VBQ0kscUNBQUE7RUFDQSxXQUFBO0FBRUo7O0FBQUE7RUFDSSxzQ0FBQTtFQUNBLFdBQUE7QUFHSjs7QUFEQTtFQUNJLGNBQUE7RUFDQSxZQUFBO0VBQ0EsZ0JBQUE7QUFJSjs7QUFGQTtFQUNFLHFCQUFBO0VBQ0EsbUJBQUE7RUFDQSxnQkFBQTtBQUtGOztBQUhBO0VBQ0ksV0FBQTtFQUNBLHlDQUFBO0VBQ0EsbUJBQUE7RUFDQSxnQkFBQTtFQUNBLFlBQUE7RUFDQSxrQkFBQTtFQUNBLG1CQUFBO0FBTUo7O0FBSkE7RUFDSSxXQUFBO0FBT0oiLCJmaWxlIjoibWVzc2FnZS5wYWdlLnNjc3MiLCJzb3VyY2VzQ29udGVudCI6WyIubWVzc2FnZXtcclxuIHBhZGRpbmc6MTBweDtcclxuIGJvcmRlci1yYWRpdXM6MTBweDtcclxuIG1hcmdpbi1ib3R0b206NHB4O1xyXG4gd2hpdGUtc3BhY2U6IHByZS13cmFwO1xyXG59XHJcbi5vdGhlci1tZXNzYWdle1xyXG4gICAgYmFja2dyb3VuZDogdmFyKC0taW9uLWNvbG9yLXRlcnRpYXJ5KTtcclxuICAgIGNvbG9yOiAjZmZmO1xyXG59XHJcbi5teS1tZXNzYWdle1xyXG4gICAgYmFja2dyb3VuZDogdmFyKC0taW9uLWNvbG9yLXNlY29uZGFyeSk7XHJcbiAgICBjb2xvcjojZmZmO1xyXG59XHJcbi50aW1le1xyXG4gICAgY29sb3I6ICNkZmRmZGY7XHJcbiAgICBmbG9hdDogcmlnaHQ7XHJcbiAgICBmb250LXNpemU6IHNtYWxsO1xyXG59XHJcbi5tc2ctYnRue1xyXG4gIC0tcGFkZGluZy1zdGFydDowLjVlbTtcclxuICAtLXBhZGRpbmctZW5kOjAuNWVtO1xyXG4gIG1hcmdpbi10b3A6IDEwcHg7XHJcbn1cclxuLm1lc3NhZ2UtaW5wdXR7XHJcbiAgICB3aWR0aDogMTAwJTtcclxuICAgIGJvcmRlcjogMXB4IHNvbGlkIHZhcigtLWlvbi1jb2xvci1tZWRpdW0pO1xyXG4gICAgYm9yZGVyLXJhZGl1czogMTBweDtcclxuICAgIGJhY2tncm91bmQ6ICNmZmY7XHJcbiAgICByZXNpemU6IG5vbmU7XHJcbiAgICBwYWRkaW5nLWxlZnQ6IDEwcHg7XHJcbiAgICBwYWRkaW5nLXJpZ2h0OiAxMHB4O1xyXG59XHJcbmlvbi1mYWJ7XHJcbiAgICB3aWR0aDogMTAwJTtcclxufSJdfQ== */";
+      __webpack_exports__["default"] = ".message {\n  padding: 10px;\n  border-radius: 10px;\n  margin-bottom: 4px;\n  white-space: pre-wrap;\n}\n\n.other-message {\n  background: var(--ion-color-tertiary);\n  color: #fff;\n}\n\n.my-message {\n  background: var(--ion-color-secondary);\n  color: #fff;\n}\n\n.time {\n  color: #dfdfdf;\n  float: right;\n  font-size: small;\n}\n\n.msg-btn {\n  --padding-start:0.5em;\n  --padding-end:0.5em;\n  margin-top: 10px;\n}\n\n.message-input {\n  width: 100%;\n  border: 1px solid var(--ion-color-medium);\n  border-radius: 10px;\n  background: #fff;\n  resize: none;\n  padding-left: 10px;\n  padding-right: 10px;\n}\n\nion-fab {\n  width: 100%;\n}\n\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi4uXFwuLlxcLi5cXG1lc3NhZ2UucGFnZS5zY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBO0VBQ0MsYUFBWTtFQUNaLG1CQUFrQjtFQUNsQixrQkFBaUI7RUFDakIscUJBQXFCO0FBQ3RCOztBQUNBO0VBQ0kscUNBQXFDO0VBQ3JDLFdBQVc7QUFFZjs7QUFBQTtFQUNJLHNDQUFzQztFQUN0QyxXQUFVO0FBR2Q7O0FBREE7RUFDSSxjQUFjO0VBQ2QsWUFBWTtFQUNaLGdCQUFnQjtBQUlwQjs7QUFGQTtFQUNFLHFCQUFnQjtFQUNoQixtQkFBYztFQUNkLGdCQUFnQjtBQUtsQjs7QUFIQTtFQUNJLFdBQVc7RUFDWCx5Q0FBeUM7RUFDekMsbUJBQW1CO0VBQ25CLGdCQUFnQjtFQUNoQixZQUFZO0VBQ1osa0JBQWtCO0VBQ2xCLG1CQUFtQjtBQU12Qjs7QUFKQTtFQUNJLFdBQVc7QUFPZiIsImZpbGUiOiJtZXNzYWdlLnBhZ2Uuc2NzcyIsInNvdXJjZXNDb250ZW50IjpbIi5tZXNzYWdle1xyXG4gcGFkZGluZzoxMHB4O1xyXG4gYm9yZGVyLXJhZGl1czoxMHB4O1xyXG4gbWFyZ2luLWJvdHRvbTo0cHg7XHJcbiB3aGl0ZS1zcGFjZTogcHJlLXdyYXA7XHJcbn1cclxuLm90aGVyLW1lc3NhZ2V7XHJcbiAgICBiYWNrZ3JvdW5kOiB2YXIoLS1pb24tY29sb3ItdGVydGlhcnkpO1xyXG4gICAgY29sb3I6ICNmZmY7XHJcbn1cclxuLm15LW1lc3NhZ2V7XHJcbiAgICBiYWNrZ3JvdW5kOiB2YXIoLS1pb24tY29sb3Itc2Vjb25kYXJ5KTtcclxuICAgIGNvbG9yOiNmZmY7XHJcbn1cclxuLnRpbWV7XHJcbiAgICBjb2xvcjogI2RmZGZkZjtcclxuICAgIGZsb2F0OiByaWdodDtcclxuICAgIGZvbnQtc2l6ZTogc21hbGw7XHJcbn1cclxuLm1zZy1idG57XHJcbiAgLS1wYWRkaW5nLXN0YXJ0OjAuNWVtO1xyXG4gIC0tcGFkZGluZy1lbmQ6MC41ZW07XHJcbiAgbWFyZ2luLXRvcDogMTBweDtcclxufVxyXG4ubWVzc2FnZS1pbnB1dHtcclxuICAgIHdpZHRoOiAxMDAlO1xyXG4gICAgYm9yZGVyOiAxcHggc29saWQgdmFyKC0taW9uLWNvbG9yLW1lZGl1bSk7XHJcbiAgICBib3JkZXItcmFkaXVzOiAxMHB4O1xyXG4gICAgYmFja2dyb3VuZDogI2ZmZjtcclxuICAgIHJlc2l6ZTogbm9uZTtcclxuICAgIHBhZGRpbmctbGVmdDogMTBweDtcclxuICAgIHBhZGRpbmctcmlnaHQ6IDEwcHg7XHJcbn1cclxuaW9uLWZhYntcclxuICAgIHdpZHRoOiAxMDAlO1xyXG59Il19 */";
       /***/
     }
   }]);

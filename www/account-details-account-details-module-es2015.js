@@ -69,18 +69,21 @@ let AccountDetailsPage = class AccountDetailsPage {
         this.regform = this.fb.group({});
     }
     ngOnInit() {
-        let id = localStorage.getItem("userId");
+        const id = localStorage.getItem('userId');
         this.accountService.getAllAccount().subscribe(res => {
-            this.regform.get('FullName').setValue(res.find(c => c.id == id).FullName);
-            this.regform.get('phonenumber').setValue(res.find(c => c.id == id).phonenumber);
-            this.regform.get('email').setValue(res.find(c => c.id == id).email);
-            this.regform.get('password').setValue(res.find(c => c.id == id).password);
+            this.locationId = res.find(c => c.id == +id).Location;
+            this.active = res.find(c => c.id == +id).active;
+            this.type = res.find(c => c.id == +id).type;
+            this.regform.get('FullName').setValue(res.find(c => c.id === +id).fullName);
+            this.regform.get('phonenumber').setValue(res.find(c => c.id === +id).phonenumber);
+            this.regform.get('email').setValue(res.find(c => c.id === +id).email);
+            this.regform.get('password').setValue(res.find(c => c.id === +id).password);
         });
         this.regform = this.fb.group({
-            email: ["", _angular_forms__WEBPACK_IMPORTED_MODULE_4__["Validators"].email],
-            phonenumber: ["", _angular_forms__WEBPACK_IMPORTED_MODULE_4__["Validators"].required],
-            password: ["", _angular_forms__WEBPACK_IMPORTED_MODULE_4__["Validators"].required],
-            FullName: ["", _angular_forms__WEBPACK_IMPORTED_MODULE_4__["Validators"].required],
+            email: ['', _angular_forms__WEBPACK_IMPORTED_MODULE_4__["Validators"].email],
+            phonenumber: ['', _angular_forms__WEBPACK_IMPORTED_MODULE_4__["Validators"].required],
+            password: ['', _angular_forms__WEBPACK_IMPORTED_MODULE_4__["Validators"].required],
+            FullName: ['', _angular_forms__WEBPACK_IMPORTED_MODULE_4__["Validators"].required],
         });
         if ((this.platform.is('mobile') && !this.platform.is('hybrid')) ||
             this.platform.is('desktop')) {
@@ -88,6 +91,20 @@ let AccountDetailsPage = class AccountDetailsPage {
         }
     }
     SaveAccount() {
+        var data = {
+            id: localStorage.getItem('userId'),
+            email: this.regform.get('email').value,
+            phonenumber: this.regform.get('phonenumber').value,
+            password: this.regform.get('password').value,
+            fullName: this.regform.get('FullName').value,
+            locationId: this.locationId,
+            active: this.active,
+            type: this.type
+        };
+        this.accountService.updateAccount(data).subscribe(res => {
+            // alert(res.toString());
+        });
+        alert("successfully Updated");
     }
 };
 AccountDetailsPage.ctorParameters = () => [
@@ -159,7 +176,7 @@ AccountDetailsPageModule = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ("<ion-header [translucent]=\"true\">\n  <ion-toolbar color=\"primary\">\n    <ion-buttons>\n      <ion-back-button defaultHref=\"profile\"></ion-back-button>\n    </ion-buttons>\n    <ion-title>Account Details</ion-title>\n  </ion-toolbar>\n</ion-header>\n\n<ion-content>\n  <form [formGroup]=\"regform\">\n    <ion-item>\n      <ion-label>Full Name</ion-label>\n      <ion-input formControlName=\"FullName\" type=\"text\"></ion-input>\n      <small class=\"form-text text-muted\" *ngIf=\"!regform.get('FullName').valid && regform.get('FullName').touched\" > This field is required! </small> \n      </ion-item>\n    <ion-item>\n      <ion-label>Email  </ion-label>\n      <ion-input formControlName=\"email\" type=\"text\"></ion-input>\n      <small class=\"form-text text-muted\" *ngIf=\"!regform.get('email').valid && regform.get('email').touched\" > This field is required! </small> \n    </ion-item>\n    <ion-item>\n      <ion-label>Phone number</ion-label>\n      <ion-input formControlName=\"phonenumber\" type=\"text\"></ion-input>\n      <small class=\"form-text text-muted\" *ngIf=\"!regform.get('phonenumber').valid && regform.get('phonenumber').touched\" > This field is required! </small> \n    </ion-item>\n    <ion-item>\n      <ion-label>Password</ion-label>\n      <ion-input formControlName=\"password\" type=\"text\"></ion-input>\n      <small class=\"form-text text-muted\" *ngIf=\"!regform.get('password').valid && regform.get('password').touched\" > This field is required! </small> \n    </ion-item>\n    <div style=\"text-align: center; margin: auto;\">\n      <ion-button id=\"add items\" (click)=\"SaveAccount()\">Save</ion-button>\n    </div>\n</form>\n</ion-content>\n");
+/* harmony default export */ __webpack_exports__["default"] = ("<ion-header [translucent]=\"true\">\n  <ion-toolbar color=\"primary\">\n    <ion-buttons>\n      <ion-back-button defaultHref=\"profile\"></ion-back-button>\n    </ion-buttons>\n    <ion-title>Account Details</ion-title>\n  </ion-toolbar>\n</ion-header>\n\n<ion-content>\n  <form [formGroup]=\"regform\">\n    <ion-item>\n      <ion-label>Full Name</ion-label>\n      <ion-input formControlName=\"FullName\" type=\"text\"></ion-input>\n      <small class=\"form-text text-muted\" *ngIf=\"!regform.get('FullName').valid && regform.get('FullName').touched\" > This field is required! </small> \n      </ion-item>\n    <ion-item>\n      <ion-label>Email  </ion-label>\n      <ion-input formControlName=\"email\" type=\"text\"></ion-input>\n      <small class=\"form-text text-muted\" *ngIf=\"!regform.get('email').valid && regform.get('email').touched\" > This field is required! </small> \n    </ion-item>\n    <ion-item>\n      <ion-label>Phone number</ion-label>\n      <ion-input formControlName=\"phonenumber\" type=\"text\"></ion-input>\n      <small class=\"form-text text-muted\" *ngIf=\"!regform.get('phonenumber').valid && regform.get('phonenumber').touched\" > This field is required! </small> \n    </ion-item>\n    <ion-item>\n      <ion-label>Password</ion-label>\n      <ion-input formControlName=\"password\" type=\"text\"></ion-input>\n      <small class=\"form-text text-muted\" *ngIf=\"!regform.get('password').valid && regform.get('password').touched\" > This field is required! </small> \n    </ion-item>\n    <div style=\"text-align: center; margin: auto;\">\n      <ion-button id=\"add items\" (click)=\"SaveAccount()\">update Account</ion-button>\n    </div>\n</form>\n</ion-content>\n");
 
 /***/ }),
 
@@ -172,7 +189,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ("ion-input {\n  --padding-start: 85px;\n}\n\nion-content ion-item {\n  padding: 0;\n  --border-radius: 14px;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi4uXFwuLlxcLi5cXGFjY291bnQtZGV0YWlscy5wYWdlLnNjc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7RUFDRSxxQkFBQTtBQUNGOztBQUlFO0VBRUUsVUFBQTtFQUVBLHFCQUFBO0FBSEoiLCJmaWxlIjoiYWNjb3VudC1kZXRhaWxzLnBhZ2Uuc2NzcyIsInNvdXJjZXNDb250ZW50IjpbImlvbi1pbnB1dCB7XHJcbiAgLS1wYWRkaW5nLXN0YXJ0OiA4NXB4O1xyXG59XHJcbmlvbi1jb250ZW50IHtcclxuICAvLy0tYmFja2dyb3VuZDogbGluZWFyLWdyYWRpZW50KDkwZGVnLCByZ2JhKDQzLDkwLDE0OCwxKSAwJSwgcmdiYSg0NSwxMTIsMjI5LDEpIDM1JSwgcmdiYSg0NSwxMTIsMjI5LDEpIDEwMCUpO1xyXG5cclxuICBpb24taXRlbSB7XHJcbiAgICAvLyAtLWJhY2tncm91bmQ6IHJnYigxMjAsIDEyNiwgMTM0KTtcclxuICAgIHBhZGRpbmc6IDA7XHJcbiAgICAvLyBtYXJnaW46IDE0cHggMDtcclxuICAgIC0tYm9yZGVyLXJhZGl1czogMTRweDtcclxuICAgIC8vIGNvbG9yOiAjRkZGRkZGO1xyXG4gICAgLy9mb250LXdlaWdodDogNjAwO1xyXG4gIH1cclxufVxyXG4iXX0= */");
+/* harmony default export */ __webpack_exports__["default"] = ("ion-input {\n  --padding-start: 85px;\n}\n\nion-content ion-item {\n  padding: 0;\n  --border-radius: 14px;\n}\n\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi4uXFwuLlxcLi5cXGFjY291bnQtZGV0YWlscy5wYWdlLnNjc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7RUFDRSxxQkFBZ0I7QUFDbEI7O0FBQ0E7RUFLSSxVQUFVO0VBRVYscUJBQWdCO0FBSHBCIiwiZmlsZSI6ImFjY291bnQtZGV0YWlscy5wYWdlLnNjc3MiLCJzb3VyY2VzQ29udGVudCI6WyJpb24taW5wdXQge1xyXG4gIC0tcGFkZGluZy1zdGFydDogODVweDtcclxufVxyXG5pb24tY29udGVudCB7XHJcbiAgLy8tLWJhY2tncm91bmQ6IGxpbmVhci1ncmFkaWVudCg5MGRlZywgcmdiYSg0Myw5MCwxNDgsMSkgMCUsIHJnYmEoNDUsMTEyLDIyOSwxKSAzNSUsIHJnYmEoNDUsMTEyLDIyOSwxKSAxMDAlKTtcclxuXHJcbiAgaW9uLWl0ZW0ge1xyXG4gICAgLy8gLS1iYWNrZ3JvdW5kOiByZ2IoMTIwLCAxMjYsIDEzNCk7XHJcbiAgICBwYWRkaW5nOiAwO1xyXG4gICAgLy8gbWFyZ2luOiAxNHB4IDA7XHJcbiAgICAtLWJvcmRlci1yYWRpdXM6IDE0cHg7XHJcbiAgICAvLyBjb2xvcjogI0ZGRkZGRjtcclxuICAgIC8vZm9udC13ZWlnaHQ6IDYwMDtcclxuICB9XHJcbn1cclxuIl19 */");
 
 /***/ })
 

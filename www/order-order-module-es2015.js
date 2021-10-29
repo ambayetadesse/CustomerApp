@@ -13,14 +13,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "mrSG");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "fXoL");
 /* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs */ "qCKp");
-/* harmony import */ var rxjs_internal_operators_map__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs/internal/operators/map */ "q3Kh");
-/* harmony import */ var rxjs_internal_operators_map__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(rxjs_internal_operators_map__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var angularfire2_firestore__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! angularfire2/firestore */ "CqG3");
-/* harmony import */ var angularfire2_firestore__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(angularfire2_firestore__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var _common_bad_input__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../common/bad-input */ "XEKg");
-/* harmony import */ var _common_not_found_error__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../common/not-found-error */ "5Jak");
-/* harmony import */ var _common_app_error__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../common/app-error */ "/GcI");
-
+/* harmony import */ var _common_bad_input__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../common/bad-input */ "XEKg");
+/* harmony import */ var _common_not_found_error__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../common/not-found-error */ "5Jak");
+/* harmony import */ var _common_app_error__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../common/app-error */ "/GcI");
+/* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/common/http */ "tk/3");
 
 
 
@@ -29,44 +25,35 @@ __webpack_require__.r(__webpack_exports__);
 
 
 let RestaurantService = class RestaurantService {
-    constructor(db) {
-        this.db = db;
-        this.restaurantCollectionList = db.collection('Restaurant');
+    constructor(http) {
+        this.http = http;
+        this.APIURL = 'http://localhost:49347/api';
     }
-    create(restaurantObj) {
-        return this.restaurantCollectionList.add(restaurantObj);
+    create(val) {
+        return this.http.post(this.APIURL + '/Restaurant', val);
     }
     getAllRestaurant() {
-        this.restaurantList = this.restaurantCollectionList.snapshotChanges().pipe(Object(rxjs_internal_operators_map__WEBPACK_IMPORTED_MODULE_3__["map"])(actions => {
-            return actions.map(a => {
-                const data = a.payload.doc.data();
-                const id = a.payload.doc.id;
-                return Object.assign({ id }, data);
-            });
-        }));
-        return this.restaurantList;
+        var restaurant = this.http.get(this.APIURL + '/Restaurant');
+        return restaurant;
     }
-    getRestaurant(id) {
-        return this.restaurantCollectionList.doc(id).valueChanges();
-    }
-    updateRestaurant(restaurantObj, id) {
-        return this.restaurantCollectionList.doc(id).update(restaurantObj)
-            .catch(this.handleError);
+    updateRestaurant(val) {
+        return this.http.put(this.APIURL + '/Restaurant/', val);
     }
     removeRestaurant(id) {
-        return this.restaurantCollectionList.doc(id).delete()
-            .catch(this.handleError);
+        return this.http.delete(this.APIURL + '/Restaurant/' + id).toPromise();
     }
     handleError(error) {
-        if (error.status === 400)
-            return rxjs__WEBPACK_IMPORTED_MODULE_2__["Observable"].throw(new _common_bad_input__WEBPACK_IMPORTED_MODULE_5__["BadInput"](error.json()));
-        if (error.status === 404)
-            return rxjs__WEBPACK_IMPORTED_MODULE_2__["Observable"].throw(new _common_not_found_error__WEBPACK_IMPORTED_MODULE_6__["NotFoundError"]());
-        return rxjs__WEBPACK_IMPORTED_MODULE_2__["Observable"].throw(new _common_app_error__WEBPACK_IMPORTED_MODULE_7__["AppError"](error));
+        if (error.status === 400) {
+            return rxjs__WEBPACK_IMPORTED_MODULE_2__["Observable"].throw(new _common_bad_input__WEBPACK_IMPORTED_MODULE_3__["BadInput"](error.json()));
+        }
+        if (error.status === 404) {
+            return rxjs__WEBPACK_IMPORTED_MODULE_2__["Observable"].throw(new _common_not_found_error__WEBPACK_IMPORTED_MODULE_4__["NotFoundError"]());
+        }
+        return rxjs__WEBPACK_IMPORTED_MODULE_2__["Observable"].throw(new _common_app_error__WEBPACK_IMPORTED_MODULE_5__["AppError"](error));
     }
 };
 RestaurantService.ctorParameters = () => [
-    { type: angularfire2_firestore__WEBPACK_IMPORTED_MODULE_4__["AngularFirestore"] }
+    { type: _angular_common_http__WEBPACK_IMPORTED_MODULE_6__["HttpClient"] }
 ];
 RestaurantService = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
     Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"])({
@@ -166,7 +153,7 @@ OrderPageRoutingModule = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ("<ion-header [translucent]=\"true\">\n  <ion-toolbar color=\"primary\">\n    <ion-buttons slot=\"start\">\n      <ion-menu-button></ion-menu-button>\n    </ion-buttons>\n    <ion-title>Recent orders</ion-title>\n  </ion-toolbar>\n</ion-header>\n<ion-content [fullscreen]=\"true\">\n  <ion-segment style=\"padding-top: 70px;\" (ionChange)=\"segmentChanged($event)\" scrollable value=\"All\">\n    <ion-segment-button value=\"All\">\n      <ion-label>\n        All\n      </ion-label>\n    </ion-segment-button>\n    <ion-segment-button value=\"Processing\">\n      <ion-label>\n        Processing\n      </ion-label>\n    </ion-segment-button>\n    <ion-segment-button value=\"Completed\">\n      <ion-label>\n        Completed\n      </ion-label>\n    </ion-segment-button>\n    <ion-segment-button value=\"Cancelled\">\n      <ion-label>\n        Cancelled\n      </ion-label>\n    </ion-segment-button>\n  </ion-segment>\n  <ion-list *ngIf=\"segment === 'All'\">\n    <ion-row *ngFor=\"let meal of listOfOrder\" class=\"ion-padding meal-row\" (click)=\"allOrder(meal,meal.id)\">\n      <ion-col size=\"8\" class=\"border-bottom\">\n        <ion-label>\n          {{ meal.restaurantName}}\n          <p>{{ meal.DateTime|date:'short' }}</p>\n          <!-- <ion-button style=\"margin-top: -7px;\" (click)=\"location(meal.Location)\">\n            <ion-icon name=\"location-outline\"></ion-icon>\n          </ion-button> -->\n        </ion-label>\n        <ion-text color=\"dark\"><b>Total : {{ meal.Total | currency:'ETB' }}</b></ion-text>\n      </ion-col>\n      <ion-col size=\"4\" class=\"border-bottom\">\n        <ion-label style=\"color: #f8f9fa;\n                    background-color: #17a2b8;\n                    border-radius: 5px;\n                    text-align: center;\">{{meal.OrderStatus}}</ion-label>\n        <!-- <ion-button fill=\"clear\" (click)=\"viewOrder(meal.id)\">\n          view order\n        </ion-button> -->\n      </ion-col>\n    </ion-row>\n  </ion-list>\n  <ion-list *ngIf=\"segment === 'Processing'\">\n    <ion-row *ngFor=\"let meal of listOfOrderProcessing\" class=\"ion-padding meal-row\">\n      <ion-col size=\"8\" class=\"border-bottom\">\n        <ion-label>\n          {{ meal.restaurantName}}\n          <p>{{ meal.DateTime|date:'short' }}</p>\n          <ion-button style=\"margin-top: -7px;\" (click)=\"location(meal.Location)\">\n            <ion-icon name=\"location-outline\"></ion-icon>\n          </ion-button>\n        </ion-label>\n        <ion-text color=\"dark\"><b>Total : {{ meal.Total | currency:'ETB' }}</b></ion-text><br>\n        <ion-text style=\"font-weight: bold;\">{{meal.Driver}} is picking up your order </ion-text>\n      </ion-col>\n      <ion-col size=\"4\" class=\"border-bottom\">\n        <ion-label style=\"color: #f8f9fa;\n                       background-color: #17a2b8;\n                       border-radius: 5px;\n                       text-align: center;\">{{meal.OrderStatus}}</ion-label>\n        <ion-button fill=\"clear\" (click)=\"viewOrder(meal.id)\">\n          view order\n        </ion-button>\n        <button style=\"\n        background-color: #2185d0;\n        border-color: #2185d0;\n        color: #fff;\n        border-radius: 0.28571429rem;\n        margin: .25rem .5rem .25rem 0;\n      \" (click)=\"sendMessage(meal.DriverId,meal.CustomerId,meal.Driver)\">\n          Send message\n        </button>\n        <button style=\"border-radius: 12px;\" (click)=\"callToDriver(meal.driverPhonenumber)\">\n          <ion-icon name=\"call\"></ion-icon>\n        </button>\n      </ion-col>\n    </ion-row>\n  </ion-list>\n  <ion-list *ngIf=\"segment === 'Completed'\">\n    <ion-row *ngFor=\"let meal of listOfOrderCompeleted\" class=\"ion-padding meal-row\">\n      <ion-col size=\"8\" class=\"border-bottom\">\n        <ion-label>\n          {{ meal.restaurantName}}\n          <p>{{ meal.DateTime|date:'short' }}</p>\n          <ion-button style=\"margin-top: -7px;\" (click)=\"location(meal.Location)\">\n            <ion-icon name=\"location-outline\"></ion-icon>\n          </ion-button>\n        </ion-label>\n        <ion-text color=\"dark\"><b>Total : {{ meal.Total | currency:'ETB' }}</b></ion-text>\n      </ion-col>\n      <ion-col size=\"4\" class=\"border-bottom\">\n        <ion-label style=\"color: #f8f9fa;\n                         background-color: #17a2b8;\n                         border-radius: 5px;\n                         text-align: center;\">{{meal.OrderStatus}}</ion-label>\n        <ion-button fill=\"clear\" (click)=\"viewOrder(meal.id)\">\n          view order\n        </ion-button>\n      </ion-col>\n    </ion-row>\n  </ion-list>\n  <ion-list *ngIf=\"segment === 'Cancelled'\">\n    <ion-row *ngFor=\"let meal of listOfOrderCancelled\" class=\"ion-padding meal-row\">\n      <ion-col size=\"8\" class=\"border-bottom\">\n        <ion-label>\n          {{ meal.restaurantName}}\n          <p>{{ meal.DateTime|date:'short'}}</p>\n          <ion-button style=\"margin-top: -7px;\" (click)=\"location(meal.Location)\">\n            <ion-icon name=\"location-outline\"></ion-icon>\n          </ion-button>\n        </ion-label>\n        <ion-text color=\"dark\"><b>Total : {{ meal.Total | currency:'ETB' }}</b></ion-text>\n      </ion-col>\n      <ion-col size=\"4\" class=\"border-bottom\">\n        <ion-label style=\"color: #f8f9fa;\n                           background-color: #17a2b8;\n                           border-radius: 5px;\n                           text-align: center;\">{{meal.OrderStatus}}</ion-label>\n        <ion-button fill=\"clear\" (click)=\"viewOrder(meal.id)\">\n          view order\n        </ion-button>\n      </ion-col>\n    </ion-row>\n  </ion-list>\n</ion-content>");
+/* harmony default export */ __webpack_exports__["default"] = ("<ion-header [translucent]=\"true\">\n  <ion-toolbar color=\"primary\">\n    <ion-buttons slot=\"start\">\n      <ion-menu-button></ion-menu-button>\n    </ion-buttons>\n    <ion-title>Recent orders</ion-title>\n  </ion-toolbar>\n</ion-header>\n<ion-content [fullscreen]=\"true\">\n  <ion-refresher slot=\"fixed\" (ionRefresh)=\"doRefresh($event)\">\n    <ion-refresher-content></ion-refresher-content>\n  </ion-refresher>\n  <ion-segment style=\"padding-top: 70px;\" (ionChange)=\"segmentChanged($event)\" scrollable value=\"All\">\n    <ion-segment-button value=\"All\">\n      <ion-label>\n        All\n      </ion-label>\n    </ion-segment-button>\n    <ion-segment-button value=\"Processing\">\n      <ion-label>\n        Processing\n      </ion-label>\n    </ion-segment-button>\n    <ion-segment-button value=\"Completed\">\n      <ion-label>\n        Completed\n      </ion-label>\n    </ion-segment-button>\n    <ion-segment-button value=\"Cancelled\">\n      <ion-label>\n        Cancelled\n      </ion-label>\n    </ion-segment-button>\n  </ion-segment>\n  <ion-list *ngIf=\"segment === 'All'\">\n    <ion-row *ngFor=\"let meal of listOfOrder\" class=\"ion-padding meal-row\" (click)=\"allOrder(meal,meal.id)\">\n      <ion-col size=\"8\" class=\"border-bottom\">\n        <ion-label>\n          {{ meal.restaurantName}}\n          <p>{{ meal.DateTime|date:'short' }}</p>\n          <!-- <ion-button style=\"margin-top: -7px;\" (click)=\"location(meal.Location)\">\n            <ion-icon name=\"location-outline\"></ion-icon>\n          </ion-button> -->\n        </ion-label>\n        <ion-text color=\"dark\"><b>Total : {{ meal.Total | currency:'ETB' }}</b></ion-text>\n      </ion-col>\n      <ion-col size=\"4\" class=\"border-bottom\">\n        <ion-label style=\"color: #f8f9fa;\n                    background-color: #17a2b8;\n                    border-radius: 5px;\n                    text-align: center;\">{{meal.OrderStatus}}</ion-label>\n        <!-- <ion-button fill=\"clear\" (click)=\"viewOrder(meal.id)\">\n          view order\n        </ion-button> -->\n      </ion-col>\n    </ion-row>\n  </ion-list>\n  <ion-list *ngIf=\"segment === 'Processing'\">\n    <ion-row *ngFor=\"let meal of listOfOrderProcessing\" class=\"ion-padding meal-row\">\n      <ion-col size=\"8\" class=\"border-bottom\">\n        <ion-label>\n          {{ meal.restaurantName}}\n          <p>{{ meal.DateTime|date:'short' }}</p>\n          <ion-button style=\"margin-top: -7px;\" (click)=\"location(meal.Location)\">\n            <ion-icon name=\"location-outline\"></ion-icon>\n          </ion-button>\n        </ion-label>\n        <ion-text color=\"dark\"><b>Total : {{ meal.Total | currency:'ETB' }}</b></ion-text><br>\n        <ion-text style=\"font-weight: bold;\">{{meal.Driver}} is picking up your order </ion-text>\n      </ion-col>\n      <ion-col size=\"4\" class=\"border-bottom\">\n        <ion-label style=\"color: #f8f9fa;\n                       background-color: #17a2b8;\n                       border-radius: 5px;\n                       text-align: center;\">{{meal.OrderStatus}}</ion-label>\n        <ion-button fill=\"clear\" (click)=\"viewOrder(meal.id)\">\n          view order\n        </ion-button>\n        <button style=\"\n        background-color: #2185d0;\n        border-color: #2185d0;\n        color: #fff;\n        border-radius: 0.28571429rem;\n        margin: .25rem .5rem .25rem 0;\n      \" (click)=\"sendMessage(meal.DriverId,meal.CustomerId,meal.Driver)\">\n          Send message\n        </button>\n        <button style=\"border-radius: 12px;\" (click)=\"callToDriver(meal.driverPhonenumber)\">\n          <ion-icon name=\"call\"></ion-icon>\n        </button>\n      </ion-col>\n    </ion-row>\n  </ion-list>\n  <ion-list *ngIf=\"segment === 'Completed'\">\n    <ion-row *ngFor=\"let meal of listOfOrderCompeleted\" class=\"ion-padding meal-row\">\n      <ion-col size=\"8\" class=\"border-bottom\">\n        <ion-label>\n          {{ meal.restaurantName}}\n          <p>{{ meal.DateTime|date:'short' }}</p>\n          <ion-button style=\"margin-top: -7px;\" (click)=\"location(meal.Location)\">\n            <ion-icon name=\"location-outline\"></ion-icon>\n          </ion-button>\n        </ion-label>\n        <ion-text color=\"dark\"><b>Total : {{ meal.Total | currency:'ETB' }}</b></ion-text>\n      </ion-col>\n      <ion-col size=\"4\" class=\"border-bottom\">\n        <ion-label style=\"color: #f8f9fa;\n                         background-color: #17a2b8;\n                         border-radius: 5px;\n                         text-align: center;\">{{meal.OrderStatus}}</ion-label>\n        <ion-button fill=\"clear\" (click)=\"viewOrder(meal.id)\">\n          view order\n        </ion-button>\n      </ion-col>\n    </ion-row>\n  </ion-list>\n  <ion-list *ngIf=\"segment === 'Cancelled'\">\n    <ion-row *ngFor=\"let meal of listOfOrderCancelled\" class=\"ion-padding meal-row\">\n      <ion-col size=\"8\" class=\"border-bottom\">\n        <ion-label>\n          {{ meal.restaurantName}}\n          <p>{{ meal.DateTime|date:'short'}}</p>\n          <ion-button style=\"margin-top: -7px;\" (click)=\"location(meal.Location)\">\n            <ion-icon name=\"location-outline\"></ion-icon>\n          </ion-button>\n        </ion-label>\n        <ion-text color=\"dark\"><b>Total : {{ meal.Total | currency:'ETB' }}</b></ion-text>\n      </ion-col>\n      <ion-col size=\"4\" class=\"border-bottom\">\n        <ion-label style=\"color: #f8f9fa;\n                           background-color: #17a2b8;\n                           border-radius: 5px;\n                           text-align: center;\">{{meal.OrderStatus}}</ion-label>\n        <ion-button fill=\"clear\" (click)=\"viewOrder(meal.id)\">\n          view order\n        </ion-button>\n      </ion-col>\n    </ion-row>\n  </ion-list>\n</ion-content>");
 
 /***/ }),
 
@@ -236,15 +223,13 @@ let OrderPage = class OrderPage {
         this.listOfOrderCompeleted = [];
         this.listOfOrderCancelled = [];
         this.isLoading = false;
-        this.accountService.getAllAccount().subscribe(result => {
-            this.listOfAccount = result;
-        });
         this.restaurantService.getAllRestaurant().subscribe(res => {
             this.listOfRestaurant = res;
         });
     }
     ngOnInit() {
         // this.id = this._Activatedroute.snapshot.paramMap.get("id");
+        this.getRestaurant();
         this.getFood();
         this.getOrder();
         this.getOrderDetails();
@@ -252,6 +237,11 @@ let OrderPage = class OrderPage {
         this.getCompeletedOrder();
         this.getCancelledOrder();
         //this.lp = new LocationPicker('map');
+    }
+    getRestaurant() {
+        this.restaurantService.getAllRestaurant().subscribe(res => {
+            this.listOfRestaurant = res;
+        });
     }
     getFood() {
         this.foodService.getAllFood().subscribe(res => {
@@ -264,38 +254,38 @@ let OrderPage = class OrderPage {
         });
     }
     getOrder() {
+        this.listOfOrder = [];
         this.orderService.getAllOrder().subscribe(res => {
-            this.listOfOrder = [];
-            this.UserId = localStorage.getItem("userId");
-            let result = res.filter(c => c.Customer == this.UserId);
-            if (result.length > 0) {
+            this.UserId = localStorage.getItem('userId');
+            const result = res.filter(c => c.customer === this.UserId);
+            if (result.length > 0 && this.listOfRestaurant != undefined) {
                 result.forEach(element => {
-                    for (let i = 0; i < element.OrderStatus.length; i++) {
-                        if (element.OrderStatus[i].checked == true) {
-                            this.orderStatus = element.OrderStatus[i].val;
-                        }
-                    }
-                    let data = {
-                        id: element.id,
-                        DateTime: element.DateTime,
-                        Customer: this.listOfAccount.find(c => c.id == element.Customer).FullName,
-                        Location: element.Location,
-                        OrderStatus: this.orderStatus,
-                        Total: element.Total,
-                        Driver: element.Driver,
-                        Vehicle: element.Vehicle,
-                        orderNo: element.orderNo,
-                        orderLocation: element.orderLocation,
-                        restaurantName: this.listOfRestaurant.find(c => c.accountId == element.RestaurantId).Name
-                    };
-                    this.listOfOrder.push(data);
-                    this.listOfOrder.sort((a, b) => new Date(b.DateTime).getTime() - new Date(a.DateTime).getTime());
-                    //this.viewOrder(element.id)
+                    this.accountService.getAllAccount().subscribe(result => {
+                        this.getStatusOfOrder(element);
+                        const resName = this.listOfRestaurant.find(c => c.id === +element.restaurantId);
+                        const data = {
+                            id: element.id,
+                            DateTime: element.dateTime,
+                            Customer: result.find(c => c.id === +element.customer).fullName,
+                            Location: element.location,
+                            OrderStatus: this.orderStatuses,
+                            Total: element.total,
+                            Driver: element.driver,
+                            Vehicle: element.vehicle,
+                            orderNo: element.orderNo,
+                            orderLocation: element.orderLocation,
+                            restaurantName: resName.name
+                        };
+                        this.listOfOrder.push(data);
+                        this.listOfOrder.sort((a, b) => new Date(b.DateTime).getTime() - new Date(a.DateTime).getTime());
+                        // this.viewOrder(element.id)
+                    });
                 });
             }
             else {
+                this.refresh();
                 this.massge = true;
-                this.messageOrder = "Preparing your order ...";
+                this.messageOrder = 'Preparing your order ...';
             }
         });
     }
@@ -303,28 +293,36 @@ let OrderPage = class OrderPage {
         this.orderService.getAllOrder().subscribe(res => {
             this.listOfOrderProcessing = [];
             this.UserId = localStorage.getItem("userId");
-            let order = res.filter(c => c.OrderStatus.find(c => c.checked == false && c.val == "delivered") && c.Customer == this.UserId);
-            if (order.length > 0) {
+            let order = res.filter(c => c.orderStatuses.find(c => c.isChecked == false && c.val == "delivered") && c.customer == this.UserId);
+            if (order.length > 0 && this.listOfRestaurant != undefined) {
                 order.forEach(element => {
-                    if (element.Driver !== "") {
+                    if (element.driver !== "") {
                         this.accountService.getAllAccount().subscribe(result => {
-                            let customerName = result.find(c => c.id == element.Customer);
-                            let driver = result.find(c => c.id == element.Driver);
+                            let customerName = result.find(c => c.id == element.customer);
+                            let driver = result.find(c => c.id == element.driver);
+                            this.getStatusOfOrder(element);
+                            if (driver) {
+                                this.driverPhone = driver.phonenumber;
+                                this.driverName = driver.fullName;
+                            }
+                            else {
+                                this.driverPhone = "";
+                                this.driverName = "";
+                            }
                             let data = {
                                 id: element.id,
-                                DateTime: element.DateTime,
-                                Customer: customerName.FullName,
-                                Location: element.Location,
-                                OrderStatus: "pending..",
-                                driverPhonenumber: driver.phonenumber,
-                                Total: element.Total,
-                                Driver: driver.FullName,
-                                DriverId: element.Driver,
-                                CustomerId: element.Customer,
-                                Vehicle: element.Vehicle,
-                                orderNo: element.orderNo,
+                                DateTime: element.dateTime,
+                                Customer: customerName.fullName,
+                                Location: element.location,
+                                OrderStatus: this.orderStatuses,
+                                driverPhonenumber: this.driverPhone,
+                                Total: element.total,
+                                Driver: this.driverName,
+                                DriverId: element.driver,
+                                CustomerId: element.customer,
+                                Vehicle: element.vehicle,
                                 orderLocation: element.orderLocation,
-                                restaurantName: this.listOfRestaurant.find(c => c.accountId == element.RestaurantId).Name
+                                restaurantName: this.listOfRestaurant.find(c => c.accountId == element.restaurantId).name
                             };
                             this.listOfOrderProcessing.push(data);
                             this.listOfOrderProcessing.sort((a, b) => new Date(b.DateTime).getTime() - new Date(a.DateTime).getTime());
@@ -333,6 +331,7 @@ let OrderPage = class OrderPage {
                 });
             }
             else {
+                this.refreshProcessingTask();
                 this.massge = true;
                 this.messageOrder = "Preparing your order ...";
             }
@@ -342,22 +341,21 @@ let OrderPage = class OrderPage {
         this.orderService.getAllOrder().subscribe(res => {
             this.listOfOrderCompeleted = [];
             this.UserId = localStorage.getItem("userId");
-            let order = res.filter(c => c.OrderStatus.find(c => c.checked == true && c.val == "delivered") && c.Customer == this.UserId);
-            if (order.length > 0) {
+            let order = res.filter(c => c.orderStatuses.find(c => c.isChecked == true && c.val == "delivered") && c.customer == this.UserId);
+            if (order.length > 0 && this.listOfRestaurant != undefined) {
                 order.forEach(element => {
                     this.accountService.getAllAccount().subscribe(result => {
                         let data = {
                             id: element.id,
-                            DateTime: element.DateTime,
-                            Customer: result.find(c => c.id == element.Customer).FullName,
-                            Location: element.Location,
+                            DateTime: element.dateTime,
+                            Customer: result.find(c => c.id == element.customer).fullName,
+                            Location: element.location,
                             OrderStatus: "Completed",
-                            Total: element.Total,
-                            Driver: element.Driver,
-                            Vehicle: element.Vehicle,
-                            orderNo: element.orderNo,
+                            Total: element.total,
+                            Driver: element.driver,
+                            Vehicle: element.vehicle,
                             orderLocation: element.orderLocation,
-                            restaurantName: this.listOfRestaurant.find(c => c.accountId == element.RestaurantId).Name
+                            restaurantName: this.listOfRestaurant.find(c => c.accountId == element.restaurantId).name
                         };
                         this.listOfOrderCompeleted.push(data);
                         this.listOfOrderCompeleted.sort((a, b) => new Date(b.DateTime).getTime() - new Date(a.DateTime).getTime());
@@ -366,6 +364,7 @@ let OrderPage = class OrderPage {
                 });
             }
             else {
+                this.refreshCompleteTask();
                 this.massge = true;
                 this.messageOrder = "Preparing your order ...";
             }
@@ -375,22 +374,21 @@ let OrderPage = class OrderPage {
         this.orderService.getAllOrder().subscribe(res => {
             this.listOfOrderCancelled = [];
             this.UserId = localStorage.getItem("userId");
-            let order = res.filter(c => c.customerStatus == false && c.Customer == this.UserId);
-            if (order.length > 0) {
+            let order = res.filter(c => c.customerStatus == "false" && c.customer == this.UserId);
+            if (order.length > 0 && this.listOfRestaurant != undefined) {
                 order.forEach(element => {
                     this.accountService.getAllAccount().subscribe(result => {
                         let data = {
                             id: element.id,
-                            DateTime: element.DateTime,
-                            Customer: result.find(c => c.id == element.Customer).FullName,
-                            Location: element.Location,
+                            DateTime: element.dateTime,
+                            Customer: result.find(c => c.id == element.customer).fullName,
+                            Location: element.location,
                             OrderStatus: "Cancelled",
-                            Total: element.Total,
-                            Driver: element.Driver,
-                            Vehicle: element.Vehicle,
-                            orderNo: element.orderNo,
+                            Total: element.total,
+                            Driver: element.driver,
+                            Vehicle: element.vehicle,
                             orderLocation: element.orderLocation,
-                            restaurantName: this.listOfRestaurant.find(c => c.accountId == element.RestaurantId).Name
+                            restaurantName: this.listOfRestaurant.find(c => c.accountId == element.restaurantId).name
                         };
                         this.listOfOrderCancelled.push(data);
                         this.listOfOrderCancelled.sort((a, b) => new Date(b.DateTime).getTime() - new Date(a.DateTime).getTime());
@@ -399,30 +397,49 @@ let OrderPage = class OrderPage {
                 });
             }
             else {
+                this.refreshCancelTask();
                 this.massge = true;
                 this.messageOrder = "Preparing your order ...";
             }
         });
     }
+    getStatusOfOrder(element) {
+        this.a = 0;
+        for (let i = 0; i < element.orderStatuses.length; i++) {
+            if (element.orderStatuses[i].isChecked == false) {
+                this.a = this.a + 1;
+            }
+            else {
+                this.orderStatuses = element.orderStatuses[i].val;
+            }
+        }
+        if (this.a == 3) {
+            for (let i = 0; i < element.restaurantStatuses.length; i++) {
+                if (element.restaurantStatuses[i].isChecked == true) {
+                    this.orderStatuses = element.restaurantStatuses[i].val;
+                }
+            }
+        }
+    }
     viewOrder(id) {
         this.isLoading = false;
         this.countItems = 0;
         this.cart = [];
-        let orderNo = this.listOfOrder.find(c => c.id == id).orderNo;
-        let orderDetails = this.listOfOrderDetails.filter(c => c.OrderId == orderNo);
+        // let orderNo = this.listOfOrder.find(c => c.id == id).orderNo;
+        let orderDetails = this.listOfOrderDetails.filter(c => c.orderId == id);
         orderDetails.forEach(el => {
             let data = {
-                CookingTime: this.listOfFood.find(c => c.id == el.Food).CookingTime,
-                DeliveryTime: this.listOfFood.find(c => c.id == el.Food).DeliveryTime,
-                Description: this.listOfFood.find(c => c.id == el.Food).Description,
-                Name: this.listOfFood.find(c => c.id == el.Food).Name,
-                Price: this.listOfFood.find(c => c.id == el.Food).Price,
-                amount: el.Qty,
-                categoryId: this.listOfFood.find(c => c.id == el.Food).categoryId,
-                id: el.Food,
-                picture: this.listOfFood.find(c => c.id == el.Food).picture,
-                restaurantId: this.listOfFood.find(c => c.id == el.Food).restaurantId,
-                type: this.listOfFood.find(c => c.id == el.Food).type,
+                CookingTime: this.listOfFood.find(c => c.id == el.foodId).cookingTime,
+                DeliveryTime: this.listOfFood.find(c => c.id == el.foodId).deliveryTime,
+                Description: this.listOfFood.find(c => c.id == el.foodId).description,
+                Name: this.listOfFood.find(c => c.id == el.foodId).name,
+                Price: this.listOfFood.find(c => c.id == el.foodId).price,
+                amount: el.qty,
+                categoryId: this.listOfFood.find(c => c.id == el.foodId).categoryId,
+                id: el.foodId,
+                picture: this.listOfFood.find(c => c.id == el.foodId).picture,
+                restaurantId: this.listOfFood.find(c => c.id == el.foodId).restaurantId,
+                type: this.listOfFood.find(c => c.id == el.foodId).type,
                 orderDetailsId: el.id,
                 orderStatus: true
             };
@@ -465,6 +482,36 @@ let OrderPage = class OrderPage {
         this.callNumber.callNumber(phonenumber, true).then(res => console.log('Launched dialer!', res))
             .catch(err => console.log('Error launching dialer', err));
     }
+    refresh() {
+        setTimeout(() => {
+            this.getOrder();
+        });
+    }
+    refreshProcessingTask() {
+        setTimeout(() => {
+            this.getProcessingOrder();
+        }, 200);
+    }
+    refreshCompleteTask() {
+        setTimeout(() => {
+            this.getCompeletedOrder();
+        }, 200);
+    }
+    refreshCancelTask() {
+        setTimeout(() => {
+            this.getCancelledOrder();
+        }, 200);
+    }
+    doRefresh(event) {
+        setTimeout(() => {
+            this.getOrder();
+            // this.getOrderDetails();
+            this.getProcessingOrder();
+            this.getCompeletedOrder();
+            this.getCancelledOrder();
+            event.target.complete();
+        }, 2000);
+    }
 };
 OrderPage.ctorParameters = () => [
     { type: _Service_food_service__WEBPACK_IMPORTED_MODULE_6__["FoodService"] },
@@ -499,7 +546,7 @@ OrderPage = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ("ion-toolbar ion-icon {\n  font-size: 25px;\n}\n\nion-content {\n  position: absolute;\n  --background:#f8f9fa;\n  --padding-bottom: 50px;\n}\n\nion-content .orders {\n  margin-top: 58px;\n}\n\n.light-bg {\n  background: #ffffff;\n  z-index: 10;\n}\n\n.meal-row {\n  padding-bottom: 0px;\n}\n\n.border-bottom {\n  border-bottom: 1px solid var(--ion-color-step-150, rgba(0, 0, 0, 0.07));\n}\n\n#map {\n  width: 60%;\n  height: 280px;\n}\n\n.message {\n  padding-top: 83px;\n  padding-left: 12px;\n  color: #337ab7;\n  font-size: 27px;\n}\n\nion-slides {\n  padding-right: 0px;\n  margin-top: 34px;\n  margin-bottom: -34px;\n  background: #e9ecef;\n  top: calc(env(safe-area-inset-top) - 34px);\n}\n\n.sticky-row {\n  position: sticky;\n  top: calc(env(safe-area-inset-top) - -55px);\n  z-index: 2;\n  background: #e9ecef;\n  box-shadow: 0px 9px 11px -15px rgba(0, 0, 0, 0.75);\n  display: flex;\n  flex-direction: row;\n  align-items: flex-end;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi4uXFwuLlxcLi5cXG9yZGVyLnBhZ2Uuc2NzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFFRTtFQUNFLGVBQUE7QUFESjs7QUFJQTtFQUNFLGtCQUFBO0VBQ0Esb0JBQUE7RUFDQSxzQkFBQTtBQURGOztBQUVJO0VBQ0UsZ0JBQUE7QUFBTjs7QUFHQTtFQUNJLG1CQUFBO0VBQ0EsV0FBQTtBQUFKOztBQUVBO0VBQ0UsbUJBQUE7QUFDRjs7QUFDQTtFQUNFLHVFQUFBO0FBRUY7O0FBQUE7RUFDRSxVQUFBO0VBQ0EsYUFBQTtBQUdGOztBQURBO0VBQ0UsaUJBQUE7RUFDQSxrQkFBQTtFQUNBLGNBQUE7RUFDQSxlQUFBO0FBSUY7O0FBRkE7RUFDRSxrQkFBQTtFQUNBLGdCQUFBO0VBQ0Esb0JBQUE7RUFDQSxtQkFBQTtFQUNBLDBDQUFBO0FBS0Y7O0FBSEU7RUFDRSxnQkFBQTtFQUNBLDJDQUFBO0VBQ0EsVUFBQTtFQUNBLG1CQUFBO0VBQ0Esa0RBQUE7RUFDQSxhQUFBO0VBQ0EsbUJBQUE7RUFDQSxxQkFBQTtBQU1KIiwiZmlsZSI6Im9yZGVyLnBhZ2Uuc2NzcyIsInNvdXJjZXNDb250ZW50IjpbIlxyXG5pb24tdG9vbGJhciB7XHJcbiAgaW9uLWljb24ge1xyXG4gICAgZm9udC1zaXplOiAyNXB4O1xyXG4gIH1cclxufVxyXG5pb24tY29udGVudCB7XHJcbiAgcG9zaXRpb246IGFic29sdXRlO1xyXG4gIC0tYmFja2dyb3VuZDojZjhmOWZhO1xyXG4gIC0tcGFkZGluZy1ib3R0b206IDUwcHg7XHJcbiAgICAub3JkZXJze1xyXG4gICAgICBtYXJnaW4tdG9wOiA1OHB4O1xyXG4gICAgfVxyXG4gIH1cclxuLmxpZ2h0LWJnIHtcclxuICAgIGJhY2tncm91bmQ6ICNmZmZmZmY7XHJcbiAgICB6LWluZGV4OiAxMDtcclxufVxyXG4ubWVhbC1yb3cge1xyXG4gIHBhZGRpbmctYm90dG9tOiAwcHg7XHJcbn1cclxuLmJvcmRlci1ib3R0b20ge1xyXG4gIGJvcmRlci1ib3R0b206IDFweCBzb2xpZCB2YXIoLS1pb24tY29sb3Itc3RlcC0xNTAsIHJnYmEoMCwgMCwgMCwgMC4wNykpO1xyXG59XHJcbiNtYXAge1xyXG4gIHdpZHRoOiA2MCU7XHJcbiAgaGVpZ2h0OiAyODBweDtcclxufVxyXG4ubWVzc2FnZXtcclxuICBwYWRkaW5nLXRvcDogODNweDtcclxuICBwYWRkaW5nLWxlZnQ6IDEycHg7XHJcbiAgY29sb3I6ICMzMzdhYjc7XHJcbiAgZm9udC1zaXplOiAyN3B4O1xyXG59XHJcbmlvbi1zbGlkZXMge1xyXG4gIHBhZGRpbmctcmlnaHQ6IDBweDtcclxuICBtYXJnaW4tdG9wOiAzNHB4O1xyXG4gIG1hcmdpbi1ib3R0b206IC0zNHB4O1xyXG4gIGJhY2tncm91bmQ6ICNlOWVjZWY7XHJcbiAgdG9wOiBjYWxjKGVudihzYWZlLWFyZWEtaW5zZXQtdG9wKSAtIDM0cHgpO1xyXG4gIH1cclxuICAuc3RpY2t5LXJvdyB7XHJcbiAgICBwb3NpdGlvbjogc3RpY2t5O1xyXG4gICAgdG9wOiBjYWxjKGVudihzYWZlLWFyZWEtaW5zZXQtdG9wKSAtIC01NXB4KTtcclxuICAgIHotaW5kZXg6IDI7XHJcbiAgICBiYWNrZ3JvdW5kOiAjZTllY2VmO1xyXG4gICAgYm94LXNoYWRvdzogMHB4IDlweCAxMXB4IC0xNXB4IHJnYmEoMCwgMCwgMCwgMC43NSk7XHJcbiAgICBkaXNwbGF5OiBmbGV4O1xyXG4gICAgZmxleC1kaXJlY3Rpb246IHJvdztcclxuICAgIGFsaWduLWl0ZW1zOiBmbGV4LWVuZDtcclxuICB9Il19 */");
+/* harmony default export */ __webpack_exports__["default"] = ("ion-toolbar ion-icon {\n  font-size: 25px;\n}\n\nion-content {\n  position: absolute;\n  --background:#f8f9fa;\n  --padding-bottom: 50px;\n}\n\nion-content .orders {\n  margin-top: 58px;\n}\n\n.light-bg {\n  background: #ffffff;\n  z-index: 10;\n}\n\n.meal-row {\n  padding-bottom: 0px;\n}\n\n.border-bottom {\n  border-bottom: 1px solid var(--ion-color-step-150, rgba(0, 0, 0, 0.07));\n}\n\n#map {\n  width: 60%;\n  height: 280px;\n}\n\n.message {\n  padding-top: 83px;\n  padding-left: 12px;\n  color: #337ab7;\n  font-size: 27px;\n}\n\nion-slides {\n  padding-right: 0px;\n  margin-top: 34px;\n  margin-bottom: -34px;\n  background: #e9ecef;\n  top: calc(env(safe-area-inset-top) - 34px);\n}\n\n.sticky-row {\n  position: sticky;\n  top: calc(env(safe-area-inset-top) - -55px);\n  z-index: 2;\n  background: #e9ecef;\n  box-shadow: 0px 9px 11px -15px rgba(0, 0, 0, 0.75);\n  display: flex;\n  flex-direction: row;\n  align-items: flex-end;\n}\n\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi4uXFwuLlxcLi5cXG9yZGVyLnBhZ2Uuc2NzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFDQTtFQUVJLGVBQWU7QUFEbkI7O0FBSUE7RUFDRSxrQkFBa0I7RUFDbEIsb0JBQWE7RUFDYixzQkFBaUI7QUFEbkI7O0FBRkE7RUFLTSxnQkFBZ0I7QUFDdEI7O0FBRUE7RUFDSSxtQkFBbUI7RUFDbkIsV0FBVztBQUNmOztBQUNBO0VBQ0UsbUJBQW1CO0FBRXJCOztBQUFBO0VBQ0UsdUVBQXVFO0FBR3pFOztBQURBO0VBQ0UsVUFBVTtFQUNWLGFBQWE7QUFJZjs7QUFGQTtFQUNFLGlCQUFpQjtFQUNqQixrQkFBa0I7RUFDbEIsY0FBYztFQUNkLGVBQWU7QUFLakI7O0FBSEE7RUFDRSxrQkFBa0I7RUFDbEIsZ0JBQWdCO0VBQ2hCLG9CQUFvQjtFQUNwQixtQkFBbUI7RUFDbkIsMENBQTBDO0FBTTVDOztBQUpFO0VBQ0UsZ0JBQWdCO0VBQ2hCLDJDQUEyQztFQUMzQyxVQUFVO0VBQ1YsbUJBQW1CO0VBQ25CLGtEQUFrRDtFQUNsRCxhQUFhO0VBQ2IsbUJBQW1CO0VBQ25CLHFCQUFxQjtBQU96QiIsImZpbGUiOiJvcmRlci5wYWdlLnNjc3MiLCJzb3VyY2VzQ29udGVudCI6WyJcclxuaW9uLXRvb2xiYXIge1xyXG4gIGlvbi1pY29uIHtcclxuICAgIGZvbnQtc2l6ZTogMjVweDtcclxuICB9XHJcbn1cclxuaW9uLWNvbnRlbnQge1xyXG4gIHBvc2l0aW9uOiBhYnNvbHV0ZTtcclxuICAtLWJhY2tncm91bmQ6I2Y4ZjlmYTtcclxuICAtLXBhZGRpbmctYm90dG9tOiA1MHB4O1xyXG4gICAgLm9yZGVyc3tcclxuICAgICAgbWFyZ2luLXRvcDogNThweDtcclxuICAgIH1cclxuICB9XHJcbi5saWdodC1iZyB7XHJcbiAgICBiYWNrZ3JvdW5kOiAjZmZmZmZmO1xyXG4gICAgei1pbmRleDogMTA7XHJcbn1cclxuLm1lYWwtcm93IHtcclxuICBwYWRkaW5nLWJvdHRvbTogMHB4O1xyXG59XHJcbi5ib3JkZXItYm90dG9tIHtcclxuICBib3JkZXItYm90dG9tOiAxcHggc29saWQgdmFyKC0taW9uLWNvbG9yLXN0ZXAtMTUwLCByZ2JhKDAsIDAsIDAsIDAuMDcpKTtcclxufVxyXG4jbWFwIHtcclxuICB3aWR0aDogNjAlO1xyXG4gIGhlaWdodDogMjgwcHg7XHJcbn1cclxuLm1lc3NhZ2V7XHJcbiAgcGFkZGluZy10b3A6IDgzcHg7XHJcbiAgcGFkZGluZy1sZWZ0OiAxMnB4O1xyXG4gIGNvbG9yOiAjMzM3YWI3O1xyXG4gIGZvbnQtc2l6ZTogMjdweDtcclxufVxyXG5pb24tc2xpZGVzIHtcclxuICBwYWRkaW5nLXJpZ2h0OiAwcHg7XHJcbiAgbWFyZ2luLXRvcDogMzRweDtcclxuICBtYXJnaW4tYm90dG9tOiAtMzRweDtcclxuICBiYWNrZ3JvdW5kOiAjZTllY2VmO1xyXG4gIHRvcDogY2FsYyhlbnYoc2FmZS1hcmVhLWluc2V0LXRvcCkgLSAzNHB4KTtcclxuICB9XHJcbiAgLnN0aWNreS1yb3cge1xyXG4gICAgcG9zaXRpb246IHN0aWNreTtcclxuICAgIHRvcDogY2FsYyhlbnYoc2FmZS1hcmVhLWluc2V0LXRvcCkgLSAtNTVweCk7XHJcbiAgICB6LWluZGV4OiAyO1xyXG4gICAgYmFja2dyb3VuZDogI2U5ZWNlZjtcclxuICAgIGJveC1zaGFkb3c6IDBweCA5cHggMTFweCAtMTVweCByZ2JhKDAsIDAsIDAsIDAuNzUpO1xyXG4gICAgZGlzcGxheTogZmxleDtcclxuICAgIGZsZXgtZGlyZWN0aW9uOiByb3c7XHJcbiAgICBhbGlnbi1pdGVtczogZmxleC1lbmQ7XHJcbiAgfSJdfQ== */");
 
 /***/ })
 

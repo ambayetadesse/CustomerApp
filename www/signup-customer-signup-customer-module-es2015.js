@@ -59,7 +59,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ("ion-content ion-item {\n  padding: 0;\n  --border-radius: 14px;\n}\nion-content ion-searchbar {\n  --border-radius: 14px;\n  --background: rgb(243, 243, 243);\n  margin-top: -13px;\n}\nion-content ion-segment {\n  margin: 5px 0;\n}\nion-header {\n  background-color: #3880ff;\n  border-radius: 14px;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi4uXFwuLlxcLi5cXHNpZ251cC1jdXN0b21lci5wYWdlLnNjc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBR007RUFFRSxVQUFBO0VBRUEscUJBQUE7QUFKUjtBQVFHO0VBQ0MscUJBQUE7RUFDQSxnQ0FBQTtFQUNBLGlCQUFBO0FBTko7QUFTRTtFQUNFLGFBQUE7QUFOSjtBQVFFO0VBQ0UseUJBQUE7RUFDQSxtQkFBQTtBQUxKIiwiZmlsZSI6InNpZ251cC1jdXN0b21lci5wYWdlLnNjc3MiLCJzb3VyY2VzQ29udGVudCI6WyJpb24tY29udGVudCB7XHJcbiAgICAvLy0tYmFja2dyb3VuZDogbGluZWFyLWdyYWRpZW50KDkwZGVnLCByZ2JhKDQzLDkwLDE0OCwxKSAwJSwgcmdiYSg0NSwxMTIsMjI5LDEpIDM1JSwgcmdiYSg0NSwxMTIsMjI5LDEpIDEwMCUpO1xyXG4gICBcclxuICAgICAgaW9uLWl0ZW0ge1xyXG4gICAgICAvLyAtLWJhY2tncm91bmQ6IHJnYigxMjAsIDEyNiwgMTM0KTtcclxuICAgICAgICBwYWRkaW5nOiAwO1xyXG4gICAgICAgLy8gbWFyZ2luOiAxNHB4IDA7XHJcbiAgICAgICAgLS1ib3JkZXItcmFkaXVzOiAxNHB4O1xyXG4gICAgICAgLy8gY29sb3I6ICNGRkZGRkY7XHJcbiAgICAgICAgLy9mb250LXdlaWdodDogNjAwO1xyXG4gICB9XHJcbiAgIGlvbi1zZWFyY2hiYXJ7XHJcbiAgICAtLWJvcmRlci1yYWRpdXM6IDE0cHg7XHJcbiAgICAtLWJhY2tncm91bmQ6IHJnYigyNDMsIDI0MywgMjQzKTtcclxuICAgIG1hcmdpbi10b3A6IC0xM3B4O1xyXG4gICB9XHJcbiAgfVxyXG4gIGlvbi1jb250ZW50IGlvbi1zZWdtZW50IHtcclxuICAgIG1hcmdpbjogNXB4IDA7XHJcbiAgfVxyXG4gIGlvbi1oZWFkZXJ7XHJcbiAgICBiYWNrZ3JvdW5kLWNvbG9yOiAjMzg4MGZmO1xyXG4gICAgYm9yZGVyLXJhZGl1czogMTRweDtcclxuICB9Il19 */");
+/* harmony default export */ __webpack_exports__["default"] = ("ion-content ion-item {\n  padding: 0;\n  --border-radius: 14px;\n}\n\nion-content ion-searchbar {\n  --border-radius: 14px;\n  --background: rgb(243, 243, 243);\n  margin-top: -13px;\n}\n\nion-content ion-segment {\n  margin: 5px 0;\n}\n\nion-header {\n  background-color: #3880ff;\n  border-radius: 14px;\n}\n\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi4uXFwuLlxcLi5cXHNpZ251cC1jdXN0b21lci5wYWdlLnNjc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7RUFLUSxVQUFVO0VBRVYscUJBQWdCO0FBSnhCOztBQUhBO0VBWUkscUJBQWdCO0VBQ2hCLGdDQUFhO0VBQ2IsaUJBQWlCO0FBTHJCOztBQVFFO0VBQ0UsYUFBYTtBQUxqQjs7QUFPRTtFQUNFLHlCQUF5QjtFQUN6QixtQkFBbUI7QUFKdkIiLCJmaWxlIjoic2lnbnVwLWN1c3RvbWVyLnBhZ2Uuc2NzcyIsInNvdXJjZXNDb250ZW50IjpbImlvbi1jb250ZW50IHtcclxuICAgIC8vLS1iYWNrZ3JvdW5kOiBsaW5lYXItZ3JhZGllbnQoOTBkZWcsIHJnYmEoNDMsOTAsMTQ4LDEpIDAlLCByZ2JhKDQ1LDExMiwyMjksMSkgMzUlLCByZ2JhKDQ1LDExMiwyMjksMSkgMTAwJSk7XHJcbiAgIFxyXG4gICAgICBpb24taXRlbSB7XHJcbiAgICAgIC8vIC0tYmFja2dyb3VuZDogcmdiKDEyMCwgMTI2LCAxMzQpO1xyXG4gICAgICAgIHBhZGRpbmc6IDA7XHJcbiAgICAgICAvLyBtYXJnaW46IDE0cHggMDtcclxuICAgICAgICAtLWJvcmRlci1yYWRpdXM6IDE0cHg7XHJcbiAgICAgICAvLyBjb2xvcjogI0ZGRkZGRjtcclxuICAgICAgICAvL2ZvbnQtd2VpZ2h0OiA2MDA7XHJcbiAgIH1cclxuICAgaW9uLXNlYXJjaGJhcntcclxuICAgIC0tYm9yZGVyLXJhZGl1czogMTRweDtcclxuICAgIC0tYmFja2dyb3VuZDogcmdiKDI0MywgMjQzLCAyNDMpO1xyXG4gICAgbWFyZ2luLXRvcDogLTEzcHg7XHJcbiAgIH1cclxuICB9XHJcbiAgaW9uLWNvbnRlbnQgaW9uLXNlZ21lbnQge1xyXG4gICAgbWFyZ2luOiA1cHggMDtcclxuICB9XHJcbiAgaW9uLWhlYWRlcntcclxuICAgIGJhY2tncm91bmQtY29sb3I6ICMzODgwZmY7XHJcbiAgICBib3JkZXItcmFkaXVzOiAxNHB4O1xyXG4gIH0iXX0= */");
 
 /***/ }),
 
@@ -234,7 +234,7 @@ let SignupCustomerPage = class SignupCustomerPage {
             FullName: ["", _angular_forms__WEBPACK_IMPORTED_MODULE_4__["Validators"].required],
             email: ["", _angular_forms__WEBPACK_IMPORTED_MODULE_4__["Validators"].required],
             phonenumber: ["", _angular_forms__WEBPACK_IMPORTED_MODULE_4__["Validators"].required],
-            FirstTimeLocation: [""],
+            locationId: [''],
             password: ["", _angular_forms__WEBPACK_IMPORTED_MODULE_4__["Validators"].required],
             confirmPassword: ["", _angular_forms__WEBPACK_IMPORTED_MODULE_4__["Validators"].required],
             type: [""],
@@ -260,11 +260,13 @@ let SignupCustomerPage = class SignupCustomerPage {
     registerAccount() {
         if (this.regform.get("password").value === this.regform.get("confirmPassword").value) {
             if (this.regform.valid) {
-                this.regform.get("FirstTimeLocation").setValue(this.Address);
+                this.regform.get("locationId").setValue(this.Address);
                 this.regform.get("active").setValue("true");
                 this.regform.get("type").setValue("customer");
                 this.regform.get("phonenumber").setValue((this.regform.get("phonenumber").value).internationalNumber);
-                this.accountService.create(this.regform.value);
+                this.accountService.create(this.regform.value).subscribe(res => {
+                    // alert(res.toString());
+                });
                 this.router.navigate(["/menu/login"]);
             }
             else {

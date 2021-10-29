@@ -104,10 +104,14 @@
             var password = this.regform.get("password").value;
 
             if (this.regform.valid) {
-              this.authServices.signUpUser(email, password).subscribe(function (result) {
+              this.authServices.getAllAccount().subscribe(function (res) {
+                var result = res.filter(function (c) {
+                  return c.email == email && c.password == password;
+                });
+
                 if (result.length > 0) {
                   localStorage.setItem("userId", result[0].id);
-                  localStorage.setItem("fullName", result[0].FullName);
+                  localStorage.setItem("fullName", result[0].fullName);
                   localStorage.setItem("roleType", result[0].type);
                   localStorage.setItem('active', result[0].active);
 

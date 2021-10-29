@@ -13,14 +13,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "mrSG");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "fXoL");
 /* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs */ "qCKp");
-/* harmony import */ var rxjs_internal_operators_map__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs/internal/operators/map */ "q3Kh");
-/* harmony import */ var rxjs_internal_operators_map__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(rxjs_internal_operators_map__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var angularfire2_firestore__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! angularfire2/firestore */ "CqG3");
-/* harmony import */ var angularfire2_firestore__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(angularfire2_firestore__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var _common_bad_input__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../common/bad-input */ "XEKg");
-/* harmony import */ var _common_not_found_error__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../common/not-found-error */ "5Jak");
-/* harmony import */ var _common_app_error__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../common/app-error */ "/GcI");
-
+/* harmony import */ var _common_bad_input__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../common/bad-input */ "XEKg");
+/* harmony import */ var _common_not_found_error__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../common/not-found-error */ "5Jak");
+/* harmony import */ var _common_app_error__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../common/app-error */ "/GcI");
+/* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/common/http */ "tk/3");
 
 
 
@@ -29,44 +25,35 @@ __webpack_require__.r(__webpack_exports__);
 
 
 let RestaurantService = class RestaurantService {
-    constructor(db) {
-        this.db = db;
-        this.restaurantCollectionList = db.collection('Restaurant');
+    constructor(http) {
+        this.http = http;
+        this.APIURL = 'http://localhost:49347/api';
     }
-    create(restaurantObj) {
-        return this.restaurantCollectionList.add(restaurantObj);
+    create(val) {
+        return this.http.post(this.APIURL + '/Restaurant', val);
     }
     getAllRestaurant() {
-        this.restaurantList = this.restaurantCollectionList.snapshotChanges().pipe(Object(rxjs_internal_operators_map__WEBPACK_IMPORTED_MODULE_3__["map"])(actions => {
-            return actions.map(a => {
-                const data = a.payload.doc.data();
-                const id = a.payload.doc.id;
-                return Object.assign({ id }, data);
-            });
-        }));
-        return this.restaurantList;
+        var restaurant = this.http.get(this.APIURL + '/Restaurant');
+        return restaurant;
     }
-    getRestaurant(id) {
-        return this.restaurantCollectionList.doc(id).valueChanges();
-    }
-    updateRestaurant(restaurantObj, id) {
-        return this.restaurantCollectionList.doc(id).update(restaurantObj)
-            .catch(this.handleError);
+    updateRestaurant(val) {
+        return this.http.put(this.APIURL + '/Restaurant/', val);
     }
     removeRestaurant(id) {
-        return this.restaurantCollectionList.doc(id).delete()
-            .catch(this.handleError);
+        return this.http.delete(this.APIURL + '/Restaurant/' + id).toPromise();
     }
     handleError(error) {
-        if (error.status === 400)
-            return rxjs__WEBPACK_IMPORTED_MODULE_2__["Observable"].throw(new _common_bad_input__WEBPACK_IMPORTED_MODULE_5__["BadInput"](error.json()));
-        if (error.status === 404)
-            return rxjs__WEBPACK_IMPORTED_MODULE_2__["Observable"].throw(new _common_not_found_error__WEBPACK_IMPORTED_MODULE_6__["NotFoundError"]());
-        return rxjs__WEBPACK_IMPORTED_MODULE_2__["Observable"].throw(new _common_app_error__WEBPACK_IMPORTED_MODULE_7__["AppError"](error));
+        if (error.status === 400) {
+            return rxjs__WEBPACK_IMPORTED_MODULE_2__["Observable"].throw(new _common_bad_input__WEBPACK_IMPORTED_MODULE_3__["BadInput"](error.json()));
+        }
+        if (error.status === 404) {
+            return rxjs__WEBPACK_IMPORTED_MODULE_2__["Observable"].throw(new _common_not_found_error__WEBPACK_IMPORTED_MODULE_4__["NotFoundError"]());
+        }
+        return rxjs__WEBPACK_IMPORTED_MODULE_2__["Observable"].throw(new _common_app_error__WEBPACK_IMPORTED_MODULE_5__["AppError"](error));
     }
 };
 RestaurantService.ctorParameters = () => [
-    { type: angularfire2_firestore__WEBPACK_IMPORTED_MODULE_4__["AngularFirestore"] }
+    { type: _angular_common_http__WEBPACK_IMPORTED_MODULE_6__["HttpClient"] }
 ];
 RestaurantService = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
     Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"])({
@@ -87,7 +74,135 @@ RestaurantService = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ("<ion-header>\n  <ion-toolbar color=\"light\">\n    <ion-buttons slot=\"start\">\n      <ion-button fill=\"solid\" shape=\"round\" color=\"light\" (click)=\"onclick()\">\n        <ion-icon slot=\"icon-only\" name=\"arrow-back\" color=\"primary\"></ion-icon>\n      </ion-button>\n    </ion-buttons>\n    <ion-title style=\"text-align: center;\">Order Details</ion-title>\n    <ion-buttons slot=\"end\">\n      <ion-button  >\n        <ion-badge *ngIf=\"cart.length > 0\">{{ cartItemCount | async }}</ion-badge>\n        <ion-icon slot=\"icon-only\" class=\"cart-icon\" name=\"cart\"></ion-icon>\n      </ion-button> \n    </ion-buttons>\n   </ion-toolbar>\n</ion-header>\n\n<ion-content fullscreen>\n  <!-- <div class=\"ion-text-end\">\n    <ion-button (click)=\"close()\" fill=\"clear\" color=\"dark\">\n      <ion-icon name=\"close\" slot=\"start\"></ion-icon>\n    </ion-button>\n  </div> -->\n  <div class=\"ion-padding\">\n    <ion-list>\n      <ion-item *ngFor=\"let p of cart\" class=\"ion-text-wrap\">\n        <ion-grid>\n          <ion-row class=\"ion-align-items-center\">\n            <ion-col size=\"2\" class=\"ion-align-self-center\">\n              <ion-button color=\"medium\" fill=\"clear\" (click)=\"decreaseCartItem(p)\">\n                <ion-icon name=\"remove-circle\" slot=\"icon-only\"></ion-icon>\n              </ion-button>\n            </ion-col>\n            <ion-col size=\"1\" class=\"ion-align-self-center\">\n              {{ p.amount }}\n            </ion-col>\n            <ion-col size=\"2\" class=\"ion-align-self-center\">\n              <ion-button color=\"medium\" fill=\"clear\" (click)=\"increaseCartItem(p)\">\n                <ion-icon name=\"add-circle\" slot=\"icon-only\"></ion-icon>\n              </ion-button>\n            </ion-col>\n            <ion-col size=\"2\" offset=\"5\">\n              <ion-button color=\"medium\" fill=\"clear\" (click)=\"removeCartItem(p)\">\n                <ion-icon name=\"close-circle\" slot=\"icon-only\"></ion-icon>\n              </ion-button>\n            </ion-col>\n          </ion-row>\n          <ion-row>\n            <ion-col size=\"5\">\n              <b>{{ p.Name }}</b>\n            </ion-col>\n            <ion-col size=\"4\">\n              <b>{{ p.Price | currency:'ETB'}}</b>\n            </ion-col>\n            <ion-col size=\"3\" class=\"ion-text-end\">\n              {{ p.amount * p.Price | currency:'ETB' }}\n            </ion-col>\n          </ion-row>\n        </ion-grid>\n      </ion-item>\n      <ion-item>\n        <ion-grid>\n          <ion-row>\n            <ion-col size=\"9\">\n             Sub Total:\n            </ion-col>\n            <ion-col size=\"3\" class=\"ion-text-end\">\n              {{ getTotal() | currency:'ETB' }}\n            </ion-col>\n          </ion-row>\n        </ion-grid>\n      </ion-item>\n      <ion-item>\n        <ion-grid>\n          <ion-row>\n            <ion-col size=\"9\">\n             Grand Total:\n            </ion-col>\n            <ion-col size=\"3\" class=\"ion-text-end\">\n              {{ getGrandTotal() | currency:'ETB' }}\n            </ion-col>\n          </ion-row>\n        </ion-grid>\n      </ion-item>\n    </ion-list>\n    <form [formGroup]=\"regform\">\n    <ion-item>\n      <ion-label>Transation Type</ion-label>\n      <ion-select interface=\"popover\" formControlName=\"transactionType\">\n        <ion-select-option value=\"Delivery\">Delivery</ion-select-option>\n        <ion-select-option value=\"Pickup\">Pickup</ion-select-option>\n      </ion-select>\n    </ion-item>\n    <ion-item>\n      <ion-label>Delivery Date</ion-label>\n      <ion-datetime formControlName=\"DeliveryDate\" display-format=\"MMM DD, YYYY HH:mm:ss\" [min]=\"minDate\" [max]=\"maxDate\" [(ngModel)]=\"currentDate\"></ion-datetime>\n    </ion-item>\n    <ion-item>\n      <ion-label>Delivery fee</ion-label>\n      <ion-input formControlName=\"DeliveryFee\" type=\"number\" (keyup)=\"getGrandTotal()\"></ion-input>\n    </ion-item>\n    <ion-item>\n      <ion-label>Delivery Time</ion-label>\n      <ion-datetime formControlName=\"DeliveryTime\" display-format=\"h:mm A\" picker-format=\"h:mm A\" value=\"1990-02-19T07:43Z\"></ion-datetime>\n    </ion-item>\n    <ion-item>\n      <ion-grid>\n        <ion-row>\n          <ion-col size=\"1\">\n            <ion-label>\n              <ion-icon style=\"height: 27px;\n              width: 19px;\" name=\"location-outline\"></ion-icon>\n            </ion-label>\n           </ion-col>\n          <ion-col size=\"8\">\n           <ion-label>\n             <p>Delivery to current Address</p>\n             <p></p>\n           </ion-label>\n          </ion-col>\n          <ion-col size=\"3\">\n            <ion-button (click)=\"location()\">\n              change\n            </ion-button>\n          </ion-col>\n        </ion-row>\n      </ion-grid>\n    </ion-item>\n    <ion-button expand=\"full\" (click)=\"order(cart)\" slot=\"fixed\">\n      Order\n    </ion-button>\n   \n  </form>\n  </div>\n</ion-content>");
+/* harmony default export */ __webpack_exports__["default"] = ("<ion-header>\n  <ion-toolbar color=\"light\">\n    <ion-buttons slot=\"start\">\n      <ion-button fill=\"solid\" shape=\"round\" color=\"light\" (click)=\"onclick()\">\n        <ion-icon slot=\"icon-only\" name=\"arrow-back\" color=\"primary\"></ion-icon>\n      </ion-button>\n    </ion-buttons>\n    <ion-title style=\"text-align: center;\">Order Details</ion-title>\n    <ion-buttons slot=\"end\">\n      <ion-button  >\n        <ion-badge *ngIf=\"cart.length > 0\">{{ cartItemCount | async }}</ion-badge>\n        <ion-icon slot=\"icon-only\" class=\"cart-icon\" name=\"cart\"></ion-icon>\n      </ion-button> \n    </ion-buttons>\n   </ion-toolbar>\n</ion-header>\n\n<ion-content fullscreen>\n  <!-- <div class=\"ion-text-end\">\n    <ion-button (click)=\"close()\" fill=\"clear\" color=\"dark\">\n      <ion-icon name=\"close\" slot=\"start\"></ion-icon>\n    </ion-button>\n  </div> -->\n  <div class=\"ion-padding\">\n    <ion-list>\n      <ion-item *ngFor=\"let p of cart\" class=\"ion-text-wrap\">\n        <ion-grid>\n          <ion-row class=\"ion-align-items-center\">\n            <ion-col size=\"2\" class=\"ion-align-self-center\">\n              <ion-button color=\"medium\" fill=\"clear\" (click)=\"decreaseCartItem(p)\">\n                <ion-icon name=\"remove-circle\" slot=\"icon-only\"></ion-icon>\n              </ion-button>\n            </ion-col>\n            <ion-col size=\"1\" class=\"ion-align-self-center\">\n              {{ p.amount }}\n            </ion-col>\n            <ion-col size=\"2\" class=\"ion-align-self-center\">\n              <ion-button color=\"medium\" fill=\"clear\" (click)=\"increaseCartItem(p)\">\n                <ion-icon name=\"add-circle\" slot=\"icon-only\"></ion-icon>\n              </ion-button>\n            </ion-col>\n            <ion-col size=\"2\" offset=\"5\">\n              <ion-button color=\"medium\" fill=\"clear\" (click)=\"removeCartItem(p)\">\n                <ion-icon name=\"close-circle\" slot=\"icon-only\"></ion-icon>\n              </ion-button>\n            </ion-col>\n          </ion-row>\n          <ion-row>\n            <ion-col size=\"5\">\n              <b>{{ p.Name }}</b>\n            </ion-col>\n            <ion-col size=\"4\">\n              <b>{{ p.Price | currency:'ETB'}}</b>\n            </ion-col>\n            <ion-col size=\"3\" class=\"ion-text-end\">\n              {{ p.amount * p.Price | currency:'ETB' }}\n            </ion-col>\n          </ion-row>\n        </ion-grid>\n      </ion-item>\n      <ion-item>\n        <ion-grid>\n          <ion-row>\n            <ion-col size=\"9\">\n             Sub Total:\n            </ion-col>\n            <ion-col size=\"3\" class=\"ion-text-end\">\n              {{ getTotal() | currency:'ETB' }}\n            </ion-col>\n          </ion-row>\n        </ion-grid>\n      </ion-item>\n      <ion-item>\n        <ion-grid>\n          <ion-row>\n            <ion-col size=\"9\">\n             Grand Total:\n            </ion-col>\n            <ion-col size=\"3\" class=\"ion-text-end\">\n              {{ getGrandTotal() | currency:'ETB' }}\n            </ion-col>\n          </ion-row>\n        </ion-grid>\n      </ion-item>\n    </ion-list>\n    <form [formGroup]=\"regform\">\n    <ion-item>\n      <ion-label>Transation Type</ion-label>\n      <ion-select interface=\"popover\" formControlName=\"transactionType\">\n        <ion-select-option value=\"Delivery\">Delivery</ion-select-option>\n        <ion-select-option value=\"Pickup\">Pickup</ion-select-option>\n      </ion-select>\n    </ion-item>\n    <ion-item>\n      <ion-label>Delivery Date</ion-label>\n      <ion-datetime formControlName=\"DeliveryDate\" display-format=\"MMM DD, YYYY HH:mm:ss\" value=\"1990-02-19T07:43Z\" [(ngModel)]=\"currentDate\"></ion-datetime>\n    </ion-item>\n    <ion-item>\n      <ion-label>Delivery fee</ion-label>\n      <ion-input formControlName=\"DeliveryFee\" type=\"number\" (keyup)=\"getGrandTotal()\"></ion-input>\n    </ion-item>\n    <ion-item>\n      <ion-label>Delivery Time</ion-label>\n      <ion-datetime formControlName=\"DeliveryTime\" display-format=\"h:mm A\" picker-format=\"h:mm A\" value=\"1990-02-19T07:43Z\"></ion-datetime>\n    </ion-item>\n    <ion-item>\n      <ion-grid>\n        <ion-row>\n          <ion-col size=\"1\">\n            <ion-label>\n              <ion-icon style=\"height: 27px;\n              width: 19px;\" name=\"location-outline\"></ion-icon>\n            </ion-label>\n           </ion-col>\n          <ion-col size=\"8\">\n           <ion-label>\n             <p>Delivery to current Address</p>\n             <p></p>\n           </ion-label>\n          </ion-col>\n          <ion-col size=\"3\">\n            <ion-button (click)=\"location()\">\n              change\n            </ion-button>\n          </ion-col>\n        </ion-row>\n      </ion-grid>\n    </ion-item>\n    <ion-button expand=\"full\" (click)=\"order(cart)\" slot=\"fixed\">\n      Order\n    </ion-button>\n   \n  </form>\n  </div>\n</ion-content>");
+
+/***/ }),
+
+/***/ "8D9V":
+/*!*************************************************!*\
+  !*** ./src/app/Service/order-detail.service.ts ***!
+  \*************************************************/
+/*! exports provided: OrderDetailService */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "OrderDetailService", function() { return OrderDetailService; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "mrSG");
+/* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/common/http */ "tk/3");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/core */ "fXoL");
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs */ "qCKp");
+/* harmony import */ var _common_app_error__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../common/app-error */ "/GcI");
+/* harmony import */ var _common_bad_input__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../common/bad-input */ "XEKg");
+/* harmony import */ var _common_not_found_error__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../common/not-found-error */ "5Jak");
+
+
+
+
+
+
+
+let OrderDetailService = class OrderDetailService {
+    constructor(http) {
+        this.http = http;
+        this.APIURL = 'http://localhost:49347/api';
+    }
+    create(val) {
+        return this.http.post(this.APIURL + '/OrderDetail', val);
+    }
+    getAllOrderDetail() {
+        return this.http.get(this.APIURL + '/OrderDetail');
+    }
+    updateOrderDetail(val) {
+        return this.http.put(this.APIURL + '/OrderDetail/', val);
+    }
+    removeOrderDetail(id) {
+        return this.http.delete(this.APIURL + '/OrderDetail/' + id).toPromise();
+    }
+    handleError(error) {
+        if (error.status === 400) {
+            return rxjs__WEBPACK_IMPORTED_MODULE_3__["Observable"].throw(new _common_bad_input__WEBPACK_IMPORTED_MODULE_5__["BadInput"](error.json()));
+        }
+        if (error.status === 404) {
+            return rxjs__WEBPACK_IMPORTED_MODULE_3__["Observable"].throw(new _common_not_found_error__WEBPACK_IMPORTED_MODULE_6__["NotFoundError"]());
+        }
+        return rxjs__WEBPACK_IMPORTED_MODULE_3__["Observable"].throw(new _common_app_error__WEBPACK_IMPORTED_MODULE_4__["AppError"](error));
+    }
+};
+OrderDetailService.ctorParameters = () => [
+    { type: _angular_common_http__WEBPACK_IMPORTED_MODULE_1__["HttpClient"] }
+];
+OrderDetailService = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
+    Object(_angular_core__WEBPACK_IMPORTED_MODULE_2__["Injectable"])({
+        providedIn: 'root'
+    })
+], OrderDetailService);
+
+
+
+/***/ }),
+
+/***/ "Dkj+":
+/*!*****************************************!*\
+  !*** ./src/app/Service/food.service.ts ***!
+  \*****************************************/
+/*! exports provided: FoodService */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FoodService", function() { return FoodService; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "mrSG");
+/* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/common/http */ "tk/3");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/core */ "fXoL");
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs */ "qCKp");
+/* harmony import */ var _common_app_error__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../common/app-error */ "/GcI");
+/* harmony import */ var _common_bad_input__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../common/bad-input */ "XEKg");
+/* harmony import */ var _common_not_found_error__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../common/not-found-error */ "5Jak");
+
+
+
+
+
+
+
+let FoodService = class FoodService {
+    constructor(http) {
+        this.http = http;
+        this.APIURL = 'http://localhost:49347/api';
+    }
+    create(val) {
+        return this.http.post(this.APIURL + '/Food', val);
+    }
+    getAllFood() {
+        return this.http.get(this.APIURL + '/Food');
+    }
+    updateFood(val) {
+        return this.http.put(this.APIURL + '/Food/', val);
+    }
+    removeFood(id) {
+        return this.http.delete(this.APIURL + '/Food/' + id).toPromise();
+    }
+    handleError(error) {
+        if (error.status === 400) {
+            return rxjs__WEBPACK_IMPORTED_MODULE_3__["Observable"].throw(new _common_bad_input__WEBPACK_IMPORTED_MODULE_5__["BadInput"](error.json()));
+        }
+        if (error.status === 404) {
+            return rxjs__WEBPACK_IMPORTED_MODULE_3__["Observable"].throw(new _common_not_found_error__WEBPACK_IMPORTED_MODULE_6__["NotFoundError"]());
+        }
+        return rxjs__WEBPACK_IMPORTED_MODULE_3__["Observable"].throw(new _common_app_error__WEBPACK_IMPORTED_MODULE_4__["AppError"](error));
+    }
+};
+FoodService.ctorParameters = () => [
+    { type: _angular_common_http__WEBPACK_IMPORTED_MODULE_1__["HttpClient"] }
+];
+FoodService = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
+    Object(_angular_core__WEBPACK_IMPORTED_MODULE_2__["Injectable"])({
+        providedIn: 'root'
+    })
+], FoodService);
+
+
 
 /***/ }),
 
@@ -100,7 +215,159 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ("ion-badge {\n  color: #fff;\n  position: absolute;\n  top: -9px;\n  right: 2px;\n  border-radius: 100%;\n}\n\n.cart-icon {\n  font-size: 50px;\n}\n\n.cart-length {\n  color: var(--ion-color-primary);\n  position: absolute;\n  top: 18px;\n  left: 25px;\n  font-weight: 600;\n  font-size: 1em;\n  min-width: 25px;\n  z-index: 10;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi4uXFwuLlxcLi5cXGNhcnQtbW9kYWwucGFnZS5zY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBO0VBQ0ksV0FBQTtFQUNBLGtCQUFBO0VBQ0EsU0FBQTtFQUNBLFVBQUE7RUFDQSxtQkFBQTtBQUNKOztBQUVBO0VBQ0UsZUFBQTtBQUNGOztBQUVBO0VBQ0UsK0JBQUE7RUFDQSxrQkFBQTtFQUNBLFNBQUE7RUFDQSxVQUFBO0VBQ0EsZ0JBQUE7RUFDQSxjQUFBO0VBQ0EsZUFBQTtFQUNBLFdBQUE7QUFDRiIsImZpbGUiOiJjYXJ0LW1vZGFsLnBhZ2Uuc2NzcyIsInNvdXJjZXNDb250ZW50IjpbImlvbi1iYWRnZSB7XHJcbiAgICBjb2xvcjogI2ZmZjtcclxuICAgIHBvc2l0aW9uOiBhYnNvbHV0ZTtcclxuICAgIHRvcDogLTlweDtcclxuICAgIHJpZ2h0OiAycHg7XHJcbiAgICBib3JkZXItcmFkaXVzOiAxMDAlO1xyXG59XHJcbiBcclxuLmNhcnQtaWNvbiB7XHJcbiAgZm9udC1zaXplOiA1MHB4O1xyXG59XHJcbiBcclxuLmNhcnQtbGVuZ3RoIHtcclxuICBjb2xvcjogdmFyKC0taW9uLWNvbG9yLXByaW1hcnkpO1xyXG4gIHBvc2l0aW9uOiBhYnNvbHV0ZTtcclxuICB0b3A6IDE4cHg7XHJcbiAgbGVmdDogMjVweDtcclxuICBmb250LXdlaWdodDogNjAwO1xyXG4gIGZvbnQtc2l6ZTogMWVtO1xyXG4gIG1pbi13aWR0aDogMjVweDtcclxuICB6LWluZGV4OiAxMDtcclxufVxyXG4iXX0= */");
+/* harmony default export */ __webpack_exports__["default"] = ("ion-badge {\n  color: #fff;\n  position: absolute;\n  top: -9px;\n  right: 2px;\n  border-radius: 100%;\n}\n\n.cart-icon {\n  font-size: 50px;\n}\n\n.cart-length {\n  color: var(--ion-color-primary);\n  position: absolute;\n  top: 18px;\n  left: 25px;\n  font-weight: 600;\n  font-size: 1em;\n  min-width: 25px;\n  z-index: 10;\n}\n\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi4uXFwuLlxcLi5cXGNhcnQtbW9kYWwucGFnZS5zY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBO0VBQ0ksV0FBVztFQUNYLGtCQUFrQjtFQUNsQixTQUFTO0VBQ1QsVUFBVTtFQUNWLG1CQUFtQjtBQUN2Qjs7QUFFQTtFQUNFLGVBQWU7QUFDakI7O0FBRUE7RUFDRSwrQkFBK0I7RUFDL0Isa0JBQWtCO0VBQ2xCLFNBQVM7RUFDVCxVQUFVO0VBQ1YsZ0JBQWdCO0VBQ2hCLGNBQWM7RUFDZCxlQUFlO0VBQ2YsV0FBVztBQUNiIiwiZmlsZSI6ImNhcnQtbW9kYWwucGFnZS5zY3NzIiwic291cmNlc0NvbnRlbnQiOlsiaW9uLWJhZGdlIHtcclxuICAgIGNvbG9yOiAjZmZmO1xyXG4gICAgcG9zaXRpb246IGFic29sdXRlO1xyXG4gICAgdG9wOiAtOXB4O1xyXG4gICAgcmlnaHQ6IDJweDtcclxuICAgIGJvcmRlci1yYWRpdXM6IDEwMCU7XHJcbn1cclxuIFxyXG4uY2FydC1pY29uIHtcclxuICBmb250LXNpemU6IDUwcHg7XHJcbn1cclxuIFxyXG4uY2FydC1sZW5ndGgge1xyXG4gIGNvbG9yOiB2YXIoLS1pb24tY29sb3ItcHJpbWFyeSk7XHJcbiAgcG9zaXRpb246IGFic29sdXRlO1xyXG4gIHRvcDogMThweDtcclxuICBsZWZ0OiAyNXB4O1xyXG4gIGZvbnQtd2VpZ2h0OiA2MDA7XHJcbiAgZm9udC1zaXplOiAxZW07XHJcbiAgbWluLXdpZHRoOiAyNXB4O1xyXG4gIHotaW5kZXg6IDEwO1xyXG59XHJcbiJdfQ== */");
+
+/***/ }),
+
+/***/ "VNSQ":
+/*!******************************************!*\
+  !*** ./src/app/Service/order.service.ts ***!
+  \******************************************/
+/*! exports provided: OrderService */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "OrderService", function() { return OrderService; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "mrSG");
+/* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/common/http */ "tk/3");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/core */ "fXoL");
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs */ "qCKp");
+/* harmony import */ var _shared_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./shared.service */ "ldse");
+
+
+
+
+
+let OrderService = class OrderService {
+    constructor(http, sharedService) {
+        this.http = http;
+        this.sharedService = sharedService;
+        this.APIURL = 'http://localhost:49347/api';
+        this.cart = [];
+        this.cartItemCount = new rxjs__WEBPACK_IMPORTED_MODULE_3__["BehaviorSubject"](0);
+        this.RestaurantId = new rxjs__WEBPACK_IMPORTED_MODULE_3__["BehaviorSubject"]({});
+        this.orderStatus = new rxjs__WEBPACK_IMPORTED_MODULE_3__["BehaviorSubject"]({});
+        this.order = [];
+        this.orderItemCount = new rxjs__WEBPACK_IMPORTED_MODULE_3__["BehaviorSubject"](0);
+    }
+    create(val) {
+        return this.http.post(this.APIURL + '/Order', val);
+    }
+    getAllOrder() {
+        return this.http.get(this.APIURL + '/Order');
+    }
+    updateOrder(val) {
+        return this.http.put(this.APIURL + '/Order/', val);
+    }
+    removeOrder(id) {
+        return this.http.delete(this.APIURL + '/Order/' + id).toPromise();
+    }
+    // create(orderObj) {
+    //   let values = this.orderCollectionList.add(orderObj)
+    //     .then((docRef) => {
+    //       this.sharedService.orderId.next(docRef.id);
+    //     })
+    //   return values;
+    // }
+    getOrderBy(id) {
+        return this.http.get(this.APIURL + '/Order' + id);
+    }
+    getOrderByDriverId(driverId) {
+        return this.http.get(this.APIURL + '/Order' + driverId);
+    }
+    getCart() {
+        return this.cart;
+    }
+    getOrders() {
+        return this.order;
+    }
+    getCartItemCount() {
+        return this.cartItemCount;
+    }
+    getOrderItemCount() {
+        return this.orderItemCount;
+    }
+    getRestaurantId() {
+        return this.RestaurantId;
+    }
+    getOrderStatus() {
+        return this.orderStatus;
+    }
+    addOrder(items) {
+        this.order = [];
+        this.amount = 0;
+        this.order.forEach(el => {
+            const index = this.order.indexOf(c => c.orderDetailsId === el.orderDetailsId);
+            this.order.splice(index, 1);
+        });
+        this.orderItemCount.next(0);
+        items.forEach(element => {
+            this.amount = this.amount + element.amount;
+            const data = {
+                CookingTime: element.CookingTime,
+                DeliveryTime: element.DeliveryTime,
+                Description: element.Description,
+                Name: element.Name,
+                Price: element.Price,
+                amount: element.amount,
+                categoryId: element.categoryId,
+                id: element.Food,
+                picture: element.picture,
+                restaurantId: element.restaurantId,
+                type: element.type,
+                orderDetailsId: element.orderDetailsId,
+            };
+            this.order.push(data);
+        });
+        this.orderItemCount.next(this.orderItemCount.value + this.amount);
+    }
+    addProduct(product) {
+        let added = false;
+        for (const p of this.cart) {
+            if (p.id === product.id) {
+                p.amount += 1;
+                added = true;
+                break;
+            }
+        }
+        if (!added) {
+            product.amount = 1;
+            this.cart.push(product);
+        }
+        this.cartItemCount.next(this.cartItemCount.value + 1);
+    }
+    decreaseProduct(product) {
+        for (const [index, p] of this.cart.entries()) {
+            if (p.id === product.id) {
+                p.amount -= 1;
+                if (p.amount === 0) {
+                    this.cart.splice(index, 1);
+                }
+            }
+        }
+        this.cartItemCount.next(this.cartItemCount.value - 1);
+    }
+    removeProduct(product) {
+        for (const [index, p] of this.cart.entries()) {
+            if (p.id === product.id) {
+                this.cartItemCount.next(this.cartItemCount.value - p.amount);
+                this.cart.splice(index, 1);
+            }
+        }
+    }
+};
+OrderService.ctorParameters = () => [
+    { type: _angular_common_http__WEBPACK_IMPORTED_MODULE_1__["HttpClient"] },
+    { type: _shared_service__WEBPACK_IMPORTED_MODULE_4__["SharedService"] }
+];
+OrderService = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
+    Object(_angular_core__WEBPACK_IMPORTED_MODULE_2__["Injectable"])({
+        providedIn: 'root'
+    })
+], OrderService);
+
+
 
 /***/ }),
 
@@ -151,46 +418,46 @@ let CartModalPage = class CartModalPage {
         this.sharedService = sharedService;
         this.cart = [];
         this.regform = this.fb.group({});
-        this.currentDate = new Date().toUTCString();
+        this.currentDate = new Date().toISOString();
         this.minDate = new Date().toISOString();
         this.maxDate = new Date().toISOString();
         this.statusDriver = [
-            { id: 0, val: 'picked', checked: false },
-            { id: 1, val: 'start moving', checked: false },
-            { id: 2, val: 'delivered', checked: false }
+            { val: 'picked', isChecked: false },
+            { val: 'start moving', isChecked: false },
+            { val: 'delivered', isChecked: false }
         ];
         this.statusRestaurant = [
-            { id: 0, val: 'order received', isChecked: true },
-            { id: 1, val: 'start cooking', isChecked: false },
-            { id: 2, val: 'cooked', isChecked: false },
-            { id: 3, val: 'ready to service', isChecked: false }
+            { val: 'order received', isChecked: true },
+            { val: 'start cooking', isChecked: false },
+            { val: 'cooked', isChecked: false },
+            { val: 'ready to service', isChecked: false }
         ];
         this.status = [
-            { id: 0, val: 'Accept', isChecked: false },
-            { id: 1, val: 'Reject', isChecked: false }
+            { val: 'Accept', isChecked: false },
+            { val: 'Reject', isChecked: false }
         ];
     }
     ngOnInit() {
         this.regform = this.fb.group({
-            transactionType: [""],
-            DeliveryDate: [""],
-            DeliveryTime: [""],
-            DeliveryAddress: [""],
-            DeliveryFee: [""]
+            transactionType: [''],
+            DeliveryDate: [''],
+            DeliveryTime: [''],
+            DeliveryAddress: [''],
+            DeliveryFee: ['']
         });
-        //setting min date
+        // setting min date
         let date = new Date();
         date.setDate(date.getDate() - 5);
         this.minDate = date.toISOString();
-        //setting max date
+        // setting max date
         date = new Date();
         date.setDate(date.getDate() + 5);
         this.maxDate = date.toISOString();
-        ///to get data form service
+        /// to get data form service
         this.cart = this.orderService.getCart();
         this.cartItemCount = this.orderService.getCartItemCount();
         this.id = this.orderService.getRestaurantId().value;
-        //console.log(this.id)
+        // console.log(this.id)
         this.getRestaurant();
         this.getFood();
         this.readNOId();
@@ -208,10 +475,12 @@ let CartModalPage = class CartModalPage {
     readNOId() {
         let No = 0;
         this.orderService.getAllOrder().subscribe((result) => {
-            if (result.length == 0)
+            if (result.length === 0) {
                 No = 1;
-            else
+            }
+            else {
                 No = result.length + 1;
+            }
             this.orderNo = +No;
         });
     }
@@ -222,54 +491,62 @@ let CartModalPage = class CartModalPage {
         this.orderService.addProduct(product);
     }
     removeCartItem(product) {
-        //this.orderService.removeProduct(product);
+        // this.orderService.removeProduct(product);
         this.presentAlertConfirm(product);
     }
     getTotal() {
-        return this.cart.reduce((i, j) => i + j.amount * j.Price, 0);
+        return this.cart.reduce((i, j) => i + j.amount * j.price, 0);
     }
     getGrandTotal() {
-        return this.getTotal() + this.regform.get("DeliveryFee").value;
+        return this.getTotal() + this.regform.get('DeliveryFee').value;
     }
     close() {
         this.modalCtrl.dismiss();
     }
     location() {
-        this.sharedService.status.next("cart-modal");
-        this.router.navigate(["/menu/location"]);
+        this.sharedService.status.next('cart-modal');
+        this.router.navigate(['/menu/location']);
     }
     order(cart) {
         this.Total = 0;
         cart.forEach(element => {
             this.restaurantId = element.restaurantId;
-            this.Total = this.Total + (element.Price * element.amount);
-            let orderDetails = {
-                OrderId: this.orderNo,
-                Food: element.id,
-                Qty: element.amount,
-                Price: element.Price
-            };
-            this.orderDetailService.create(orderDetails);
         });
-        let res = this.listOfRestaurant.find(c => c.accountId == this.restaurantId);
-        let order = {
-            RestaurantId: this.restaurantId,
-            DateTime: this.regform.get('DeliveryDate').value,
-            Customer: localStorage.getItem("userId"),
-            Location: res.Location,
-            OrderStatus: this.statusDriver,
-            Total: this.getGrandTotal(),
-            orderNo: this.orderNo,
-            Driver: "",
-            Vehicle: "",
-            orderLocation: "",
-            restaurantStatus: this.statusRestaurant,
-            customerStatus: false,
-            status: this.status
+        const res = this.listOfRestaurant.find(c => c.id === +this.restaurantId);
+        const order = {
+            restaurantId: res.accountId.toString(),
+            dateTime: this.regform.get('DeliveryDate').value,
+            customer: localStorage.getItem('userId'),
+            location: res.location,
+            orderStatuses: this.statusDriver,
+            total: this.getGrandTotal(),
+            driver: 'null',
+            vehicle: 'null',
+            orderLocation: 'null',
+            restaurantStatuses: this.statusRestaurant,
+            customerStatus: 'true',
+            statuses: this.status
         };
-        this.orderService.create(order);
-        this.presentAlert("Add order succesfuly");
-        this.router.navigate(["/menu/order"]);
+        this.orderService.create(order).subscribe(res => {
+            alert(res.toString());
+            this.orderService.getAllOrder().subscribe(res => {
+                cart.forEach(element => {
+                    this.restaurantId = element.restaurantId;
+                    this.Total = this.Total + (element.Price * element.amount);
+                    const orderDetails = {
+                        orderId: res[0].id,
+                        foodId: element.id,
+                        qty: element.amount,
+                        price: element.price
+                    };
+                    this.orderDetailService.create(orderDetails).subscribe(res => {
+                        alert(res.toString());
+                    });
+                });
+            });
+        });
+        this.presentAlert('Add order succesfuly');
+        this.router.navigate(['/menu/order']);
     }
     presentAlert(message) {
         return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, function* () {
@@ -277,7 +554,7 @@ let CartModalPage = class CartModalPage {
                 cssClass: 'my-custom-class',
                 header: 'Order',
                 // subHeader: 'Subtitle',
-                message: message,
+                message,
                 buttons: ['OK']
             });
             yield alert.present();
@@ -309,7 +586,7 @@ let CartModalPage = class CartModalPage {
     }
     onclick() {
         this.id = this.orderService.getRestaurantId().value;
-        this.router.navigate(["/menu/details/" + this.id]);
+        this.router.navigate(['/menu/details/' + this.id]);
     }
 };
 CartModalPage.ctorParameters = () => [
@@ -330,6 +607,75 @@ CartModalPage = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
         styles: [_cart_modal_page_scss__WEBPACK_IMPORTED_MODULE_2__["default"]]
     })
 ], CartModalPage);
+
+
+
+/***/ }),
+
+/***/ "ldse":
+/*!*******************************************!*\
+  !*** ./src/app/Service/shared.service.ts ***!
+  \*******************************************/
+/*! exports provided: SharedService */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SharedService", function() { return SharedService; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "mrSG");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "fXoL");
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs */ "qCKp");
+
+
+
+let SharedService = class SharedService {
+    constructor() {
+        this.currentAddress = new rxjs__WEBPACK_IMPORTED_MODULE_2__["BehaviorSubject"]({});
+        this.restaurant = new rxjs__WEBPACK_IMPORTED_MODULE_2__["BehaviorSubject"]({});
+        this.status = new rxjs__WEBPACK_IMPORTED_MODULE_2__["BehaviorSubject"]({});
+        this.location = new rxjs__WEBPACK_IMPORTED_MODULE_2__["BehaviorSubject"]({});
+        this.orderId = new rxjs__WEBPACK_IMPORTED_MODULE_2__["BehaviorSubject"]({});
+        this.RestaurantLocation = new rxjs__WEBPACK_IMPORTED_MODULE_2__["BehaviorSubject"]({});
+        this.resId = new rxjs__WEBPACK_IMPORTED_MODULE_2__["BehaviorSubject"]({});
+        this.listOfCatagoryFilter = new rxjs__WEBPACK_IMPORTED_MODULE_2__["BehaviorSubject"]({});
+        this.deriverId = new rxjs__WEBPACK_IMPORTED_MODULE_2__["BehaviorSubject"]({});
+        this.customerId = new rxjs__WEBPACK_IMPORTED_MODULE_2__["BehaviorSubject"]({});
+        this.driverName = new rxjs__WEBPACK_IMPORTED_MODULE_2__["BehaviorSubject"]({});
+    }
+    getCurrentAddress() {
+        return this.currentAddress;
+    }
+    getMenuFilter() {
+        return this.listOfCatagoryFilter;
+    }
+    getLocation() {
+        return this.location;
+    }
+    getStatus() {
+        return this.status;
+    }
+    getRestaurantLocation() {
+        return this.RestaurantLocation;
+    }
+    getRestaurantId() {
+        return this.resId;
+    }
+    getDriverId() {
+        return this.deriverId;
+    }
+    getCustomerId() {
+        return this.customerId;
+    }
+    getDriverName() {
+        return this.driverName;
+    }
+};
+SharedService.ctorParameters = () => [];
+SharedService = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
+    Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"])({
+        providedIn: 'root'
+    })
+], SharedService);
 
 
 

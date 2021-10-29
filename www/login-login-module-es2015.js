@@ -46,10 +46,11 @@ let LoginPage = class LoginPage {
         let email = this.regform.get("email").value;
         let password = this.regform.get("password").value;
         if (this.regform.valid) {
-            this.authServices.signUpUser(email, password).subscribe(result => {
+            this.authServices.getAllAccount().subscribe(res => {
+                let result = res.filter(c => c.email == email && c.password == password);
                 if (result.length > 0) {
                     localStorage.setItem("userId", result[0].id);
-                    localStorage.setItem("fullName", result[0].FullName);
+                    localStorage.setItem("fullName", result[0].fullName);
                     localStorage.setItem("roleType", result[0].type);
                     localStorage.setItem('active', result[0].active);
                     if (result[0].type == "driver") {

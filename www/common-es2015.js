@@ -129,16 +129,12 @@ class NotFoundError extends _app_error__WEBPACK_IMPORTED_MODULE_0__["AppError"] 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AccountService", function() { return AccountService; });
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "mrSG");
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "fXoL");
-/* harmony import */ var angularfire2_firestore__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! angularfire2/firestore */ "CqG3");
-/* harmony import */ var angularfire2_firestore__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(angularfire2_firestore__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/common/http */ "tk/3");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/core */ "fXoL");
 /* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs */ "qCKp");
-/* harmony import */ var rxjs_internal_operators_map__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! rxjs/internal/operators/map */ "q3Kh");
-/* harmony import */ var rxjs_internal_operators_map__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(rxjs_internal_operators_map__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var _common_app_error__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../common/app-error */ "/GcI");
-/* harmony import */ var _common_bad_input__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../common/bad-input */ "XEKg");
-/* harmony import */ var _common_not_found_error__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../common/not-found-error */ "5Jak");
-
+/* harmony import */ var _common_app_error__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../common/app-error */ "/GcI");
+/* harmony import */ var _common_bad_input__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../common/bad-input */ "XEKg");
+/* harmony import */ var _common_not_found_error__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../common/not-found-error */ "5Jak");
 
 
 
@@ -147,56 +143,37 @@ __webpack_require__.r(__webpack_exports__);
 
 
 let AccountService = class AccountService {
-    constructor(db) {
-        this.db = db;
-        this.accountCollectionList = db.collection('Account');
+    constructor(http) {
+        this.http = http;
+        this.APIURL = 'http://localhost:49347/api';
     }
-    create(accountObj) {
-        return this.accountCollectionList.add(accountObj);
+    create(val) {
+        return this.http.post(this.APIURL + '/Account', val);
     }
     getAllAccount() {
-        this.accountList = this.accountCollectionList.snapshotChanges().pipe(Object(rxjs_internal_operators_map__WEBPACK_IMPORTED_MODULE_4__["map"])(actions => {
-            return actions.map(a => {
-                const data = a.payload.doc.data();
-                const id = a.payload.doc.id;
-                return Object.assign({ id }, data);
-            });
-        }));
-        return this.accountList;
+        return this.http.get(this.APIURL + '/Account');
     }
-    getAccountById(id) {
-        const accountObj = this.db.collection('Account', ref => ref.where('id', '==', id)).snapshotChanges();
-        this.accountList = accountObj.pipe(Object(rxjs_internal_operators_map__WEBPACK_IMPORTED_MODULE_4__["map"])(changes => changes.map(a => {
-            const data = a.payload.doc.data();
-            const id = a.payload.doc.id;
-            return Object.assign({ id }, data);
-        })));
-        return this.accountList;
-    }
-    getAccount(id) {
-        return this.accountCollectionList.doc(id).valueChanges();
-    }
-    updateAccount(accountObj, id) {
-        return this.accountCollectionList.doc(id).update(accountObj)
-            .catch(this.handleError);
+    updateAccount(val) {
+        return this.http.put(this.APIURL + '/Account/', val);
     }
     removeAccount(id) {
-        return this.accountCollectionList.doc(id).delete()
-            .catch(this.handleError);
+        return this.http.delete(this.APIURL + '/Account/' + id).toPromise();
     }
     handleError(error) {
-        if (error.status === 400)
-            return rxjs__WEBPACK_IMPORTED_MODULE_3__["Observable"].throw(new _common_bad_input__WEBPACK_IMPORTED_MODULE_6__["BadInput"](error.json()));
-        if (error.status === 404)
-            return rxjs__WEBPACK_IMPORTED_MODULE_3__["Observable"].throw(new _common_not_found_error__WEBPACK_IMPORTED_MODULE_7__["NotFoundError"]());
-        return rxjs__WEBPACK_IMPORTED_MODULE_3__["Observable"].throw(new _common_app_error__WEBPACK_IMPORTED_MODULE_5__["AppError"](error));
+        if (error.status === 400) {
+            return rxjs__WEBPACK_IMPORTED_MODULE_3__["Observable"].throw(new _common_bad_input__WEBPACK_IMPORTED_MODULE_5__["BadInput"](error.json()));
+        }
+        if (error.status === 404) {
+            return rxjs__WEBPACK_IMPORTED_MODULE_3__["Observable"].throw(new _common_not_found_error__WEBPACK_IMPORTED_MODULE_6__["NotFoundError"]());
+        }
+        return rxjs__WEBPACK_IMPORTED_MODULE_3__["Observable"].throw(new _common_app_error__WEBPACK_IMPORTED_MODULE_4__["AppError"](error));
     }
 };
 AccountService.ctorParameters = () => [
-    { type: angularfire2_firestore__WEBPACK_IMPORTED_MODULE_2__["AngularFirestore"] }
+    { type: _angular_common_http__WEBPACK_IMPORTED_MODULE_1__["HttpClient"] }
 ];
 AccountService = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
-    Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"])({
+    Object(_angular_core__WEBPACK_IMPORTED_MODULE_2__["Injectable"])({
         providedIn: 'root'
     })
 ], AccountService);
@@ -339,151 +316,6 @@ ParallaxDirective = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
 
 /***/ }),
 
-/***/ "YHxn":
-/*!*********************************************************!*\
-  !*** ./src/app/customer-option/customer-option.page.ts ***!
-  \*********************************************************/
-/*! exports provided: CustomerOptionPage */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CustomerOptionPage", function() { return CustomerOptionPage; });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "mrSG");
-/* harmony import */ var _raw_loader_customer_option_page_html__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! raw-loader!./customer-option.page.html */ "ZFaY");
-/* harmony import */ var _customer_option_page_scss__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./customer-option.page.scss */ "gW5g");
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/core */ "fXoL");
-/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/router */ "tyNb");
-/* harmony import */ var _ionic_angular__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @ionic/angular */ "TEn/");
-/* harmony import */ var _Service_food_service__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../Service/food.service */ "Dkj+");
-/* harmony import */ var _Service_order_detail_service__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../Service/order-detail.service */ "8D9V");
-/* harmony import */ var _Service_order_service__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../Service/order.service */ "VNSQ");
-
-
-
-
-
-
-
-
-
-let CustomerOptionPage = class CustomerOptionPage {
-    constructor(modalControler, orderService, foodService, orderDetailsService, router) {
-        this.modalControler = modalControler;
-        this.orderService = orderService;
-        this.foodService = foodService;
-        this.orderDetailsService = orderDetailsService;
-        this.router = router;
-    }
-    ngOnInit() {
-        this.orderService.getAllOrder().subscribe(res => {
-            this.listOfOrder = res;
-        });
-        this.getFood();
-        this.getOrderDetails();
-    }
-    getFood() {
-        this.foodService.getAllFood().subscribe(res => {
-            this.listOfFood = res;
-        });
-    }
-    getOrderDetails() {
-        this.orderDetailsService.getAllOrderDetail().subscribe(res => {
-            this.listOfOrderDetails = res;
-        });
-    }
-    reOrder() {
-    }
-    CancelOrder() {
-        let order = this.listOfOrder.find(c => c.id == this.data.id);
-        let data = {
-            id: order.id,
-            RestaurantId: order.RestaurantId,
-            orderNo: order.orderNo,
-            DateTime: order.DateTime,
-            Customer: order.Customer,
-            Location: order.Location,
-            OrderStatus: order.OrderStatus,
-            Total: order.Total,
-            Driver: order.Driver,
-            Vehicle: order.Vehicle,
-            orderLocation: order.orderLocation,
-            restaurantStatus: order.restaurantStatus,
-            customerStatus: false,
-            status: order.status
-        };
-        this.orderService.updateOrder(data, order.id);
-    }
-    viewOrder(id) {
-        this.isLoading = false;
-        this.countItems = 0;
-        this.cart = [];
-        let orderNo = this.listOfOrder.find(c => c.id == id).orderNo;
-        let orderDetails = this.listOfOrderDetails.filter(c => c.OrderId == orderNo);
-        orderDetails.forEach(el => {
-            let data = {
-                CookingTime: this.listOfFood.find(c => c.id == el.Food).CookingTime,
-                DeliveryTime: this.listOfFood.find(c => c.id == el.Food).DeliveryTime,
-                Description: this.listOfFood.find(c => c.id == el.Food).Description,
-                Name: this.listOfFood.find(c => c.id == el.Food).Name,
-                Price: this.listOfFood.find(c => c.id == el.Food).Price,
-                amount: el.Qty,
-                categoryId: this.listOfFood.find(c => c.id == el.Food).categoryId,
-                id: el.Food,
-                picture: this.listOfFood.find(c => c.id == el.Food).picture,
-                restaurantId: this.listOfFood.find(c => c.id == el.Food).restaurantId,
-                type: this.listOfFood.find(c => c.id == el.Food).type,
-                orderDetailsId: el.id,
-                orderStatus: true
-            };
-            this.cart.push(data);
-            this.countItems = this.cart.length;
-            console.log(this.countItems);
-        });
-        this.orderService.addOrder(this.cart);
-        this.router.navigate(["/menu/order-history"]);
-        this.modalControler.dismiss();
-    }
-    close() {
-        this.modalControler.dismiss();
-    }
-};
-CustomerOptionPage.ctorParameters = () => [
-    { type: _ionic_angular__WEBPACK_IMPORTED_MODULE_5__["ModalController"] },
-    { type: _Service_order_service__WEBPACK_IMPORTED_MODULE_8__["OrderService"] },
-    { type: _Service_food_service__WEBPACK_IMPORTED_MODULE_6__["FoodService"] },
-    { type: _Service_order_detail_service__WEBPACK_IMPORTED_MODULE_7__["OrderDetailService"] },
-    { type: _angular_router__WEBPACK_IMPORTED_MODULE_4__["Router"] }
-];
-CustomerOptionPage.propDecorators = {
-    data: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_3__["Input"] }],
-    id: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_3__["Input"] }]
-};
-CustomerOptionPage = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
-    Object(_angular_core__WEBPACK_IMPORTED_MODULE_3__["Component"])({
-        selector: 'app-customer-option',
-        template: _raw_loader_customer_option_page_html__WEBPACK_IMPORTED_MODULE_1__["default"],
-        styles: [_customer_option_page_scss__WEBPACK_IMPORTED_MODULE_2__["default"]]
-    })
-], CustomerOptionPage);
-
-
-
-/***/ }),
-
-/***/ "ZFaY":
-/*!*************************************************************************************************!*\
-  !*** ./node_modules/raw-loader/dist/cjs.js!./src/app/customer-option/customer-option.page.html ***!
-  \*************************************************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ("<ion-header>\n  <ion-toolbar>\n    <ion-title>What do you want to do ?</ion-title>\n  </ion-toolbar>\n</ion-header>\n\n<ion-content>\n<ion-list>\n  <ion-item>\n    <ion-button expand=\"full\"  fill=\"clear\" (click)=\"reOrder()\"> Re-Order</ion-button>\n  </ion-item>\n  <ion-item>\n    <ion-button expand=\"full\"  fill=\"clear\" (click)=\"CancelOrder()\">Cancel Order</ion-button>\n  </ion-item>\n  <ion-item>\n    <ion-button fill=\"clear\" (click)=\"viewOrder(id)\"> View order  </ion-button>\n  </ion-item>\n</ion-list>\n<ion-footer>\n  <ion-button expand=\"full\" fill=\"clear\" (click)=\"close()\">\n    <ion-icon name=\"close-outline\"></ion-icon>&nbsp;&nbsp; Cancel</ion-button>\n</ion-footer>\n</ion-content>\n");
-
-/***/ }),
-
 /***/ "ZaV5":
 /*!**************************************************************************!*\
   !*** ./node_modules/@ionic/core/dist/esm/framework-delegate-4584ab5a.js ***!
@@ -569,16 +401,41 @@ ShardDirectivesModule = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])
 
 /***/ }),
 
-/***/ "gW5g":
-/*!***********************************************************!*\
-  !*** ./src/app/customer-option/customer-option.page.scss ***!
-  \***********************************************************/
-/*! exports provided: default */
+/***/ "enR7":
+/*!*****************************************!*\
+  !*** ./src/app/Service/auth.service.ts ***!
+  \*****************************************/
+/*! exports provided: AuthService */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ("\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJjdXN0b21lci1vcHRpb24ucGFnZS5zY3NzIn0= */");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AuthService", function() { return AuthService; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "mrSG");
+/* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/common/http */ "tk/3");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/core */ "fXoL");
+
+
+
+let AuthService = class AuthService {
+    constructor(http) {
+        this.http = http;
+        this.APIURL = 'http://localhost:49347/api';
+    }
+    getAllAccount() {
+        return this.http.get(this.APIURL + '/Account');
+    }
+};
+AuthService.ctorParameters = () => [
+    { type: _angular_common_http__WEBPACK_IMPORTED_MODULE_1__["HttpClient"] }
+];
+AuthService = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
+    Object(_angular_core__WEBPACK_IMPORTED_MODULE_2__["Injectable"])({
+        providedIn: 'root'
+    })
+], AuthService);
+
+
 
 /***/ }),
 
@@ -776,16 +633,12 @@ HideHeaderDirective = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CategoryService", function() { return CategoryService; });
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "mrSG");
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "fXoL");
-/* harmony import */ var angularfire2_firestore__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! angularfire2/firestore */ "CqG3");
-/* harmony import */ var angularfire2_firestore__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(angularfire2_firestore__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/common/http */ "tk/3");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/core */ "fXoL");
 /* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs */ "qCKp");
-/* harmony import */ var rxjs_internal_operators_map__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! rxjs/internal/operators/map */ "q3Kh");
-/* harmony import */ var rxjs_internal_operators_map__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(rxjs_internal_operators_map__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var _common_app_error__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../common/app-error */ "/GcI");
-/* harmony import */ var _common_bad_input__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../common/bad-input */ "XEKg");
-/* harmony import */ var _common_not_found_error__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../common/not-found-error */ "5Jak");
-
+/* harmony import */ var _common_app_error__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../common/app-error */ "/GcI");
+/* harmony import */ var _common_bad_input__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../common/bad-input */ "XEKg");
+/* harmony import */ var _common_not_found_error__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../common/not-found-error */ "5Jak");
 
 
 
@@ -794,47 +647,37 @@ __webpack_require__.r(__webpack_exports__);
 
 
 let CategoryService = class CategoryService {
-    constructor(db) {
-        this.db = db;
-        this.categoryCollectionList = db.collection('Category');
+    constructor(http) {
+        this.http = http;
+        this.APIURL = 'http://localhost:49347/api';
     }
-    create(categoryObj) {
-        return this.categoryCollectionList.add(categoryObj);
+    create(val) {
+        return this.http.post(this.APIURL + '/Categorie', val);
     }
     getAllCategory() {
-        this.categoryList = this.categoryCollectionList.snapshotChanges().pipe(Object(rxjs_internal_operators_map__WEBPACK_IMPORTED_MODULE_4__["map"])(actions => {
-            return actions.map(a => {
-                const data = a.payload.doc.data();
-                const id = a.payload.doc.id;
-                return Object.assign({ id }, data);
-            });
-        }));
-        return this.categoryList;
+        return this.http.get(this.APIURL + '/Categorie');
     }
-    getCategory(id) {
-        return this.categoryCollectionList.doc(id).valueChanges();
-    }
-    updateCategory(categoryObj, id) {
-        return this.categoryCollectionList.doc(id).update(categoryObj)
-            .catch(this.handleError);
+    updateCategory(val) {
+        return this.http.put(this.APIURL + '/Categorie/', val);
     }
     removeCategory(id) {
-        return this.categoryCollectionList.doc(id).delete()
-            .catch(this.handleError);
+        return this.http.delete(this.APIURL + '/Categorie/' + id).toPromise();
     }
     handleError(error) {
-        if (error.status === 400)
-            return rxjs__WEBPACK_IMPORTED_MODULE_3__["Observable"].throw(new _common_bad_input__WEBPACK_IMPORTED_MODULE_6__["BadInput"](error.json()));
-        if (error.status === 404)
-            return rxjs__WEBPACK_IMPORTED_MODULE_3__["Observable"].throw(new _common_not_found_error__WEBPACK_IMPORTED_MODULE_7__["NotFoundError"]());
-        return rxjs__WEBPACK_IMPORTED_MODULE_3__["Observable"].throw(new _common_app_error__WEBPACK_IMPORTED_MODULE_5__["AppError"](error));
+        if (error.status === 400) {
+            return rxjs__WEBPACK_IMPORTED_MODULE_3__["Observable"].throw(new _common_bad_input__WEBPACK_IMPORTED_MODULE_5__["BadInput"](error.json()));
+        }
+        if (error.status === 404) {
+            return rxjs__WEBPACK_IMPORTED_MODULE_3__["Observable"].throw(new _common_not_found_error__WEBPACK_IMPORTED_MODULE_6__["NotFoundError"]());
+        }
+        return rxjs__WEBPACK_IMPORTED_MODULE_3__["Observable"].throw(new _common_app_error__WEBPACK_IMPORTED_MODULE_4__["AppError"](error));
     }
 };
 CategoryService.ctorParameters = () => [
-    { type: angularfire2_firestore__WEBPACK_IMPORTED_MODULE_2__["AngularFirestore"] }
+    { type: _angular_common_http__WEBPACK_IMPORTED_MODULE_1__["HttpClient"] }
 ];
 CategoryService = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
-    Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"])({
+    Object(_angular_core__WEBPACK_IMPORTED_MODULE_2__["Injectable"])({
         providedIn: 'root'
     })
 ], CategoryService);
