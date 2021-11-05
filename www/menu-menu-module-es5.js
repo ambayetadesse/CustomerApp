@@ -116,13 +116,19 @@
       var _angular_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(
       /*! @angular/core */
       "fXoL");
+      /* harmony import */
+
+
+      var src_environments_environment__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(
+      /*! src/environments/environment */
+      "AytR");
 
       var UserRoleService = /*#__PURE__*/function () {
         function UserRoleService(http) {
           _classCallCheck(this, UserRoleService);
 
           this.http = http;
-          this.APIURL = 'http://localhost:49347/api';
+          this.APIURL = src_environments_environment__WEBPACK_IMPORTED_MODULE_3__["environment"].apiURL;
         }
 
         _createClass(UserRoleService, [{
@@ -250,13 +256,19 @@
       var _angular_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(
       /*! @angular/core */
       "fXoL");
+      /* harmony import */
+
+
+      var src_environments_environment__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(
+      /*! src/environments/environment */
+      "AytR");
 
       var FunctionalityService = /*#__PURE__*/function () {
         function FunctionalityService(http) {
           _classCallCheck(this, FunctionalityService);
 
           this.http = http;
-          this.APIURL = 'http://localhost:49347/api';
+          this.APIURL = src_environments_environment__WEBPACK_IMPORTED_MODULE_3__["environment"].apiURL;
         }
 
         _createClass(FunctionalityService, [{

@@ -81,13 +81,19 @@
       var _angular_common_http__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(
       /*! @angular/common/http */
       "tk/3");
+      /* harmony import */
+
+
+      var src_environments_environment__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(
+      /*! src/environments/environment */
+      "AytR");
 
       var RestaurantService = /*#__PURE__*/function () {
         function RestaurantService(http) {
           _classCallCheck(this, RestaurantService);
 
           this.http = http;
-          this.APIURL = 'http://localhost:49347/api';
+          this.APIURL = src_environments_environment__WEBPACK_IMPORTED_MODULE_7__["environment"].apiURL;
         }
 
         _createClass(RestaurantService, [{
@@ -187,19 +193,25 @@
       /* harmony import */
 
 
-      var _common_app_error__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(
+      var src_environments_environment__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(
+      /*! src/environments/environment */
+      "AytR");
+      /* harmony import */
+
+
+      var _common_app_error__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(
       /*! ../common/app-error */
       "/GcI");
       /* harmony import */
 
 
-      var _common_bad_input__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(
+      var _common_bad_input__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(
       /*! ../common/bad-input */
       "XEKg");
       /* harmony import */
 
 
-      var _common_not_found_error__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(
+      var _common_not_found_error__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(
       /*! ../common/not-found-error */
       "5Jak");
 
@@ -208,7 +220,7 @@
           _classCallCheck(this, OrderDetailService);
 
           this.http = http;
-          this.APIURL = 'http://localhost:49347/api';
+          this.APIURL = src_environments_environment__WEBPACK_IMPORTED_MODULE_4__["environment"].apiURL;
         }
 
         _createClass(OrderDetailService, [{
@@ -235,14 +247,14 @@
           key: "handleError",
           value: function handleError(error) {
             if (error.status === 400) {
-              return rxjs__WEBPACK_IMPORTED_MODULE_3__["Observable"]["throw"](new _common_bad_input__WEBPACK_IMPORTED_MODULE_5__["BadInput"](error.json()));
+              return rxjs__WEBPACK_IMPORTED_MODULE_3__["Observable"]["throw"](new _common_bad_input__WEBPACK_IMPORTED_MODULE_6__["BadInput"](error.json()));
             }
 
             if (error.status === 404) {
-              return rxjs__WEBPACK_IMPORTED_MODULE_3__["Observable"]["throw"](new _common_not_found_error__WEBPACK_IMPORTED_MODULE_6__["NotFoundError"]());
+              return rxjs__WEBPACK_IMPORTED_MODULE_3__["Observable"]["throw"](new _common_not_found_error__WEBPACK_IMPORTED_MODULE_7__["NotFoundError"]());
             }
 
-            return rxjs__WEBPACK_IMPORTED_MODULE_3__["Observable"]["throw"](new _common_app_error__WEBPACK_IMPORTED_MODULE_4__["AppError"](error));
+            return rxjs__WEBPACK_IMPORTED_MODULE_3__["Observable"]["throw"](new _common_app_error__WEBPACK_IMPORTED_MODULE_5__["AppError"](error));
           }
         }]);
 
@@ -307,19 +319,25 @@
       /* harmony import */
 
 
-      var _common_app_error__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(
+      var src_environments_environment__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(
+      /*! src/environments/environment */
+      "AytR");
+      /* harmony import */
+
+
+      var _common_app_error__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(
       /*! ../common/app-error */
       "/GcI");
       /* harmony import */
 
 
-      var _common_bad_input__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(
+      var _common_bad_input__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(
       /*! ../common/bad-input */
       "XEKg");
       /* harmony import */
 
 
-      var _common_not_found_error__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(
+      var _common_not_found_error__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(
       /*! ../common/not-found-error */
       "5Jak");
 
@@ -328,7 +346,7 @@
           _classCallCheck(this, FoodService);
 
           this.http = http;
-          this.APIURL = 'http://localhost:49347/api';
+          this.APIURL = src_environments_environment__WEBPACK_IMPORTED_MODULE_4__["environment"].apiURL;
         }
 
         _createClass(FoodService, [{
@@ -355,14 +373,14 @@
           key: "handleError",
           value: function handleError(error) {
             if (error.status === 400) {
-              return rxjs__WEBPACK_IMPORTED_MODULE_3__["Observable"]["throw"](new _common_bad_input__WEBPACK_IMPORTED_MODULE_5__["BadInput"](error.json()));
+              return rxjs__WEBPACK_IMPORTED_MODULE_3__["Observable"]["throw"](new _common_bad_input__WEBPACK_IMPORTED_MODULE_6__["BadInput"](error.json()));
             }
 
             if (error.status === 404) {
-              return rxjs__WEBPACK_IMPORTED_MODULE_3__["Observable"]["throw"](new _common_not_found_error__WEBPACK_IMPORTED_MODULE_6__["NotFoundError"]());
+              return rxjs__WEBPACK_IMPORTED_MODULE_3__["Observable"]["throw"](new _common_not_found_error__WEBPACK_IMPORTED_MODULE_7__["NotFoundError"]());
             }
 
-            return rxjs__WEBPACK_IMPORTED_MODULE_3__["Observable"]["throw"](new _common_app_error__WEBPACK_IMPORTED_MODULE_4__["AppError"](error));
+            return rxjs__WEBPACK_IMPORTED_MODULE_3__["Observable"]["throw"](new _common_app_error__WEBPACK_IMPORTED_MODULE_5__["AppError"](error));
           }
         }]);
 
@@ -830,7 +848,13 @@
       /* harmony import */
 
 
-      var _shared_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(
+      var src_environments_environment__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(
+      /*! src/environments/environment */
+      "AytR");
+      /* harmony import */
+
+
+      var _shared_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(
       /*! ./shared.service */
       "ldse");
 
@@ -840,7 +864,7 @@
 
           this.http = http;
           this.sharedService = sharedService;
-          this.APIURL = 'http://localhost:49347/api';
+          this.APIURL = src_environments_environment__WEBPACK_IMPORTED_MODULE_4__["environment"].apiURL;
           this.cart = [];
           this.cartItemCount = new rxjs__WEBPACK_IMPORTED_MODULE_3__["BehaviorSubject"](0);
           this.RestaurantId = new rxjs__WEBPACK_IMPORTED_MODULE_3__["BehaviorSubject"]({});
@@ -1043,7 +1067,7 @@
         return [{
           type: _angular_common_http__WEBPACK_IMPORTED_MODULE_1__["HttpClient"]
         }, {
-          type: _shared_service__WEBPACK_IMPORTED_MODULE_4__["SharedService"]
+          type: _shared_service__WEBPACK_IMPORTED_MODULE_5__["SharedService"]
         }];
       };
 

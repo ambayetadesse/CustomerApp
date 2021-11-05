@@ -38,10 +38,7 @@
         <ion-label>
           {{ meal.restaurantName}}
           <p>{{ meal.DateTime|date:'short' }}</p>
-          <!-- <ion-button style="margin-top: -7px;" (click)="location(meal.Location)">
-            <ion-icon name="location-outline"></ion-icon>
-          </ion-button> -->
-        </ion-label>
+       </ion-label>
         <ion-text color="dark"><b>Total : {{ meal.Total | currency:'ETB' }}</b></ion-text>
       </ion-col>
       <ion-col size="4" class="border-bottom">
@@ -49,9 +46,6 @@
                     background-color: #17a2b8;
                     border-radius: 5px;
                     text-align: center;">{{meal.OrderStatus}}</ion-label>
-        <!-- <ion-button fill="clear" (click)="viewOrder(meal.id)">
-          view order
-        </ion-button> -->
       </ion-col>
     </ion-row>
   </ion-list>

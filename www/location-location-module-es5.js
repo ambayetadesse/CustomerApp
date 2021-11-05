@@ -67,13 +67,19 @@
       var _angular_common_http__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(
       /*! @angular/common/http */
       "tk/3");
+      /* harmony import */
+
+
+      var src_environments_environment__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(
+      /*! src/environments/environment */
+      "AytR");
 
       var RestaurantService = /*#__PURE__*/function () {
         function RestaurantService(http) {
           _classCallCheck(this, RestaurantService);
 
           this.http = http;
-          this.APIURL = 'http://localhost:49347/api';
+          this.APIURL = src_environments_environment__WEBPACK_IMPORTED_MODULE_7__["environment"].apiURL;
         }
 
         _createClass(RestaurantService, [{

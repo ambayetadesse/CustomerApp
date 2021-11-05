@@ -552,7 +552,7 @@
                 if (index == 0) {
                   this.getAddToCart(product, index);
                 } else {
-                  if (this.resId === +this.cart[index - 1].restaurantId) {
+                  if (this.resId === +product.restaurantId) {
                     this.getAddToCart(product, index);
                   } else {
                     this.presentAlert('Switching Restaurant is not allowed');

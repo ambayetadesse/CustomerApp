@@ -27,7 +27,7 @@ __webpack_require__.r(__webpack_exports__);
 // The list of file replacements can be found in `angular.json`.
 const environment = {
     production: false,
-    // apiURL:'http://localhost:51978/api',
+    apiURL: 'http://localhost:49347/api',
     firebase: {
         apiKey: "AIzaSyDJ0I6Nu7J3wlns9EWmKIEMNuR_pVKmwaY",
         authDomain: "mtk-delivery.firebaseapp.com",

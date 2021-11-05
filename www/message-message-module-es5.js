@@ -942,13 +942,19 @@
       var _angular_common_http__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(
       /*! @angular/common/http */
       "tk/3");
+      /* harmony import */
+
+
+      var src_environments_environment__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(
+      /*! src/environments/environment */
+      "AytR");
 
       var MessageService = /*#__PURE__*/function () {
         function MessageService(http) {
           _classCallCheck(this, MessageService);
 
           this.http = http;
-          this.APIURL = 'http://localhost:49347/api';
+          this.APIURL = src_environments_environment__WEBPACK_IMPORTED_MODULE_3__["environment"].apiURL;
         }
 
         _createClass(MessageService, [{
