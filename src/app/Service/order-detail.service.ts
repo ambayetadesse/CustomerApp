@@ -1,13 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { AngularFirestoreCollection, AngularFirestore } from 'angularfire2/firestore';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/internal/operators/map';
-import { environment } from 'src/environments/environment';
-import { OrderDetail } from 'src/Table/table';
 import { AppError } from '../common/app-error';
 import { BadInput } from '../common/bad-input';
 import { NotFoundError } from '../common/not-found-error';
+import { environment } from 'src/environments/environment.prod';
 
 @Injectable({
   providedIn: 'root'
@@ -15,19 +12,19 @@ import { NotFoundError } from '../common/not-found-error';
 export class OrderDetailService {
 
   readonly APIURL = environment.apiURL;
-  constructor( private http: HttpClient) {
+  constructor(private http: HttpClient) {
   }
   create(val: any) {
-    return this.http.post(this.APIURL + '/OrderDetail', val);
+    return this.http.post(this.APIURL + '/orderdetail', val);
   }
   getAllOrderDetail(): Observable<any[]> {
-    return this.http.get<any>(this.APIURL + '/OrderDetail');
+    return this.http.get<any>(this.APIURL + '/orderdetail');
   }
   updateOrderDetail(val: any) {
-    return this.http.put(this.APIURL + '/OrderDetail/', val);
+    return this.http.put(this.APIURL + '/orderdetail/', val);
   }
   removeOrderDetail(id) {
-    return this.http.delete(this.APIURL + '/OrderDetail/' + id).toPromise();
+    return this.http.delete(this.APIURL + '/orderdetail/' + id).toPromise();
   }
 
   private handleError(error: Response) {

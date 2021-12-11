@@ -567,7 +567,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "mrSG");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "fXoL");
 /* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/common/http */ "tk/3");
-/* harmony import */ var src_environments_environment__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! src/environments/environment */ "AytR");
+/* harmony import */ var src_environments_environment_prod__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! src/environments/environment.prod */ "cxbk");
 
 
 
@@ -575,19 +575,19 @@ __webpack_require__.r(__webpack_exports__);
 let MessageService = class MessageService {
     constructor(http) {
         this.http = http;
-        this.APIURL = src_environments_environment__WEBPACK_IMPORTED_MODULE_3__["environment"].apiURL;
+        this.APIURL = src_environments_environment_prod__WEBPACK_IMPORTED_MODULE_3__["environment"].apiURL;
     }
     create(val) {
-        return this.http.post(this.APIURL + '/Message', val);
+        return this.http.post(this.APIURL + '/message', val);
     }
     getAllMessage() {
-        return this.http.get(this.APIURL + '/Message');
+        return this.http.get(this.APIURL + '/message');
     }
     updateMessage(val) {
-        return this.http.put(this.APIURL + '/Message/', val);
+        return this.http.put(this.APIURL + '/message/', val);
     }
     removeMessage(id) {
-        return this.http.delete(this.APIURL + '/Message/' + id).toPromise();
+        return this.http.delete(this.APIURL + '/message/' + id).toPromise();
     }
 };
 MessageService.ctorParameters = () => [

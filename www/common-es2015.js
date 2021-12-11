@@ -132,7 +132,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/common/http */ "tk/3");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/core */ "fXoL");
 /* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs */ "qCKp");
-/* harmony import */ var src_environments_environment__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! src/environments/environment */ "AytR");
+/* harmony import */ var src_environments_environment_prod__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! src/environments/environment.prod */ "cxbk");
 /* harmony import */ var _common_app_error__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../common/app-error */ "/GcI");
 /* harmony import */ var _common_bad_input__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../common/bad-input */ "XEKg");
 /* harmony import */ var _common_not_found_error__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../common/not-found-error */ "5Jak");
@@ -147,19 +147,21 @@ __webpack_require__.r(__webpack_exports__);
 let AccountService = class AccountService {
     constructor(http) {
         this.http = http;
-        this.APIURL = src_environments_environment__WEBPACK_IMPORTED_MODULE_4__["environment"].apiURL;
+        this.APIURL = src_environments_environment_prod__WEBPACK_IMPORTED_MODULE_4__["environment"].apiURL;
+        this.params = {};
+        this.headers = {};
     }
     create(val) {
-        return this.http.post(this.APIURL + '/Account', val);
+        return this.http.post(this.APIURL + '/account', val);
     }
     getAllAccount() {
-        return this.http.get(this.APIURL + '/Account');
+        return this.http.get(this.APIURL + '/account', this.params);
     }
     updateAccount(val) {
-        return this.http.put(this.APIURL + '/Account/', val);
+        return this.http.put(this.APIURL + '/account/', val);
     }
     removeAccount(id) {
-        return this.http.delete(this.APIURL + '/Account/' + id).toPromise();
+        return this.http.delete(this.APIURL + '/account/' + id).toPromise();
     }
     handleError(error) {
         if (error.status === 400) {
@@ -403,6 +405,24 @@ ShardDirectivesModule = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])
 
 /***/ }),
 
+/***/ "cxbk":
+/*!**********************************************!*\
+  !*** ./src/environments/environment.prod.ts ***!
+  \**********************************************/
+/*! exports provided: environment */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "environment", function() { return environment; });
+const environment = {
+    production: true,
+    apiURL: 'http://192.168.0.103:8009/api',
+};
+
+
+/***/ }),
+
 /***/ "enR7":
 /*!*****************************************!*\
   !*** ./src/app/Service/auth.service.ts ***!
@@ -416,7 +436,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "mrSG");
 /* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/common/http */ "tk/3");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/core */ "fXoL");
-/* harmony import */ var src_environments_environment__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! src/environments/environment */ "AytR");
+/* harmony import */ var src_environments_environment_prod__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! src/environments/environment.prod */ "cxbk");
 
 
 
@@ -424,10 +444,11 @@ __webpack_require__.r(__webpack_exports__);
 let AuthService = class AuthService {
     constructor(http) {
         this.http = http;
-        this.APIURL = src_environments_environment__WEBPACK_IMPORTED_MODULE_3__["environment"].apiURL;
+        // https: HttpClient;
+        this.APIURL = src_environments_environment_prod__WEBPACK_IMPORTED_MODULE_3__["environment"].apiURL;
     }
     getAllAccount() {
-        return this.http.get(this.APIURL + '/Account');
+        return this.http.get(this.APIURL + '/account');
     }
 };
 AuthService.ctorParameters = () => [
@@ -640,7 +661,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/common/http */ "tk/3");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/core */ "fXoL");
 /* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs */ "qCKp");
-/* harmony import */ var src_environments_environment__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! src/environments/environment */ "AytR");
+/* harmony import */ var src_environments_environment_prod__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! src/environments/environment.prod */ "cxbk");
 /* harmony import */ var _common_app_error__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../common/app-error */ "/GcI");
 /* harmony import */ var _common_bad_input__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../common/bad-input */ "XEKg");
 /* harmony import */ var _common_not_found_error__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../common/not-found-error */ "5Jak");
@@ -655,19 +676,19 @@ __webpack_require__.r(__webpack_exports__);
 let CategoryService = class CategoryService {
     constructor(http) {
         this.http = http;
-        this.APIURL = src_environments_environment__WEBPACK_IMPORTED_MODULE_4__["environment"].apiURL;
+        this.APIURL = src_environments_environment_prod__WEBPACK_IMPORTED_MODULE_4__["environment"].apiURL;
     }
     create(val) {
-        return this.http.post(this.APIURL + '/Categorie', val);
+        return this.http.post(this.APIURL + '/categorie', val);
     }
     getAllCategory() {
-        return this.http.get(this.APIURL + '/Categorie');
+        return this.http.get(this.APIURL + '/categorie');
     }
     updateCategory(val) {
-        return this.http.put(this.APIURL + '/Categorie/', val);
+        return this.http.put(this.APIURL + '/categorie/', val);
     }
     removeCategory(id) {
-        return this.http.delete(this.APIURL + '/Categorie/' + id).toPromise();
+        return this.http.delete(this.APIURL + '/categorie/' + id).toPromise();
     }
     handleError(error) {
         if (error.status === 400) {

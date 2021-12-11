@@ -30,34 +30,34 @@ export class CartModalPage implements OnInit {
   orderNo: number;
   restaurantId: any;
   Total: number;
-  status: {  val: string; isChecked: boolean; }[];
+  status: { val: string; isChecked: boolean; }[];
   statusRestaurant: { val: string; isChecked: boolean; }[];
   statusDriver: { val: string; isChecked: boolean; }[];
   constructor(private modalCtrl: ModalController,
-              private alertCtrl: AlertController,
-              private orderService: OrderService,
-              private fb: FormBuilder,
-              private router: Router,
-              private restaurantService: RestaurantService,
-              private orderDetailService: OrderDetailService,
-              private foodService: FoodService,
-              private sharedService: SharedService) {
-      this.statusDriver = [
-        {  val: 'picked', isChecked: false },
-        { val: 'start moving', isChecked: false },
-        {  val: 'delivered', isChecked: false }
-      ];
-      this.statusRestaurant = [
-         {  val: 'order received', isChecked: true },
-         {  val: 'start cooking', isChecked: false },
-         {  val: 'cooked', isChecked: false },
-         { val: 'ready to service', isChecked: false }
-       ];
-      this.status = [
-         { val: 'Accept', isChecked: false},
-         { val: 'Reject', isChecked: false}
-       ];
-    }
+    private alertCtrl: AlertController,
+    private orderService: OrderService,
+    private fb: FormBuilder,
+    private router: Router,
+    private restaurantService: RestaurantService,
+    private orderDetailService: OrderDetailService,
+    private foodService: FoodService,
+    private sharedService: SharedService) {
+    this.statusDriver = [
+      { val: 'picked', isChecked: false },
+      { val: 'start moving', isChecked: false },
+      { val: 'delivered', isChecked: false }
+    ];
+    this.statusRestaurant = [
+      { val: 'order received', isChecked: true },
+      { val: 'start cooking', isChecked: false },
+      { val: 'cooked', isChecked: false },
+      { val: 'ready to service', isChecked: false }
+    ];
+    this.status = [
+      { val: 'Accept', isChecked: false },
+      { val: 'Reject', isChecked: false }
+    ];
+  }
 
   ngOnInit() {
     this.regform = this.fb.group({
@@ -119,13 +119,13 @@ export class CartModalPage implements OnInit {
     return this.cart.reduce((i, j) => i + j.amount * j.price, 0);
   }
 
-  getGrandTotal(){
+  getGrandTotal() {
     return this.getTotal() + this.regform.get('DeliveryFee').value;
   }
   close() {
     this.modalCtrl.dismiss();
   }
-  location(){
+  location() {
     this.sharedService.status.next('cart-modal');
     this.router.navigate(['/menu/location']);
   }
@@ -136,7 +136,7 @@ export class CartModalPage implements OnInit {
     });
     const res = this.listOfRestaurant.find(c => c.id === +this.restaurantId);
     const order = {
-      restaurantId:res.accountId.toString(),
+      restaurantId: res.accountId.toString(),
       dateTime: this.regform.get('DeliveryDate').value,
       customer: localStorage.getItem('userId'),
       location: res.location, // to insert loging user (customer) of location
@@ -149,9 +149,9 @@ export class CartModalPage implements OnInit {
       customerStatus: 'true',
       statuses: this.status
     };
-    this.orderService.create(order).subscribe( res => {
-       alert(res.toString());
-       this.orderService.getAllOrder().subscribe(res=>{
+    this.orderService.create(order).subscribe(async res => {
+      alert(res.toString());
+      this.orderService.getAllOrder().subscribe(res => {
         cart.forEach(element => {
           this.restaurantId = element.restaurantId;
           this.Total = this.Total + (element.Price * element.amount);
@@ -161,19 +161,20 @@ export class CartModalPage implements OnInit {
             qty: element.amount,
             price: element.price
           };
-          this.orderDetailService.create(orderDetails).subscribe( res => {
-          alert(res.toString());
+          this.orderDetailService.create(orderDetails).subscribe(res => {
+            alert(res.toString());
           });
+          this.presentAlert('Add order succesfuly');
+          this.router.navigate(['/menu/order']);
         });
-       });
+      });
     });
-    this.presentAlert('Add order succesfuly');
-    this.router.navigate(['/menu/order']);
+
   }
   async presentAlert(message) {
     const alert = await this.alertCtrl.create({
       cssClass: 'my-custom-class',
-       header: 'Order',
+      header: 'Order',
       // subHeader: 'Subtitle',
       message,
       buttons: ['OK']

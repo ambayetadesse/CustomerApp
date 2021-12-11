@@ -84,38 +84,38 @@
       /* harmony import */
 
 
-      var src_environments_environment__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(
-      /*! src/environments/environment */
-      "AytR");
+      var src_environments_environment_prod__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(
+      /*! src/environments/environment.prod */
+      "cxbk");
 
       var RestaurantService = /*#__PURE__*/function () {
         function RestaurantService(http) {
           _classCallCheck(this, RestaurantService);
 
           this.http = http;
-          this.APIURL = src_environments_environment__WEBPACK_IMPORTED_MODULE_7__["environment"].apiURL;
+          this.APIURL = src_environments_environment_prod__WEBPACK_IMPORTED_MODULE_7__["environment"].apiURL;
         }
 
         _createClass(RestaurantService, [{
           key: "create",
           value: function create(val) {
-            return this.http.post(this.APIURL + '/Restaurant', val);
+            return this.http.post(this.APIURL + '/restaurant', val);
           }
         }, {
           key: "getAllRestaurant",
           value: function getAllRestaurant() {
-            var restaurant = this.http.get(this.APIURL + '/Restaurant');
+            var restaurant = this.http.get(this.APIURL + '/restaurant');
             return restaurant;
           }
         }, {
           key: "updateRestaurant",
           value: function updateRestaurant(val) {
-            return this.http.put(this.APIURL + '/Restaurant/', val);
+            return this.http.put(this.APIURL + '/restaurant/', val);
           }
         }, {
           key: "removeRestaurant",
           value: function removeRestaurant(id) {
-            return this.http["delete"](this.APIURL + '/Restaurant/' + id).toPromise();
+            return this.http["delete"](this.APIURL + '/restaurant/' + id).toPromise();
           }
         }, {
           key: "handleError",
@@ -253,9 +253,9 @@
       /* harmony import */
 
 
-      var src_environments_environment__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(
-      /*! src/environments/environment */
-      "AytR");
+      var src_environments_environment_prod__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(
+      /*! src/environments/environment.prod */
+      "cxbk");
       /* harmony import */
 
 
@@ -280,28 +280,28 @@
           _classCallCheck(this, FoodService);
 
           this.http = http;
-          this.APIURL = src_environments_environment__WEBPACK_IMPORTED_MODULE_4__["environment"].apiURL;
+          this.APIURL = src_environments_environment_prod__WEBPACK_IMPORTED_MODULE_4__["environment"].apiURL;
         }
 
         _createClass(FoodService, [{
           key: "create",
           value: function create(val) {
-            return this.http.post(this.APIURL + '/Food', val);
+            return this.http.post(this.APIURL + '/food', val);
           }
         }, {
           key: "getAllFood",
           value: function getAllFood() {
-            return this.http.get(this.APIURL + '/Food');
+            return this.http.get(this.APIURL + '/food');
           }
         }, {
           key: "updateFood",
           value: function updateFood(val) {
-            return this.http.put(this.APIURL + '/Food/', val);
+            return this.http.put(this.APIURL + '/food/', val);
           }
         }, {
           key: "removeFood",
           value: function removeFood(id) {
-            return this.http["delete"](this.APIURL + '/Food/' + id).toPromise();
+            return this.http["delete"](this.APIURL + '/food/' + id).toPromise();
           }
         }, {
           key: "handleError",
@@ -379,15 +379,15 @@
       /* harmony import */
 
 
-      var src_environments_environment__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(
-      /*! src/environments/environment */
-      "AytR");
+      var _shared_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(
+      /*! ./shared.service */
+      "ldse");
       /* harmony import */
 
 
-      var _shared_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(
-      /*! ./shared.service */
-      "ldse");
+      var src_environments_environment_prod__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(
+      /*! src/environments/environment.prod */
+      "cxbk");
 
       var OrderService = /*#__PURE__*/function () {
         function OrderService(http, sharedService) {
@@ -395,7 +395,7 @@
 
           this.http = http;
           this.sharedService = sharedService;
-          this.APIURL = src_environments_environment__WEBPACK_IMPORTED_MODULE_4__["environment"].apiURL;
+          this.APIURL = src_environments_environment_prod__WEBPACK_IMPORTED_MODULE_5__["environment"].apiURL;
           this.cart = [];
           this.cartItemCount = new rxjs__WEBPACK_IMPORTED_MODULE_3__["BehaviorSubject"](0);
           this.RestaurantId = new rxjs__WEBPACK_IMPORTED_MODULE_3__["BehaviorSubject"]({});
@@ -407,22 +407,22 @@
         _createClass(OrderService, [{
           key: "create",
           value: function create(val) {
-            return this.http.post(this.APIURL + '/Order', val);
+            return this.http.post(this.APIURL + '/order', val);
           }
         }, {
           key: "getAllOrder",
           value: function getAllOrder() {
-            return this.http.get(this.APIURL + '/Order');
+            return this.http.get(this.APIURL + '/order');
           }
         }, {
           key: "updateOrder",
           value: function updateOrder(val) {
-            return this.http.put(this.APIURL + '/Order/', val);
+            return this.http.put(this.APIURL + '/order/', val);
           }
         }, {
           key: "removeOrder",
           value: function removeOrder(id) {
-            return this.http["delete"](this.APIURL + '/Order/' + id).toPromise();
+            return this.http["delete"](this.APIURL + '/order/' + id).toPromise();
           } // create(orderObj) {
           //   let values = this.orderCollectionList.add(orderObj)
           //     .then((docRef) => {
@@ -434,12 +434,12 @@
         }, {
           key: "getOrderBy",
           value: function getOrderBy(id) {
-            return this.http.get(this.APIURL + '/Order' + id);
+            return this.http.get(this.APIURL + '/order' + id);
           }
         }, {
           key: "getOrderByDriverId",
           value: function getOrderByDriverId(driverId) {
-            return this.http.get(this.APIURL + '/Order' + driverId);
+            return this.http.get(this.APIURL + '/order' + driverId);
           }
         }, {
           key: "getCart",
@@ -598,7 +598,7 @@
         return [{
           type: _angular_common_http__WEBPACK_IMPORTED_MODULE_1__["HttpClient"]
         }, {
-          type: _shared_service__WEBPACK_IMPORTED_MODULE_5__["SharedService"]
+          type: _shared_service__WEBPACK_IMPORTED_MODULE_4__["SharedService"]
         }];
       };
 

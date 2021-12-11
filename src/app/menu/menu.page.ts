@@ -22,6 +22,9 @@ export class MenuPage implements OnInit {
   ListOfMenu1: any[] = [];
   pageList: any[] = [];
   usePicker: boolean;
+  listOfAccount: Account[];
+  base64textString: any;
+  loader: any;
   constructor(private authServices: AuthService,
     private router: Router,
     private alertCtrl: AlertController,
@@ -45,21 +48,30 @@ export class MenuPage implements OnInit {
       { title: 'order', url: '/order', icon: 'cart' },
       { title: 'location', url: '/location', icon: 'locate' },
       { title: 'home', url: '/home', icon: 'home' },
-      { title:'profile',url:'/profile',icon:'person'}
+      { title: 'profile', url: '/profile', icon: 'person' }
     ];
     this.getRoute();
+    this.getAccount();
   }
-
+  getAccount() {
+    this.accountService.getAllAccount().subscribe(async res => {
+      this.listOfAccount = res;
+      this.base64textString = res.find(c => c.id == localStorage.getItem("userId")).photo;
+    }, async (err) => {
+      await this.loader.dismiss().then();
+      console.log(err);
+    })
+  }
   getRoute() {
-    this.functionalityService.getAllFunctionality().subscribe(result => {
+    this.functionalityService.getAllFunctionality().subscribe(async result => {
       this.listOfFunctionality = result;
-     // console.log(result)
+      // console.log(result)
       if (result.length > 0) {
         this.roleType = localStorage.getItem("roleType");
         this.userName = localStorage.getItem("fullName");
         //console.log(this.userName)
-        this.userRoleService.getAllUserRole().subscribe(res => {
-         // console.log(res)
+        this.userRoleService.getAllUserRole().subscribe(async res => {
+          // console.log(res)
           let result = res.filter(c => c.userId == this.roleType);
           let active = localStorage.getItem("active");
           if (result.length > 0 && active == "true") {

@@ -1,18 +1,15 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { environment } from 'src/environments/environment';
-import { AppError } from '../common/app-error';
-import { BadInput } from '../common/bad-input';
-import { NotFoundError } from '../common/not-found-error';
 import { SharedService } from './shared.service';
+import { environment } from 'src/environments/environment.prod';
 
 @Injectable({
   providedIn: 'root'
 })
 export class OrderService {
-  constructor( private http: HttpClient,
-               private sharedService: SharedService) {
+  constructor(private http: HttpClient,
+    private sharedService: SharedService) {
   }
   readonly APIURL = environment.apiURL;
   private cart = [];
@@ -22,18 +19,19 @@ export class OrderService {
 
   amount: number;
   private order = [];
-  private orderItemCount  = new BehaviorSubject(0);
+  private orderItemCount = new BehaviorSubject(0);
   create(val: any) {
-    return this.http.post(this.APIURL + '/Order', val);
+    return this.http.post(this.APIURL + '/order', val);
   }
   getAllOrder(): Observable<any[]> {
-    return this.http.get<any>(this.APIURL + '/Order');
+    return this.http.get<any>(this.APIURL + '/order');
   }
+
   updateOrder(val: any) {
-    return this.http.put(this.APIURL + '/Order/', val);
+    return this.http.put(this.APIURL + '/order/', val);
   }
   removeOrder(id) {
-    return this.http.delete(this.APIURL + '/Order/' + id).toPromise();
+    return this.http.delete(this.APIURL + '/order/' + id).toPromise();
   }
 
   // create(orderObj) {
@@ -44,22 +42,22 @@ export class OrderService {
   //   return values;
   // }
 
-  getOrderBy(id){
-    return this.http.get<any>(this.APIURL + '/Order' + id);
+  getOrderBy(id) {
+    return this.http.get<any>(this.APIURL + '/order' + id);
   }
-  getOrderByDriverId(driverId){
-    return this.http.get<any>(this.APIURL + '/Order' + driverId);
+  getOrderByDriverId(driverId) {
+    return this.http.get<any>(this.APIURL + '/order' + driverId);
   }
   getCart() {
     return this.cart;
   }
-  getOrders(){
+  getOrders() {
     return this.order;
   }
   getCartItemCount() {
     return this.cartItemCount;
   }
-  getOrderItemCount(){
+  getOrderItemCount() {
     return this.orderItemCount;
   }
   getRestaurantId() {
@@ -69,16 +67,16 @@ export class OrderService {
     return this.orderStatus;
   }
   addOrder(items) {
-   this.order = [];
-   this.amount = 0;
-   this.order.forEach(el => {
+    this.order = [];
+    this.amount = 0;
+    this.order.forEach(el => {
       const index = this.order.indexOf(c => c.orderDetailsId === el.orderDetailsId);
       this.order.splice(index, 1);
     });
-   this.orderItemCount.next(0);
-   items.forEach(element => {
-    this.amount = this.amount + element.amount;
-    const data = {
+    this.orderItemCount.next(0);
+    items.forEach(element => {
+      this.amount = this.amount + element.amount;
+      const data = {
         CookingTime: element.CookingTime,
         DeliveryTime: element.DeliveryTime,
         Description: element.Description,
@@ -92,9 +90,9 @@ export class OrderService {
         type: element.type,
         orderDetailsId: element.orderDetailsId,
       };
-    this.order.push(data);
-      });
-   this.orderItemCount.next(this.orderItemCount.value + this.amount);
+      this.order.push(data);
+    });
+    this.orderItemCount.next(this.orderItemCount.value + this.amount);
   }
   addProduct(product) {
     let added = false;

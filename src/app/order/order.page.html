@@ -1,4 +1,4 @@
-<ion-header [translucent]="true" >
+<ion-header [translucent]="true">
   <ion-toolbar color="primary">
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
@@ -6,7 +6,7 @@
     <ion-title>Recent orders</ion-title>
   </ion-toolbar>
 </ion-header>
-<ion-content [fullscreen]="true"  #pageTop scrollEvents="true"  (ionScroll)="onScroll($event)">
+<ion-content [fullscreen]="true" #pageTop scrollEvents="true" (ionScroll)="onScroll($event)">
   <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
@@ -38,7 +38,7 @@
         <ion-label>
           {{ meal.restaurantName}}
           <p>{{ meal.DateTime|date:'short' }}</p>
-       </ion-label>
+        </ion-label>
         <ion-text color="dark"><b>Total : {{ meal.Total | currency:'ETB' }}</b></ion-text>
       </ion-col>
       <ion-col size="4" class="border-bottom">
@@ -48,6 +48,7 @@
                     text-align: center;">{{meal.OrderStatus}}</ion-label>
       </ion-col>
     </ion-row>
+    <ion-label class="message" *ngIf="listOfOrder.length==0">{{this.messageOrder}}</ion-label>
   </ion-list>
   <ion-list *ngIf="segment === 'Processing'">
     <ion-row *ngFor="let meal of listOfOrderProcessing" class="ion-padding meal-row">
@@ -84,6 +85,7 @@
         </button>
       </ion-col>
     </ion-row>
+  <ion-label class="message" *ngIf="listOfOrderProcessing.length==0">{{this.messageOrder}}</ion-label>
   </ion-list>
   <ion-list *ngIf="segment === 'Completed'">
     <ion-row *ngFor="let meal of listOfOrderCompeleted" class="ion-padding meal-row">
@@ -107,6 +109,7 @@
         </ion-button>
       </ion-col>
     </ion-row>
+    <ion-label class="message" *ngIf="listOfOrderCompeleted.length==0">{{this.messageOrder}}</ion-label>
   </ion-list>
   <ion-list *ngIf="segment === 'Cancelled'">
     <ion-row *ngFor="let meal of listOfOrderCancelled" class="ion-padding meal-row">
@@ -130,10 +133,18 @@
         </ion-button>
       </ion-col>
     </ion-row>
+   <ion-label class="message" *ngIf="listOfOrderCancelled.length==0">{{this.messageOrder}}</ion-label>
   </ion-list>
   <ion-fab horizontal="end" vertical="bottom" slot="fixed">
     <ion-fab-button color="light" (click)="pageScroller()">
       <ion-icon md="chevron-up-outline" ios="chevron-up-circle-outline"></ion-icon>
     </ion-fab-button>
   </ion-fab>
+  <!-- <ion-infinite-scroll (ionInfinite)="loadMoreData($event)" threshold="10px">
+    <ion-infinite-scroll-content
+    loadingSpinner ="bubbles"
+    loadingText="loading more products..."
+    >
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll> -->
 </ion-content>

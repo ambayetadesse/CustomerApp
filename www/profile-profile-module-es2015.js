@@ -1652,11 +1652,14 @@ let ProfilePage = class ProfilePage {
         this.getAccount();
     }
     getAccount() {
-        this.accountService.getAllAccount().subscribe(res => {
+        this.accountService.getAllAccount().subscribe((res) => Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, function* () {
             this.listOfAccount = res;
             this.base64textString = res.find(c => c.id == +localStorage.getItem("userId")).photo;
             this.fullName = res.find(c => c.id == localStorage.getItem("userId")).FullName;
-        });
+        }), (error) => Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, function* () {
+            yield this.loader.dismiss().then();
+            console.log(error);
+        }));
     }
     account() {
         this.router.navigate(["/account-details"]);
@@ -1701,6 +1704,7 @@ let ProfilePage = class ProfilePage {
             this.base64textString = 'data:image/png;base64,' + image.base64String;
             let accounts = this.listOfAccount.find(c => c.id == +localStorage.getItem("userId"));
             let data = {
+                id: accounts.id,
                 email: accounts.email,
                 phonenumber: accounts.phonenumber,
                 password: accounts.password,
@@ -1710,7 +1714,12 @@ let ProfilePage = class ProfilePage {
                 type: accounts.type,
                 photo: this.base64textString
             };
-            this.accountService.updateAccount(data);
+            this.accountService.updateAccount(data).subscribe((res) => Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, function* () {
+                console.log(res);
+            }), (err) => Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, function* () {
+                yield this.loader.dismiss().then();
+                console.log(err);
+            }));
         })
             .catch(error => {
             console.log(error);

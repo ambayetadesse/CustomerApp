@@ -1,13 +1,13 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Account, Food, Order, OrderDetail, Restaurant } from 'src/Table/table';
+import { Router } from '@angular/router';
+import { Account, OrderDetail, Restaurant } from 'src/Table/table';
 import { AccountService } from '../Service/account.service';
 import { FoodService } from '../Service/food.service';
 import { OrderDetailService } from '../Service/order-detail.service';
 import { OrderService } from '../Service/order.service';
 import LocationPicker from "location-picker";
 import { SharedService } from '../Service/shared.service';
-import { AlertController, IonContent, ModalController } from '@ionic/angular';
+import { AlertController, IonContent, LoadingController, ModalController, ToastController } from '@ionic/angular';
 import { RestaurantService } from '../Service/restaurant.service';
 import { CustomerOptionPage } from '../customer-option/customer-option.page';
 import { CallNumber } from '@ionic-native/call-number/ngx';
@@ -27,7 +27,7 @@ export class OrderPage implements OnInit {
   cart: any[] = [];
   lp: LocationPicker;
   UserId: string;
-  messageOrder: string;
+  messageOrder = "Preparing your order ...";
   massge: boolean;
   countItems: number;
   statusOrder: { id: number; val: string; }[];
@@ -51,9 +51,14 @@ export class OrderPage implements OnInit {
   orderStatuses: string;
   @ViewChild('pageTop') pageTop: IonContent;
   showLocationDetail = false;
+  currentPage: number = 1;
+  messageProcessingOrder: string;
+  messageCompleteOrder: string;
+  messageCancelOrder: string;
   public pageScroller() {
     this.pageTop.scrollToTop();
   }
+  loader: any
   constructor(private foodService: FoodService,
     private orderService: OrderService,
     private accountService: AccountService,
@@ -63,38 +68,55 @@ export class OrderPage implements OnInit {
     private alertCtrl: AlertController,
     private restaurantService: RestaurantService,
     private modalController: ModalController,
-    private callNumber: CallNumber
+    private callNumber: CallNumber,
+    private loadingController: LoadingController,
+    private toastController: ToastController
     // private _Activatedroute:ActivatedRoute,
   ) {
-    this.restaurantService.getAllRestaurant().subscribe(res => {
-      this.listOfRestaurant = res;
-    })
+    this.getOrder();
   }
 
-  ngOnInit() {
+  async ngOnInit() {
+    this.loader = await this.loadingController.create({
+      message: 'Getting Products ...',
+      spinner: "bubbles",
+      animated: true
+    });
+    await this.loader.present().then();
     // this.id = this._Activatedroute.snapshot.paramMap.get("id");
     this.getRestaurant();
     this.getFood();
-    this.getOrder();
     this.getOrderDetails();
     this.getProcessingOrder();
     this.getCompeletedOrder();
     this.getCancelledOrder();
     //this.lp = new LocationPicker('map');
   }
-  getRestaurant(){
-    this.restaurantService.getAllRestaurant().subscribe(res => {
+  getRestaurant() {
+    this.restaurantService.getAllRestaurant().subscribe(async res => {
+      await this.loader.dismiss().then();
       this.listOfRestaurant = res;
+    }, async (err) => {
+      await this.loader.dismiss().then();
+      console.log(err);
     })
   }
   getFood() {
-    this.foodService.getAllFood().subscribe(res => {
+    this.foodService.getAllFood().subscribe(async res => {
+      await this.loader.dismiss().then();
       this.listOfFood = res;
+    }, async (err) => {
+      await this.loader.dismiss().then();
+      console.log(err);
     })
   }
   getOrderDetails() {
-    this.orderDetailsService.getAllOrderDetail().subscribe(res => {
+    this.orderDetailsService.getAllOrderDetail().subscribe(async res => {
+      await this.loader.dismiss().then();
       this.listOfOrderDetails = res;
+    }, async (err) => {
+      await this.loader.dismiss().then();
+      console.log(err);
     })
   }
   onScroll(ev) {
@@ -103,13 +125,14 @@ export class OrderPage implements OnInit {
   }
   getOrder() {
     this.listOfOrder = [];
-    this.orderService.getAllOrder().subscribe(res => {
+    this.orderService.getAllOrder().subscribe(async res => {
+      await this.loader.dismiss().then();
       this.UserId = localStorage.getItem('userId');
       const result = res.filter(c => c.customer === this.UserId);
-      if (result.length > 0 && this.listOfRestaurant != undefined) {
+      if (result.length > 0) {
         result.forEach(element => {
           this.accountService.getAllAccount().subscribe(result => {
-           this.getStatusOfOrder(element);
+            this.getStatusOfOrder(element);
             const resName = this.listOfRestaurant.find(c => c.id === +element.restaurantId);
             const data = {
               id: element.id,
@@ -132,29 +155,32 @@ export class OrderPage implements OnInit {
         });
       }
       else {
-        this.refresh();
         this.massge = true;
         this.messageOrder = 'Preparing your order ...';
       }
+    }, async (err) => {
+      await this.loader.dismiss().then();
+      console.log(err);
     });
   }
   getProcessingOrder() {
-   this.orderService.getAllOrder().subscribe(res => {
-    this.listOfOrderProcessing = [];
+    this.orderService.getAllOrder().subscribe(async res => {
+      await this.loader.dismiss().then();
+      this.listOfOrderProcessing = [];
       this.UserId = localStorage.getItem("userId");
       let order = res.filter(c => c.orderStatuses.find(c => c.isChecked == false && c.val == "delivered") && c.customer == this.UserId)
-      if (order.length > 0 && this.listOfRestaurant != undefined) {
+      if (order.length > 0) {
         order.forEach(element => {
-          if(element.driver !== ""){
+          if (element.driver !== "") {
             this.accountService.getAllAccount().subscribe(result => {
               let customerName = result.find(c => c.id == element.customer);
               let driver = result.find(c => c.id == element.driver);
               this.getStatusOfOrder(element);
-              if(driver){
+              if (driver) {
                 this.driverPhone = driver.phonenumber;
                 this.driverName = driver.fullName
               }
-              else{
+              else {
                 this.driverPhone = "";
                 this.driverName = ""
               }
@@ -164,7 +190,7 @@ export class OrderPage implements OnInit {
                 Customer: customerName.fullName,
                 Location: element.location,
                 OrderStatus: this.orderStatuses,
-                driverPhonenumber:this.driverPhone,
+                driverPhonenumber: this.driverPhone,
                 Total: element.total,
                 Driver: this.driverName,
                 DriverId: element.driver,
@@ -181,18 +207,21 @@ export class OrderPage implements OnInit {
         });
       }
       else {
-        this.refreshProcessingTask();
         this.massge = true;
-        this.messageOrder = "Preparing your order ..."
+        this.messageProcessingOrder = "Preparing your order ..."
       }
+    }, async (err) => {
+      await this.loader.dismiss().then();
+      console.log(err);
     })
   }
   getCompeletedOrder() {
-    this.orderService.getAllOrder().subscribe(res => {
+    this.orderService.getAllOrder().subscribe(async res => {
+      await this.loader.dismiss().then();
       this.listOfOrderCompeleted = [];
       this.UserId = localStorage.getItem("userId");
       let order = res.filter(c => c.orderStatuses.find(c => c.isChecked == true && c.val == "delivered") && c.customer == this.UserId)
-      if (order.length > 0 && this.listOfRestaurant != undefined) {
+      if (order.length > 0) {
         order.forEach(element => {
           this.accountService.getAllAccount().subscribe(result => {
             let data = {
@@ -215,18 +244,21 @@ export class OrderPage implements OnInit {
         });
       }
       else {
-        this.refreshCompleteTask();
         this.massge = true;
-        this.messageOrder = "Preparing your order ..."
+        this.messageCompleteOrder = "Preparing your order ..."
       }
+    }, async (err) => {
+      await this.loader.dismiss().then();
+      console.log(err);
     })
   }
   getCancelledOrder() {
-    this.orderService.getAllOrder().subscribe(res => {
+    this.orderService.getAllOrder().subscribe(async res => {
+      await this.loader.dismiss().then();
       this.listOfOrderCancelled = [];
       this.UserId = localStorage.getItem("userId");
       let order = res.filter(c => c.customerStatus == "false" && c.customer == this.UserId)
-      if (order.length > 0 && this.listOfRestaurant != undefined) {
+      if (order.length > 0) {
         order.forEach(element => {
           this.accountService.getAllAccount().subscribe(result => {
             let data = {
@@ -249,35 +281,37 @@ export class OrderPage implements OnInit {
         });
       }
       else {
-        this.refreshCancelTask();
         this.massge = true;
-        this.messageOrder = "Preparing your order ..."
+        this.messageCancelOrder = "Preparing your order ..."
       }
+    }, async (err) => {
+      await this.loader.dismiss().then();
+      console.log(err);
     })
   }
-  getStatusOfOrder(element){
+  getStatusOfOrder(element) {
     this.a = 0;
-    for(let i=0;i<element.orderStatuses.length;i++){
-    if(element.orderStatuses[i].isChecked == false){
-      this.a = this.a+1;
+    for (let i = 0; i < element.orderStatuses.length; i++) {
+      if (element.orderStatuses[i].isChecked == false) {
+        this.a = this.a + 1;
+      }
+      else {
+        this.orderStatuses = element.orderStatuses[i].val;
+      }
     }
-    else{
-      this.orderStatuses = element.orderStatuses[i].val;
-    }
-    }
-    if(this.a ==3){
-      for(let i=0;i<element.restaurantStatuses.length;i++){
-        if(element.restaurantStatuses[i].isChecked == true){
+    if (this.a == 3) {
+      for (let i = 0; i < element.restaurantStatuses.length; i++) {
+        if (element.restaurantStatuses[i].isChecked == true) {
           this.orderStatuses = element.restaurantStatuses[i].val;
         }
-        }
+      }
     }
   }
   viewOrder(id) {
     this.isLoading = false;
     this.countItems = 0;
     this.cart = [];
-   // let orderNo = this.listOfOrder.find(c => c.id == id).orderNo;
+    // let orderNo = this.listOfOrder.find(c => c.id == id).orderNo;
     let orderDetails = this.listOfOrderDetails.filter(c => c.orderId == id);
     orderDetails.forEach(el => {
       let data = {
@@ -334,36 +368,70 @@ export class OrderPage implements OnInit {
     this.callNumber.callNumber(phonenumber, true).then(res => console.log('Launched dialer!', res))
       .catch(err => console.log('Error launching dialer', err));
   }
-  refresh(){
+  refresh() {
     setTimeout(() => {
       this.getOrder();
     });
   }
-  refreshProcessingTask(){
-    setTimeout(()=>{
+  refreshProcessingTask() {
+    setTimeout(() => {
       this.getProcessingOrder();
-    },200);
+    }, 200);
   }
-  refreshCompleteTask(){
-    setTimeout(()=>{
+  refreshCompleteTask() {
+    setTimeout(() => {
       this.getCompeletedOrder();
-    },200);
+    }, 200);
   }
-  refreshCancelTask(){
-    setTimeout(()=>{
+  refreshCancelTask() {
+    setTimeout(() => {
       this.getCancelledOrder();
-    },200);
+    }, 200);
   }
   doRefresh(event) {
     setTimeout(() => {
       this.getOrder();
-     // this.getOrderDetails();
+      // this.getOrderDetails();
       this.getProcessingOrder();
       this.getCompeletedOrder();
       this.getCancelledOrder();
       event.target.complete();
     }, 2000);
   }
+  // async loadMoreData(ev:any){
+  //   const toast:HTMLIonToastElement = await this.toastController.create({
+  //     message:'No More Products',
+  //     animated:true,
+  //     duration:2000,
+  //     buttons:[
+  //       {
+  //         text:'Done',
+  //         role:'cancel',
+  //         icon:'close'
+  //       }
+  //     ]
+  //   });
+  //   if(ev == null){
+  //    this.currentPage = 1;
+  //   }else{
+  //     this.currentPage++;
+  //     this.listOfOrder =[];
+  //     this.orderService.getAllOrder()
+  //     .subscribe( async(prods:Order[])=>{
+  //       this.listOfOrder = this.listOfOrder.concat(prods);
+  //       this.listOfOrder = [...this.listOfOrder];
+  //       if(ev ==! null){
+  //         ev.target.complete();
+  //       }
+  //       if(prods.length<10){
+  //         await toast.present();
+  //         ev.target.disabled = true;
+  //       }
+  //     },async(err)=>{
+  //       console.log(err);
+  //     });
+  //   }
+  //  }
 }
 
 

@@ -19,7 +19,8 @@ export class ProfilePage implements OnInit {
   base64textString: string;
   photo: string;
   listOfAccount: Account[];
-  fullName:string
+  fullName: string
+  loader: any;
   constructor(private router: Router, private authServices: AuthService,
     private alertCtrl: AlertController, private accountService: AccountService,
     private fb: FormBuilder) { }
@@ -28,10 +29,13 @@ export class ProfilePage implements OnInit {
     this.getAccount();
   }
   getAccount() {
-    this.accountService.getAllAccount().subscribe(res => {
+    this.accountService.getAllAccount().subscribe(async res => {
       this.listOfAccount = res;
       this.base64textString = res.find(c => c.id == +localStorage.getItem("userId")).photo;
-      this.fullName = res.find(c=>c.id==localStorage.getItem("userId")).FullName
+      this.fullName = res.find(c => c.id == localStorage.getItem("userId")).FullName
+    }, async (error) => {
+      await this.loader.dismiss().then();
+      console.log(error);
     })
   }
   account() {
@@ -75,6 +79,7 @@ export class ProfilePage implements OnInit {
         this.base64textString = 'data:image/png;base64,' + image.base64String;
         let accounts = this.listOfAccount.find(c => c.id == +localStorage.getItem("userId"));
         let data = {
+          id: accounts.id,
           email: accounts.email,
           phonenumber: accounts.phonenumber,
           password: accounts.password,
@@ -84,7 +89,12 @@ export class ProfilePage implements OnInit {
           type: accounts.type,
           photo: this.base64textString
         }
-        this.accountService.updateAccount(data);
+        this.accountService.updateAccount(data).subscribe(async res => {
+          console.log(res);
+        }, async (err) => {
+          await this.loader.dismiss().then();
+          console.log(err);
+        });
       })
       .catch(error => {
         console.log(error);

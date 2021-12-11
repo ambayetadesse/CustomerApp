@@ -2971,13 +2971,45 @@
             var _this2 = this;
 
             this.accountService.getAllAccount().subscribe(function (res) {
-              _this2.listOfAccount = res;
-              _this2.base64textString = res.find(function (c) {
-                return c.id == +localStorage.getItem("userId");
-              }).photo;
-              _this2.fullName = res.find(function (c) {
-                return c.id == localStorage.getItem("userId");
-              }).FullName;
+              return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(_this2, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+                return regeneratorRuntime.wrap(function _callee$(_context) {
+                  while (1) {
+                    switch (_context.prev = _context.next) {
+                      case 0:
+                        this.listOfAccount = res;
+                        this.base64textString = res.find(function (c) {
+                          return c.id == +localStorage.getItem("userId");
+                        }).photo;
+                        this.fullName = res.find(function (c) {
+                          return c.id == localStorage.getItem("userId");
+                        }).FullName;
+
+                      case 3:
+                      case "end":
+                        return _context.stop();
+                    }
+                  }
+                }, _callee, this);
+              }));
+            }, function (error) {
+              return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(_this2, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
+                return regeneratorRuntime.wrap(function _callee2$(_context2) {
+                  while (1) {
+                    switch (_context2.prev = _context2.next) {
+                      case 0:
+                        _context2.next = 2;
+                        return this.loader.dismiss().then();
+
+                      case 2:
+                        console.log(error);
+
+                      case 3:
+                      case "end":
+                        return _context2.stop();
+                    }
+                  }
+                }, _callee2, this);
+              }));
             });
           }
         }, {
@@ -2998,12 +3030,12 @@
         }, {
           key: "logout",
           value: function logout() {
-            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
+            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee4() {
               var _this3 = this;
 
-              return regeneratorRuntime.wrap(function _callee2$(_context2) {
+              return regeneratorRuntime.wrap(function _callee4$(_context4) {
                 while (1) {
-                  switch (_context2.prev = _context2.next) {
+                  switch (_context4.prev = _context4.next) {
                     case 0:
                       localStorage.setItem("userId", null);
                       localStorage.setItem("fullName", null);
@@ -3012,13 +3044,13 @@
                       this.router.navigateByUrl('login');
 
                       (function (error) {
-                        return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(_this3, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+                        return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(_this3, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee3() {
                           var alert;
-                          return regeneratorRuntime.wrap(function _callee$(_context) {
+                          return regeneratorRuntime.wrap(function _callee3$(_context3) {
                             while (1) {
-                              switch (_context.prev = _context.next) {
+                              switch (_context3.prev = _context3.next) {
                                 case 0:
-                                  _context.next = 2;
+                                  _context3.next = 2;
                                   return this.alertCtrl.create({
                                     message: error.message,
                                     buttons: [{
@@ -3028,25 +3060,25 @@
                                   });
 
                                 case 2:
-                                  alert = _context.sent;
-                                  _context.next = 5;
+                                  alert = _context3.sent;
+                                  _context3.next = 5;
                                   return alert.present();
 
                                 case 5:
                                 case "end":
-                                  return _context.stop();
+                                  return _context3.stop();
                               }
                             }
-                          }, _callee, this);
+                          }, _callee3, this);
                         }));
                       });
 
                     case 6:
                     case "end":
-                      return _context2.stop();
+                      return _context4.stop();
                   }
                 }
-              }, _callee2, this);
+              }, _callee4, this);
             }));
           }
         }, {
@@ -3075,6 +3107,7 @@
               });
 
               var data = {
+                id: accounts.id,
                 email: accounts.email,
                 phonenumber: accounts.phonenumber,
                 password: accounts.password,
@@ -3085,7 +3118,41 @@
                 photo: _this4.base64textString
               };
 
-              _this4.accountService.updateAccount(data);
+              _this4.accountService.updateAccount(data).subscribe(function (res) {
+                return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(_this4, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee5() {
+                  return regeneratorRuntime.wrap(function _callee5$(_context5) {
+                    while (1) {
+                      switch (_context5.prev = _context5.next) {
+                        case 0:
+                          console.log(res);
+
+                        case 1:
+                        case "end":
+                          return _context5.stop();
+                      }
+                    }
+                  }, _callee5);
+                }));
+              }, function (err) {
+                return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(_this4, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee6() {
+                  return regeneratorRuntime.wrap(function _callee6$(_context6) {
+                    while (1) {
+                      switch (_context6.prev = _context6.next) {
+                        case 0:
+                          _context6.next = 2;
+                          return this.loader.dismiss().then();
+
+                        case 2:
+                          console.log(err);
+
+                        case 3:
+                        case "end":
+                          return _context6.stop();
+                      }
+                    }
+                  }, _callee6, this);
+                }));
+              });
             })["catch"](function (error) {
               console.log(error);
 

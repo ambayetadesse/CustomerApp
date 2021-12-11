@@ -119,42 +119,42 @@
       /* harmony import */
 
 
-      var src_environments_environment__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(
-      /*! src/environments/environment */
-      "AytR");
+      var src_environments_environment_prod__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(
+      /*! src/environments/environment.prod */
+      "cxbk");
 
       var UserRoleService = /*#__PURE__*/function () {
         function UserRoleService(http) {
           _classCallCheck(this, UserRoleService);
 
           this.http = http;
-          this.APIURL = src_environments_environment__WEBPACK_IMPORTED_MODULE_3__["environment"].apiURL;
+          this.APIURL = src_environments_environment_prod__WEBPACK_IMPORTED_MODULE_3__["environment"].apiURL;
         }
 
         _createClass(UserRoleService, [{
           key: "create",
           value: function create(val) {
-            return this.http.post(this.APIURL + '/UserRole', val);
+            return this.http.post(this.APIURL + '/userrole', val);
           }
         }, {
           key: "getAllUserRole",
           value: function getAllUserRole() {
-            return this.http.get(this.APIURL + '/UserRole');
+            return this.http.get(this.APIURL + '/userrole');
           }
         }, {
           key: "updateUserRole",
           value: function updateUserRole(val) {
-            return this.http.put(this.APIURL + '/UserRole/', val);
+            return this.http.put(this.APIURL + '/userrole/', val);
           }
         }, {
           key: "deleteUserRole",
           value: function deleteUserRole(id) {
-            return this.http["delete"](this.APIURL + '/UserRole/' + id).toPromise();
+            return this.http["delete"](this.APIURL + '/userrole/' + id).toPromise();
           }
         }, {
           key: "getUerRoleId",
           value: function getUerRoleId(userId) {
-            return this.http.get(this.APIURL + '/UserRole/' + userId);
+            return this.http.get(this.APIURL + '/userrole/' + userId);
           }
         }]);
 
@@ -169,53 +169,7 @@
 
       UserRoleService = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([Object(_angular_core__WEBPACK_IMPORTED_MODULE_2__["Injectable"])({
         providedIn: 'root'
-      })], UserRoleService); // import { Injectable } from '@angular/core';
-      // import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
-      // import { Observable } from 'rxjs';
-      // import { map } from 'rxjs/internal/operators/map';
-      // import { userRole } from 'src/Table/table';
-      // @Injectable({
-      //   providedIn: 'root'
-      // })
-      // export class UserRoleService {
-      //   private userRoleCollectionList: AngularFirestoreCollection<any>;
-      //   private userRoleList: Observable<userRole[]>;
-      //   userRoleLists: Observable<{ id: string; funId: string; userId: string; remark: string; }[]>;
-      //   // db: any;
-      //   constructor(private db: AngularFirestore) {
-      //     this.userRoleCollectionList = db.collection<userRole>('userRole');
-      //    }
-      //    create(userR) {
-      //     return this.userRoleCollectionList.add(userR);
-      //   }
-      //   getAllUserRole(){
-      //     this.userRoleList = this.userRoleCollectionList.snapshotChanges().pipe(
-      //       map(actions => {
-      //         return actions.map(a => {
-      //           const data = a.payload.doc.data();
-      //           const id = a.payload.doc.id;
-      //           return { id, ...data };
-      //         });
-      //       })
-      //     );
-      //     return this.userRoleList;
-      //   }
-      //   getUerRoleId(id: string) {
-      //     const lookUpObj = this.db.collection('userRole', ref => ref.where('userId', '==', id)).snapshotChanges();
-      //     this.userRoleLists = lookUpObj.pipe(
-      //       map(changes => changes.map(a => {
-      //         const data = a.payload.doc.data() as userRole;
-      //         const id = a.payload.doc.id;
-      //         return { id, ...data };
-      //       }))
-      //     );
-      //     return this.userRoleLists;
-      //   }
-      //   deleteUserRole(id) {
-      //     return this.userRoleCollectionList.doc(id).delete();
-      //   }
-      // }
-
+      })], UserRoleService);
       /***/
     },
 
@@ -259,16 +213,16 @@
       /* harmony import */
 
 
-      var src_environments_environment__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(
-      /*! src/environments/environment */
-      "AytR");
+      var src_environments_environment_prod__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(
+      /*! src/environments/environment.prod */
+      "cxbk");
 
       var FunctionalityService = /*#__PURE__*/function () {
         function FunctionalityService(http) {
           _classCallCheck(this, FunctionalityService);
 
           this.http = http;
-          this.APIURL = src_environments_environment__WEBPACK_IMPORTED_MODULE_3__["environment"].apiURL;
+          this.APIURL = src_environments_environment_prod__WEBPACK_IMPORTED_MODULE_3__["environment"].apiURL;
         }
 
         _createClass(FunctionalityService, [{
@@ -635,52 +589,128 @@
               icon: 'person'
             }];
             this.getRoute();
+            this.getAccount();
+          }
+        }, {
+          key: "getAccount",
+          value: function getAccount() {
+            var _this = this;
+
+            this.accountService.getAllAccount().subscribe(function (res) {
+              return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(_this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+                return regeneratorRuntime.wrap(function _callee$(_context) {
+                  while (1) {
+                    switch (_context.prev = _context.next) {
+                      case 0:
+                        this.listOfAccount = res;
+                        this.base64textString = res.find(function (c) {
+                          return c.id == localStorage.getItem("userId");
+                        }).photo;
+
+                      case 2:
+                      case "end":
+                        return _context.stop();
+                    }
+                  }
+                }, _callee, this);
+              }));
+            }, function (err) {
+              return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(_this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
+                return regeneratorRuntime.wrap(function _callee2$(_context2) {
+                  while (1) {
+                    switch (_context2.prev = _context2.next) {
+                      case 0:
+                        _context2.next = 2;
+                        return this.loader.dismiss().then();
+
+                      case 2:
+                        console.log(err);
+
+                      case 3:
+                      case "end":
+                        return _context2.stop();
+                    }
+                  }
+                }, _callee2, this);
+              }));
+            });
           }
         }, {
           key: "getRoute",
           value: function getRoute() {
-            var _this = this;
+            var _this2 = this;
 
             this.functionalityService.getAllFunctionality().subscribe(function (result) {
-              _this.listOfFunctionality = result; // console.log(result)
+              return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(_this2, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee4() {
+                var _this3 = this;
 
-              if (result.length > 0) {
-                _this.roleType = localStorage.getItem("roleType");
-                _this.userName = localStorage.getItem("fullName"); //console.log(this.userName)
+                return regeneratorRuntime.wrap(function _callee4$(_context4) {
+                  while (1) {
+                    switch (_context4.prev = _context4.next) {
+                      case 0:
+                        this.listOfFunctionality = result; // console.log(result)
 
-                _this.userRoleService.getAllUserRole().subscribe(function (res) {
-                  // console.log(res)
-                  var result = res.filter(function (c) {
-                    return c.userId == _this.roleType;
-                  });
-                  var active = localStorage.getItem("active");
+                        if (result.length > 0) {
+                          this.roleType = localStorage.getItem("roleType");
+                          this.userName = localStorage.getItem("fullName"); //console.log(this.userName)
 
-                  if (result.length > 0 && active == "true") {
-                    //To check transcation menu in user role
-                    result.forEach(function (element) {
-                      var isFound = _this.listOfFunctionality.filter(function (c) {
-                        return c.id == +element.funId;
-                      });
+                          this.userRoleService.getAllUserRole().subscribe(function (res) {
+                            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(_this3, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee3() {
+                              var _this4 = this;
 
-                      if (isFound.length > 0) {
-                        var rol = _this.ListOfMenu1.filter(function (c) {
-                          return c.title == isFound[0].compName;
-                        })[0];
+                              var result, active;
+                              return regeneratorRuntime.wrap(function _callee3$(_context3) {
+                                while (1) {
+                                  switch (_context3.prev = _context3.next) {
+                                    case 0:
+                                      // console.log(res)
+                                      result = res.filter(function (c) {
+                                        return c.userId == _this4.roleType;
+                                      });
+                                      active = localStorage.getItem("active");
 
-                        if (rol) {
-                          var y = {
-                            title: isFound[0].compName,
-                            url: rol.url,
-                            icon: rol.icon
-                          };
+                                      if (result.length > 0 && active == "true") {
+                                        //To check transcation menu in user role
+                                        result.forEach(function (element) {
+                                          var isFound = _this4.listOfFunctionality.filter(function (c) {
+                                            return c.id == +element.funId;
+                                          });
 
-                          _this.pageList.push(y);
+                                          if (isFound.length > 0) {
+                                            var rol = _this4.ListOfMenu1.filter(function (c) {
+                                              return c.title == isFound[0].compName;
+                                            })[0];
+
+                                            if (rol) {
+                                              var y = {
+                                                title: isFound[0].compName,
+                                                url: rol.url,
+                                                icon: rol.icon
+                                              };
+
+                                              _this4.pageList.push(y);
+                                            }
+                                          }
+                                        });
+                                      }
+
+                                    case 3:
+                                    case "end":
+                                      return _context3.stop();
+                                  }
+                                }
+                              }, _callee3);
+                            }));
+                          });
                         }
-                      }
-                    });
+
+                      case 2:
+                      case "end":
+                        return _context4.stop();
+                    }
                   }
-                });
-              }
+                }, _callee4, this);
+              }));
             });
           }
         }, {
@@ -692,13 +722,13 @@
         }, {
           key: "AlertInternet",
           value: function AlertInternet() {
-            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee5() {
               var alert;
-              return regeneratorRuntime.wrap(function _callee$(_context) {
+              return regeneratorRuntime.wrap(function _callee5$(_context5) {
                 while (1) {
-                  switch (_context.prev = _context.next) {
+                  switch (_context5.prev = _context5.next) {
                     case 0:
-                      _context.next = 2;
+                      _context5.next = 2;
                       return this.alertCtrl.create({
                         cssClass: 'my-custom-class',
                         header: 'Internet',
@@ -708,27 +738,27 @@
                       });
 
                     case 2:
-                      alert = _context.sent;
-                      _context.next = 5;
+                      alert = _context5.sent;
+                      _context5.next = 5;
                       return alert.present();
 
                     case 5:
                     case "end":
-                      return _context.stop();
+                      return _context5.stop();
                   }
                 }
-              }, _callee, this);
+              }, _callee5, this);
             }));
           }
         }, {
           key: "logout",
           value: function logout() {
-            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee3() {
-              var _this2 = this;
+            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee7() {
+              var _this5 = this;
 
-              return regeneratorRuntime.wrap(function _callee3$(_context3) {
+              return regeneratorRuntime.wrap(function _callee7$(_context7) {
                 while (1) {
-                  switch (_context3.prev = _context3.next) {
+                  switch (_context7.prev = _context7.next) {
                     case 0:
                       localStorage.setItem("userId", null);
                       localStorage.setItem("fullName", null);
@@ -737,13 +767,13 @@
                       this.router.navigateByUrl('login');
 
                       (function (error) {
-                        return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(_this2, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
+                        return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(_this5, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee6() {
                           var alert;
-                          return regeneratorRuntime.wrap(function _callee2$(_context2) {
+                          return regeneratorRuntime.wrap(function _callee6$(_context6) {
                             while (1) {
-                              switch (_context2.prev = _context2.next) {
+                              switch (_context6.prev = _context6.next) {
                                 case 0:
-                                  _context2.next = 2;
+                                  _context6.next = 2;
                                   return this.alertCtrl.create({
                                     message: error.message,
                                     buttons: [{
@@ -753,25 +783,25 @@
                                   });
 
                                 case 2:
-                                  alert = _context2.sent;
-                                  _context2.next = 5;
+                                  alert = _context6.sent;
+                                  _context6.next = 5;
                                   return alert.present();
 
                                 case 5:
                                 case "end":
-                                  return _context2.stop();
+                                  return _context6.stop();
                               }
                             }
-                          }, _callee2, this);
+                          }, _callee6, this);
                         }));
                       });
 
                     case 6:
                     case "end":
-                      return _context3.stop();
+                      return _context7.stop();
                   }
                 }
-              }, _callee3, this);
+              }, _callee7, this);
             }));
           }
         }]);

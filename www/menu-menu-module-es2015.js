@@ -55,7 +55,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "mrSG");
 /* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/common/http */ "tk/3");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/core */ "fXoL");
-/* harmony import */ var src_environments_environment__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! src/environments/environment */ "AytR");
+/* harmony import */ var src_environments_environment_prod__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! src/environments/environment.prod */ "cxbk");
 
 
 
@@ -63,22 +63,22 @@ __webpack_require__.r(__webpack_exports__);
 let UserRoleService = class UserRoleService {
     constructor(http) {
         this.http = http;
-        this.APIURL = src_environments_environment__WEBPACK_IMPORTED_MODULE_3__["environment"].apiURL;
+        this.APIURL = src_environments_environment_prod__WEBPACK_IMPORTED_MODULE_3__["environment"].apiURL;
     }
     create(val) {
-        return this.http.post(this.APIURL + '/UserRole', val);
+        return this.http.post(this.APIURL + '/userrole', val);
     }
     getAllUserRole() {
-        return this.http.get(this.APIURL + '/UserRole');
+        return this.http.get(this.APIURL + '/userrole');
     }
     updateUserRole(val) {
-        return this.http.put(this.APIURL + '/UserRole/', val);
+        return this.http.put(this.APIURL + '/userrole/', val);
     }
     deleteUserRole(id) {
-        return this.http.delete(this.APIURL + '/UserRole/' + id).toPromise();
+        return this.http.delete(this.APIURL + '/userrole/' + id).toPromise();
     }
     getUerRoleId(userId) {
-        return this.http.get(this.APIURL + '/UserRole/' + userId);
+        return this.http.get(this.APIURL + '/userrole/' + userId);
     }
 };
 UserRoleService.ctorParameters = () => [
@@ -90,52 +90,6 @@ UserRoleService = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
     })
 ], UserRoleService);
 
-// import { Injectable } from '@angular/core';
-// import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
-// import { Observable } from 'rxjs';
-// import { map } from 'rxjs/internal/operators/map';
-// import { userRole } from 'src/Table/table';
-// @Injectable({
-//   providedIn: 'root'
-// })
-// export class UserRoleService {
-//   private userRoleCollectionList: AngularFirestoreCollection<any>;
-//   private userRoleList: Observable<userRole[]>;
-//   userRoleLists: Observable<{ id: string; funId: string; userId: string; remark: string; }[]>;
-//   // db: any;
-//   constructor(private db: AngularFirestore) {
-//     this.userRoleCollectionList = db.collection<userRole>('userRole');
-//    }
-//    create(userR) {
-//     return this.userRoleCollectionList.add(userR);
-//   }
-//   getAllUserRole(){
-//     this.userRoleList = this.userRoleCollectionList.snapshotChanges().pipe(
-//       map(actions => {
-//         return actions.map(a => {
-//           const data = a.payload.doc.data();
-//           const id = a.payload.doc.id;
-//           return { id, ...data };
-//         });
-//       })
-//     );
-//     return this.userRoleList;
-//   }
-//   getUerRoleId(id: string) {
-//     const lookUpObj = this.db.collection('userRole', ref => ref.where('userId', '==', id)).snapshotChanges();
-//     this.userRoleLists = lookUpObj.pipe(
-//       map(changes => changes.map(a => {
-//         const data = a.payload.doc.data() as userRole;
-//         const id = a.payload.doc.id;
-//         return { id, ...data };
-//       }))
-//     );
-//     return this.userRoleLists;
-//   }
-//   deleteUserRole(id) {
-//     return this.userRoleCollectionList.doc(id).delete();
-//   }
-// }
 
 
 /***/ }),
@@ -153,7 +107,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "mrSG");
 /* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/common/http */ "tk/3");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/core */ "fXoL");
-/* harmony import */ var src_environments_environment__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! src/environments/environment */ "AytR");
+/* harmony import */ var src_environments_environment_prod__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! src/environments/environment.prod */ "cxbk");
 
 
 
@@ -161,7 +115,7 @@ __webpack_require__.r(__webpack_exports__);
 let FunctionalityService = class FunctionalityService {
     constructor(http) {
         this.http = http;
-        this.APIURL = src_environments_environment__WEBPACK_IMPORTED_MODULE_3__["environment"].apiURL;
+        this.APIURL = src_environments_environment_prod__WEBPACK_IMPORTED_MODULE_3__["environment"].apiURL;
     }
     create(val) {
         return this.http.post(this.APIURL + '/functionalitie', val);
@@ -356,16 +310,26 @@ let MenuPage = class MenuPage {
             { title: 'profile', url: '/profile', icon: 'person' }
         ];
         this.getRoute();
+        this.getAccount();
+    }
+    getAccount() {
+        this.accountService.getAllAccount().subscribe((res) => Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, function* () {
+            this.listOfAccount = res;
+            this.base64textString = res.find(c => c.id == localStorage.getItem("userId")).photo;
+        }), (err) => Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, function* () {
+            yield this.loader.dismiss().then();
+            console.log(err);
+        }));
     }
     getRoute() {
-        this.functionalityService.getAllFunctionality().subscribe(result => {
+        this.functionalityService.getAllFunctionality().subscribe((result) => Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, function* () {
             this.listOfFunctionality = result;
             // console.log(result)
             if (result.length > 0) {
                 this.roleType = localStorage.getItem("roleType");
                 this.userName = localStorage.getItem("fullName");
                 //console.log(this.userName)
-                this.userRoleService.getAllUserRole().subscribe(res => {
+                this.userRoleService.getAllUserRole().subscribe((res) => Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, function* () {
                     // console.log(res)
                     let result = res.filter(c => c.userId == this.roleType);
                     let active = localStorage.getItem("active");
@@ -386,9 +350,9 @@ let MenuPage = class MenuPage {
                             }
                         });
                     }
-                });
+                }));
             }
-        });
+        }));
     }
     readPath1(path) {
         let pa = path.url;

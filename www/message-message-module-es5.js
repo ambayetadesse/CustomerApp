@@ -945,37 +945,37 @@
       /* harmony import */
 
 
-      var src_environments_environment__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(
-      /*! src/environments/environment */
-      "AytR");
+      var src_environments_environment_prod__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(
+      /*! src/environments/environment.prod */
+      "cxbk");
 
       var MessageService = /*#__PURE__*/function () {
         function MessageService(http) {
           _classCallCheck(this, MessageService);
 
           this.http = http;
-          this.APIURL = src_environments_environment__WEBPACK_IMPORTED_MODULE_3__["environment"].apiURL;
+          this.APIURL = src_environments_environment_prod__WEBPACK_IMPORTED_MODULE_3__["environment"].apiURL;
         }
 
         _createClass(MessageService, [{
           key: "create",
           value: function create(val) {
-            return this.http.post(this.APIURL + '/Message', val);
+            return this.http.post(this.APIURL + '/message', val);
           }
         }, {
           key: "getAllMessage",
           value: function getAllMessage() {
-            return this.http.get(this.APIURL + '/Message');
+            return this.http.get(this.APIURL + '/message');
           }
         }, {
           key: "updateMessage",
           value: function updateMessage(val) {
-            return this.http.put(this.APIURL + '/Message/', val);
+            return this.http.put(this.APIURL + '/message/', val);
           }
         }, {
           key: "removeMessage",
           value: function removeMessage(id) {
-            return this.http["delete"](this.APIURL + '/Message/' + id).toPromise();
+            return this.http["delete"](this.APIURL + '/message/' + id).toPromise();
           }
         }]);
 

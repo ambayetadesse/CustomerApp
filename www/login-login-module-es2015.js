@@ -47,6 +47,7 @@ let LoginPage = class LoginPage {
         let password = this.regform.get("password").value;
         if (this.regform.valid) {
             this.authServices.getAllAccount().subscribe(res => {
+                console.log(res);
                 let result = res.filter(c => c.email == email && c.password == password);
                 if (result.length > 0) {
                     localStorage.setItem("userId", result[0].id);

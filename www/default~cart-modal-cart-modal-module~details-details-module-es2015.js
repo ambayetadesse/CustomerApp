@@ -17,7 +17,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _common_not_found_error__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../common/not-found-error */ "5Jak");
 /* harmony import */ var _common_app_error__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../common/app-error */ "/GcI");
 /* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/common/http */ "tk/3");
-/* harmony import */ var src_environments_environment__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! src/environments/environment */ "AytR");
+/* harmony import */ var src_environments_environment_prod__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! src/environments/environment.prod */ "cxbk");
 
 
 
@@ -29,20 +29,20 @@ __webpack_require__.r(__webpack_exports__);
 let RestaurantService = class RestaurantService {
     constructor(http) {
         this.http = http;
-        this.APIURL = src_environments_environment__WEBPACK_IMPORTED_MODULE_7__["environment"].apiURL;
+        this.APIURL = src_environments_environment_prod__WEBPACK_IMPORTED_MODULE_7__["environment"].apiURL;
     }
     create(val) {
-        return this.http.post(this.APIURL + '/Restaurant', val);
+        return this.http.post(this.APIURL + '/restaurant', val);
     }
     getAllRestaurant() {
-        var restaurant = this.http.get(this.APIURL + '/Restaurant');
+        var restaurant = this.http.get(this.APIURL + '/restaurant');
         return restaurant;
     }
     updateRestaurant(val) {
-        return this.http.put(this.APIURL + '/Restaurant/', val);
+        return this.http.put(this.APIURL + '/restaurant/', val);
     }
     removeRestaurant(id) {
-        return this.http.delete(this.APIURL + '/Restaurant/' + id).toPromise();
+        return this.http.delete(this.APIURL + '/restaurant/' + id).toPromise();
     }
     handleError(error) {
         if (error.status === 400) {
@@ -94,10 +94,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/common/http */ "tk/3");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/core */ "fXoL");
 /* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs */ "qCKp");
-/* harmony import */ var src_environments_environment__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! src/environments/environment */ "AytR");
-/* harmony import */ var _common_app_error__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../common/app-error */ "/GcI");
-/* harmony import */ var _common_bad_input__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../common/bad-input */ "XEKg");
-/* harmony import */ var _common_not_found_error__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../common/not-found-error */ "5Jak");
+/* harmony import */ var _common_app_error__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../common/app-error */ "/GcI");
+/* harmony import */ var _common_bad_input__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../common/bad-input */ "XEKg");
+/* harmony import */ var _common_not_found_error__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../common/not-found-error */ "5Jak");
+/* harmony import */ var src_environments_environment_prod__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! src/environments/environment.prod */ "cxbk");
 
 
 
@@ -109,28 +109,28 @@ __webpack_require__.r(__webpack_exports__);
 let OrderDetailService = class OrderDetailService {
     constructor(http) {
         this.http = http;
-        this.APIURL = src_environments_environment__WEBPACK_IMPORTED_MODULE_4__["environment"].apiURL;
+        this.APIURL = src_environments_environment_prod__WEBPACK_IMPORTED_MODULE_7__["environment"].apiURL;
     }
     create(val) {
-        return this.http.post(this.APIURL + '/OrderDetail', val);
+        return this.http.post(this.APIURL + '/orderdetail', val);
     }
     getAllOrderDetail() {
-        return this.http.get(this.APIURL + '/OrderDetail');
+        return this.http.get(this.APIURL + '/orderdetail');
     }
     updateOrderDetail(val) {
-        return this.http.put(this.APIURL + '/OrderDetail/', val);
+        return this.http.put(this.APIURL + '/orderdetail/', val);
     }
     removeOrderDetail(id) {
-        return this.http.delete(this.APIURL + '/OrderDetail/' + id).toPromise();
+        return this.http.delete(this.APIURL + '/orderdetail/' + id).toPromise();
     }
     handleError(error) {
         if (error.status === 400) {
-            return rxjs__WEBPACK_IMPORTED_MODULE_3__["Observable"].throw(new _common_bad_input__WEBPACK_IMPORTED_MODULE_6__["BadInput"](error.json()));
+            return rxjs__WEBPACK_IMPORTED_MODULE_3__["Observable"].throw(new _common_bad_input__WEBPACK_IMPORTED_MODULE_5__["BadInput"](error.json()));
         }
         if (error.status === 404) {
-            return rxjs__WEBPACK_IMPORTED_MODULE_3__["Observable"].throw(new _common_not_found_error__WEBPACK_IMPORTED_MODULE_7__["NotFoundError"]());
+            return rxjs__WEBPACK_IMPORTED_MODULE_3__["Observable"].throw(new _common_not_found_error__WEBPACK_IMPORTED_MODULE_6__["NotFoundError"]());
         }
-        return rxjs__WEBPACK_IMPORTED_MODULE_3__["Observable"].throw(new _common_app_error__WEBPACK_IMPORTED_MODULE_5__["AppError"](error));
+        return rxjs__WEBPACK_IMPORTED_MODULE_3__["Observable"].throw(new _common_app_error__WEBPACK_IMPORTED_MODULE_4__["AppError"](error));
     }
 };
 OrderDetailService.ctorParameters = () => [
@@ -160,7 +160,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/common/http */ "tk/3");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/core */ "fXoL");
 /* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs */ "qCKp");
-/* harmony import */ var src_environments_environment__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! src/environments/environment */ "AytR");
+/* harmony import */ var src_environments_environment_prod__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! src/environments/environment.prod */ "cxbk");
 /* harmony import */ var _common_app_error__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../common/app-error */ "/GcI");
 /* harmony import */ var _common_bad_input__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../common/bad-input */ "XEKg");
 /* harmony import */ var _common_not_found_error__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../common/not-found-error */ "5Jak");
@@ -175,19 +175,19 @@ __webpack_require__.r(__webpack_exports__);
 let FoodService = class FoodService {
     constructor(http) {
         this.http = http;
-        this.APIURL = src_environments_environment__WEBPACK_IMPORTED_MODULE_4__["environment"].apiURL;
+        this.APIURL = src_environments_environment_prod__WEBPACK_IMPORTED_MODULE_4__["environment"].apiURL;
     }
     create(val) {
-        return this.http.post(this.APIURL + '/Food', val);
+        return this.http.post(this.APIURL + '/food', val);
     }
     getAllFood() {
-        return this.http.get(this.APIURL + '/Food');
+        return this.http.get(this.APIURL + '/food');
     }
     updateFood(val) {
-        return this.http.put(this.APIURL + '/Food/', val);
+        return this.http.put(this.APIURL + '/food/', val);
     }
     removeFood(id) {
-        return this.http.delete(this.APIURL + '/Food/' + id).toPromise();
+        return this.http.delete(this.APIURL + '/food/' + id).toPromise();
     }
     handleError(error) {
         if (error.status === 400) {
@@ -239,8 +239,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/common/http */ "tk/3");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/core */ "fXoL");
 /* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs */ "qCKp");
-/* harmony import */ var src_environments_environment__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! src/environments/environment */ "AytR");
-/* harmony import */ var _shared_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./shared.service */ "ldse");
+/* harmony import */ var _shared_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./shared.service */ "ldse");
+/* harmony import */ var src_environments_environment_prod__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! src/environments/environment.prod */ "cxbk");
 
 
 
@@ -251,7 +251,7 @@ let OrderService = class OrderService {
     constructor(http, sharedService) {
         this.http = http;
         this.sharedService = sharedService;
-        this.APIURL = src_environments_environment__WEBPACK_IMPORTED_MODULE_4__["environment"].apiURL;
+        this.APIURL = src_environments_environment_prod__WEBPACK_IMPORTED_MODULE_5__["environment"].apiURL;
         this.cart = [];
         this.cartItemCount = new rxjs__WEBPACK_IMPORTED_MODULE_3__["BehaviorSubject"](0);
         this.RestaurantId = new rxjs__WEBPACK_IMPORTED_MODULE_3__["BehaviorSubject"]({});
@@ -260,16 +260,16 @@ let OrderService = class OrderService {
         this.orderItemCount = new rxjs__WEBPACK_IMPORTED_MODULE_3__["BehaviorSubject"](0);
     }
     create(val) {
-        return this.http.post(this.APIURL + '/Order', val);
+        return this.http.post(this.APIURL + '/order', val);
     }
     getAllOrder() {
-        return this.http.get(this.APIURL + '/Order');
+        return this.http.get(this.APIURL + '/order');
     }
     updateOrder(val) {
-        return this.http.put(this.APIURL + '/Order/', val);
+        return this.http.put(this.APIURL + '/order/', val);
     }
     removeOrder(id) {
-        return this.http.delete(this.APIURL + '/Order/' + id).toPromise();
+        return this.http.delete(this.APIURL + '/order/' + id).toPromise();
     }
     // create(orderObj) {
     //   let values = this.orderCollectionList.add(orderObj)
@@ -279,10 +279,10 @@ let OrderService = class OrderService {
     //   return values;
     // }
     getOrderBy(id) {
-        return this.http.get(this.APIURL + '/Order' + id);
+        return this.http.get(this.APIURL + '/order' + id);
     }
     getOrderByDriverId(driverId) {
-        return this.http.get(this.APIURL + '/Order' + driverId);
+        return this.http.get(this.APIURL + '/order' + driverId);
     }
     getCart() {
         return this.cart;
@@ -367,7 +367,7 @@ let OrderService = class OrderService {
 };
 OrderService.ctorParameters = () => [
     { type: _angular_common_http__WEBPACK_IMPORTED_MODULE_1__["HttpClient"] },
-    { type: _shared_service__WEBPACK_IMPORTED_MODULE_5__["SharedService"] }
+    { type: _shared_service__WEBPACK_IMPORTED_MODULE_4__["SharedService"] }
 ];
 OrderService = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
     Object(_angular_core__WEBPACK_IMPORTED_MODULE_2__["Injectable"])({
@@ -535,8 +535,9 @@ let CartModalPage = class CartModalPage {
             customerStatus: 'true',
             statuses: this.status
         };
-        this.orderService.create(order).subscribe(res => {
-            alert(res.toString());
+        this.orderService.create(order).subscribe((res) => Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, function* () {
+            // await this.loader.dismiss().then();
+            // alert(res.toString());
             this.orderService.getAllOrder().subscribe(res => {
                 cart.forEach(element => {
                     this.restaurantId = element.restaurantId;
@@ -548,13 +549,13 @@ let CartModalPage = class CartModalPage {
                         price: element.price
                     };
                     this.orderDetailService.create(orderDetails).subscribe(res => {
-                        alert(res.toString());
+                        // alert(res.toString());
                     });
+                    this.presentAlert('Add order succesfuly');
+                    this.router.navigate(['/menu/order']);
                 });
             });
-        });
-        this.presentAlert('Add order succesfuly');
-        this.router.navigate(['/menu/order']);
+        }));
     }
     presentAlert(message) {
         return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, function* () {

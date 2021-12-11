@@ -1,7 +1,7 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { environment } from 'src/environments/environment';
+import { environment } from 'src/environments/environment.prod';
 import { AppError } from '../common/app-error';
 import { BadInput } from '../common/bad-input';
 import { NotFoundError } from '../common/not-found-error';
@@ -10,21 +10,23 @@ import { NotFoundError } from '../common/not-found-error';
   providedIn: 'root'
 })
 export class AccountService {
-
   readonly APIURL = environment.apiURL;
-  constructor( private http: HttpClient) {
+  params = {};
+  headers = {};
+  constructor(private http: HttpClient) {
   }
+
   create(val: any) {
-    return this.http.post(this.APIURL + '/Account', val);
+    return this.http.post(this.APIURL + '/account', val);
   }
   getAllAccount(): Observable<any[]> {
-    return this.http.get<any>(this.APIURL + '/Account');
+    return this.http.get<any>(this.APIURL + '/account', this.params);
   }
   updateAccount(val: any) {
-    return this.http.put(this.APIURL + '/Account/', val);
+    return this.http.put(this.APIURL + '/account/', val);
   }
   removeAccount(id) {
-    return this.http.delete(this.APIURL + '/Account/' + id).toPromise();
+    return this.http.delete(this.APIURL + '/account/' + id).toPromise();
   }
 
   private handleError(error: Response) {

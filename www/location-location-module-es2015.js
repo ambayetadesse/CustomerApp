@@ -17,7 +17,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _common_not_found_error__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../common/not-found-error */ "5Jak");
 /* harmony import */ var _common_app_error__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../common/app-error */ "/GcI");
 /* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/common/http */ "tk/3");
-/* harmony import */ var src_environments_environment__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! src/environments/environment */ "AytR");
+/* harmony import */ var src_environments_environment_prod__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! src/environments/environment.prod */ "cxbk");
 
 
 
@@ -29,20 +29,20 @@ __webpack_require__.r(__webpack_exports__);
 let RestaurantService = class RestaurantService {
     constructor(http) {
         this.http = http;
-        this.APIURL = src_environments_environment__WEBPACK_IMPORTED_MODULE_7__["environment"].apiURL;
+        this.APIURL = src_environments_environment_prod__WEBPACK_IMPORTED_MODULE_7__["environment"].apiURL;
     }
     create(val) {
-        return this.http.post(this.APIURL + '/Restaurant', val);
+        return this.http.post(this.APIURL + '/restaurant', val);
     }
     getAllRestaurant() {
-        var restaurant = this.http.get(this.APIURL + '/Restaurant');
+        var restaurant = this.http.get(this.APIURL + '/restaurant');
         return restaurant;
     }
     updateRestaurant(val) {
-        return this.http.put(this.APIURL + '/Restaurant/', val);
+        return this.http.put(this.APIURL + '/restaurant/', val);
     }
     removeRestaurant(id) {
-        return this.http.delete(this.APIURL + '/Restaurant/' + id).toPromise();
+        return this.http.delete(this.APIURL + '/restaurant/' + id).toPromise();
     }
     handleError(error) {
         if (error.status === 400) {

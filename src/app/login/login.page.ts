@@ -13,6 +13,7 @@ export class LoginPage implements OnInit {
 	regform = this.fb.group({});
 	fieldTextType: boolean;
 	public subscription: any;
+	loader: any;
 	constructor(private authServices: AuthService, private router: Router,
 		private alertCtrl: AlertController, private fb: FormBuilder,
 		private modalController: ModalController,
@@ -29,7 +30,8 @@ export class LoginPage implements OnInit {
 		let password = this.regform.get("password").value;
 		if (this.regform.valid) {
 			this.authServices.getAllAccount().subscribe(res => {
-				let result = res.filter(c=>c.email==email && c.password==password);
+				console.log(res)
+				let result = res.filter(c => c.email == email && c.password == password);
 				if (result.length > 0) {
 					localStorage.setItem("userId", result[0].id);
 					localStorage.setItem("fullName", result[0].fullName);
@@ -92,7 +94,7 @@ export class LoginPage implements OnInit {
 	register() {
 		this.router.navigate(["/signup-customer"]);
 	}
-	loginPhonenumber(){
+	loginPhonenumber() {
 		this.router.navigate(["/user"]);
 	}
 }

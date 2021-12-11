@@ -266,9 +266,9 @@
       /* harmony import */
 
 
-      var src_environments_environment__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(
-      /*! src/environments/environment */
-      "AytR");
+      var src_environments_environment_prod__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(
+      /*! src/environments/environment.prod */
+      "cxbk");
       /* harmony import */
 
 
@@ -293,28 +293,30 @@
           _classCallCheck(this, AccountService);
 
           this.http = http;
-          this.APIURL = src_environments_environment__WEBPACK_IMPORTED_MODULE_4__["environment"].apiURL;
+          this.APIURL = src_environments_environment_prod__WEBPACK_IMPORTED_MODULE_4__["environment"].apiURL;
+          this.params = {};
+          this.headers = {};
         }
 
         _createClass(AccountService, [{
           key: "create",
           value: function create(val) {
-            return this.http.post(this.APIURL + '/Account', val);
+            return this.http.post(this.APIURL + '/account', val);
           }
         }, {
           key: "getAllAccount",
           value: function getAllAccount() {
-            return this.http.get(this.APIURL + '/Account');
+            return this.http.get(this.APIURL + '/account', this.params);
           }
         }, {
           key: "updateAccount",
           value: function updateAccount(val) {
-            return this.http.put(this.APIURL + '/Account/', val);
+            return this.http.put(this.APIURL + '/account/', val);
           }
         }, {
           key: "removeAccount",
           value: function removeAccount(id) {
-            return this.http["delete"](this.APIURL + '/Account/' + id).toPromise();
+            return this.http["delete"](this.APIURL + '/account/' + id).toPromise();
           }
         }, {
           key: "handleError",
@@ -771,6 +773,33 @@
     },
 
     /***/
+    "cxbk":
+    /*!**********************************************!*\
+      !*** ./src/environments/environment.prod.ts ***!
+      \**********************************************/
+
+    /*! exports provided: environment */
+
+    /***/
+    function cxbk(module, __webpack_exports__, __webpack_require__) {
+      "use strict";
+
+      __webpack_require__.r(__webpack_exports__);
+      /* harmony export (binding) */
+
+
+      __webpack_require__.d(__webpack_exports__, "environment", function () {
+        return environment;
+      });
+
+      var environment = {
+        production: true,
+        apiURL: 'http://192.168.0.103:8009/api'
+      };
+      /***/
+    },
+
+    /***/
     "enR7":
     /*!*****************************************!*\
       !*** ./src/app/Service/auth.service.ts ***!
@@ -810,22 +839,23 @@
       /* harmony import */
 
 
-      var src_environments_environment__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(
-      /*! src/environments/environment */
-      "AytR");
+      var src_environments_environment_prod__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(
+      /*! src/environments/environment.prod */
+      "cxbk");
 
       var AuthService = /*#__PURE__*/function () {
         function AuthService(http) {
           _classCallCheck(this, AuthService);
 
-          this.http = http;
-          this.APIURL = src_environments_environment__WEBPACK_IMPORTED_MODULE_3__["environment"].apiURL;
+          this.http = http; // https: HttpClient;
+
+          this.APIURL = src_environments_environment_prod__WEBPACK_IMPORTED_MODULE_3__["environment"].apiURL;
         }
 
         _createClass(AuthService, [{
           key: "getAllAccount",
           value: function getAllAccount() {
-            return this.http.get(this.APIURL + '/Account');
+            return this.http.get(this.APIURL + '/account');
           }
         }]);
 
@@ -1118,9 +1148,9 @@
       /* harmony import */
 
 
-      var src_environments_environment__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(
-      /*! src/environments/environment */
-      "AytR");
+      var src_environments_environment_prod__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(
+      /*! src/environments/environment.prod */
+      "cxbk");
       /* harmony import */
 
 
@@ -1145,28 +1175,28 @@
           _classCallCheck(this, CategoryService);
 
           this.http = http;
-          this.APIURL = src_environments_environment__WEBPACK_IMPORTED_MODULE_4__["environment"].apiURL;
+          this.APIURL = src_environments_environment_prod__WEBPACK_IMPORTED_MODULE_4__["environment"].apiURL;
         }
 
         _createClass(CategoryService, [{
           key: "create",
           value: function create(val) {
-            return this.http.post(this.APIURL + '/Categorie', val);
+            return this.http.post(this.APIURL + '/categorie', val);
           }
         }, {
           key: "getAllCategory",
           value: function getAllCategory() {
-            return this.http.get(this.APIURL + '/Categorie');
+            return this.http.get(this.APIURL + '/categorie');
           }
         }, {
           key: "updateCategory",
           value: function updateCategory(val) {
-            return this.http.put(this.APIURL + '/Categorie/', val);
+            return this.http.put(this.APIURL + '/categorie/', val);
           }
         }, {
           key: "removeCategory",
           value: function removeCategory(id) {
-            return this.http["delete"](this.APIURL + '/Categorie/' + id).toPromise();
+            return this.http["delete"](this.APIURL + '/categorie/' + id).toPromise();
           }
         }, {
           key: "handleError",

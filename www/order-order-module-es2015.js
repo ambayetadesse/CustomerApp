@@ -17,7 +17,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _common_not_found_error__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../common/not-found-error */ "5Jak");
 /* harmony import */ var _common_app_error__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../common/app-error */ "/GcI");
 /* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/common/http */ "tk/3");
-/* harmony import */ var src_environments_environment__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! src/environments/environment */ "AytR");
+/* harmony import */ var src_environments_environment_prod__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! src/environments/environment.prod */ "cxbk");
 
 
 
@@ -29,20 +29,20 @@ __webpack_require__.r(__webpack_exports__);
 let RestaurantService = class RestaurantService {
     constructor(http) {
         this.http = http;
-        this.APIURL = src_environments_environment__WEBPACK_IMPORTED_MODULE_7__["environment"].apiURL;
+        this.APIURL = src_environments_environment_prod__WEBPACK_IMPORTED_MODULE_7__["environment"].apiURL;
     }
     create(val) {
-        return this.http.post(this.APIURL + '/Restaurant', val);
+        return this.http.post(this.APIURL + '/restaurant', val);
     }
     getAllRestaurant() {
-        var restaurant = this.http.get(this.APIURL + '/Restaurant');
+        var restaurant = this.http.get(this.APIURL + '/restaurant');
         return restaurant;
     }
     updateRestaurant(val) {
-        return this.http.put(this.APIURL + '/Restaurant/', val);
+        return this.http.put(this.APIURL + '/restaurant/', val);
     }
     removeRestaurant(id) {
-        return this.http.delete(this.APIURL + '/Restaurant/' + id).toPromise();
+        return this.http.delete(this.APIURL + '/restaurant/' + id).toPromise();
     }
     handleError(error) {
         if (error.status === 400) {
@@ -155,7 +155,7 @@ OrderPageRoutingModule = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ("<ion-header [translucent]=\"true\" >\n  <ion-toolbar color=\"primary\">\n    <ion-buttons slot=\"start\">\n      <ion-menu-button></ion-menu-button>\n    </ion-buttons>\n    <ion-title>Recent orders</ion-title>\n  </ion-toolbar>\n</ion-header>\n<ion-content [fullscreen]=\"true\"  #pageTop scrollEvents=\"true\"  (ionScroll)=\"onScroll($event)\">\n  <ion-refresher slot=\"fixed\" (ionRefresh)=\"doRefresh($event)\">\n    <ion-refresher-content></ion-refresher-content>\n  </ion-refresher>\n  <ion-segment style=\"padding-top: 70px;\" (ionChange)=\"segmentChanged($event)\" scrollable value=\"All\">\n    <ion-segment-button value=\"All\">\n      <ion-label>\n        All\n      </ion-label>\n    </ion-segment-button>\n    <ion-segment-button value=\"Processing\">\n      <ion-label>\n        Processing\n      </ion-label>\n    </ion-segment-button>\n    <ion-segment-button value=\"Completed\">\n      <ion-label>\n        Completed\n      </ion-label>\n    </ion-segment-button>\n    <ion-segment-button value=\"Cancelled\">\n      <ion-label>\n        Cancelled\n      </ion-label>\n    </ion-segment-button>\n  </ion-segment>\n  <ion-list *ngIf=\"segment === 'All'\">\n    <ion-row *ngFor=\"let meal of listOfOrder\" class=\"ion-padding meal-row\" (click)=\"allOrder(meal,meal.id)\">\n      <ion-col size=\"8\" class=\"border-bottom\">\n        <ion-label>\n          {{ meal.restaurantName}}\n          <p>{{ meal.DateTime|date:'short' }}</p>\n       </ion-label>\n        <ion-text color=\"dark\"><b>Total : {{ meal.Total | currency:'ETB' }}</b></ion-text>\n      </ion-col>\n      <ion-col size=\"4\" class=\"border-bottom\">\n        <ion-label style=\"color: #f8f9fa;\n                    background-color: #17a2b8;\n                    border-radius: 5px;\n                    text-align: center;\">{{meal.OrderStatus}}</ion-label>\n      </ion-col>\n    </ion-row>\n  </ion-list>\n  <ion-list *ngIf=\"segment === 'Processing'\">\n    <ion-row *ngFor=\"let meal of listOfOrderProcessing\" class=\"ion-padding meal-row\">\n      <ion-col size=\"8\" class=\"border-bottom\">\n        <ion-label>\n          {{ meal.restaurantName}}\n          <p>{{ meal.DateTime|date:'short' }}</p>\n          <ion-button style=\"margin-top: -7px;\" (click)=\"location(meal.Location)\">\n            <ion-icon name=\"location-outline\"></ion-icon>\n          </ion-button>\n        </ion-label>\n        <ion-text color=\"dark\"><b>Total : {{ meal.Total | currency:'ETB' }}</b></ion-text><br>\n        <ion-text style=\"font-weight: bold;\">{{meal.Driver}} is picking up your order </ion-text>\n      </ion-col>\n      <ion-col size=\"4\" class=\"border-bottom\">\n        <ion-label style=\"color: #f8f9fa;\n                       background-color: #17a2b8;\n                       border-radius: 5px;\n                       text-align: center;\">{{meal.OrderStatus}}</ion-label>\n        <ion-button fill=\"clear\" (click)=\"viewOrder(meal.id)\">\n          view order\n        </ion-button>\n        <button style=\"\n        background-color: #2185d0;\n        border-color: #2185d0;\n        color: #fff;\n        border-radius: 0.28571429rem;\n        margin: .25rem .5rem .25rem 0;\n      \" (click)=\"sendMessage(meal.DriverId,meal.CustomerId,meal.Driver)\">\n          Send message\n        </button>\n        <button style=\"border-radius: 12px;\" (click)=\"callToDriver(meal.driverPhonenumber)\">\n          <ion-icon name=\"call\"></ion-icon>\n        </button>\n      </ion-col>\n    </ion-row>\n  </ion-list>\n  <ion-list *ngIf=\"segment === 'Completed'\">\n    <ion-row *ngFor=\"let meal of listOfOrderCompeleted\" class=\"ion-padding meal-row\">\n      <ion-col size=\"8\" class=\"border-bottom\">\n        <ion-label>\n          {{ meal.restaurantName}}\n          <p>{{ meal.DateTime|date:'short' }}</p>\n          <ion-button style=\"margin-top: -7px;\" (click)=\"location(meal.Location)\">\n            <ion-icon name=\"location-outline\"></ion-icon>\n          </ion-button>\n        </ion-label>\n        <ion-text color=\"dark\"><b>Total : {{ meal.Total | currency:'ETB' }}</b></ion-text>\n      </ion-col>\n      <ion-col size=\"4\" class=\"border-bottom\">\n        <ion-label style=\"color: #f8f9fa;\n                         background-color: #17a2b8;\n                         border-radius: 5px;\n                         text-align: center;\">{{meal.OrderStatus}}</ion-label>\n        <ion-button fill=\"clear\" (click)=\"viewOrder(meal.id)\">\n          view order\n        </ion-button>\n      </ion-col>\n    </ion-row>\n  </ion-list>\n  <ion-list *ngIf=\"segment === 'Cancelled'\">\n    <ion-row *ngFor=\"let meal of listOfOrderCancelled\" class=\"ion-padding meal-row\">\n      <ion-col size=\"8\" class=\"border-bottom\">\n        <ion-label>\n          {{ meal.restaurantName}}\n          <p>{{ meal.DateTime|date:'short'}}</p>\n          <ion-button style=\"margin-top: -7px;\" (click)=\"location(meal.Location)\">\n            <ion-icon name=\"location-outline\"></ion-icon>\n          </ion-button>\n        </ion-label>\n        <ion-text color=\"dark\"><b>Total : {{ meal.Total | currency:'ETB' }}</b></ion-text>\n      </ion-col>\n      <ion-col size=\"4\" class=\"border-bottom\">\n        <ion-label style=\"color: #f8f9fa;\n                           background-color: #17a2b8;\n                           border-radius: 5px;\n                           text-align: center;\">{{meal.OrderStatus}}</ion-label>\n        <ion-button fill=\"clear\" (click)=\"viewOrder(meal.id)\">\n          view order\n        </ion-button>\n      </ion-col>\n    </ion-row>\n  </ion-list>\n  <ion-fab horizontal=\"end\" vertical=\"bottom\" slot=\"fixed\">\n    <ion-fab-button color=\"light\" (click)=\"pageScroller()\">\n      <ion-icon md=\"chevron-up-outline\" ios=\"chevron-up-circle-outline\"></ion-icon>\n    </ion-fab-button>\n  </ion-fab>\n</ion-content>");
+/* harmony default export */ __webpack_exports__["default"] = ("<ion-header [translucent]=\"true\">\n  <ion-toolbar color=\"primary\">\n    <ion-buttons slot=\"start\">\n      <ion-menu-button></ion-menu-button>\n    </ion-buttons>\n    <ion-title>Recent orders</ion-title>\n  </ion-toolbar>\n</ion-header>\n<ion-content [fullscreen]=\"true\" #pageTop scrollEvents=\"true\" (ionScroll)=\"onScroll($event)\">\n  <ion-refresher slot=\"fixed\" (ionRefresh)=\"doRefresh($event)\">\n    <ion-refresher-content></ion-refresher-content>\n  </ion-refresher>\n  <ion-segment style=\"padding-top: 70px;\" (ionChange)=\"segmentChanged($event)\" scrollable value=\"All\">\n    <ion-segment-button value=\"All\">\n      <ion-label>\n        All\n      </ion-label>\n    </ion-segment-button>\n    <ion-segment-button value=\"Processing\">\n      <ion-label>\n        Processing\n      </ion-label>\n    </ion-segment-button>\n    <ion-segment-button value=\"Completed\">\n      <ion-label>\n        Completed\n      </ion-label>\n    </ion-segment-button>\n    <ion-segment-button value=\"Cancelled\">\n      <ion-label>\n        Cancelled\n      </ion-label>\n    </ion-segment-button>\n  </ion-segment>\n  <ion-list *ngIf=\"segment === 'All'\">\n    <ion-row *ngFor=\"let meal of listOfOrder\" class=\"ion-padding meal-row\" (click)=\"allOrder(meal,meal.id)\">\n      <ion-col size=\"8\" class=\"border-bottom\">\n        <ion-label>\n          {{ meal.restaurantName}}\n          <p>{{ meal.DateTime|date:'short' }}</p>\n        </ion-label>\n        <ion-text color=\"dark\"><b>Total : {{ meal.Total | currency:'ETB' }}</b></ion-text>\n      </ion-col>\n      <ion-col size=\"4\" class=\"border-bottom\">\n        <ion-label style=\"color: #f8f9fa;\n                    background-color: #17a2b8;\n                    border-radius: 5px;\n                    text-align: center;\">{{meal.OrderStatus}}</ion-label>\n      </ion-col>\n    </ion-row>\n    <ion-label class=\"message\" *ngIf=\"listOfOrder.length==0\">{{this.messageOrder}}</ion-label>\n  </ion-list>\n  <ion-list *ngIf=\"segment === 'Processing'\">\n    <ion-row *ngFor=\"let meal of listOfOrderProcessing\" class=\"ion-padding meal-row\">\n      <ion-col size=\"8\" class=\"border-bottom\">\n        <ion-label>\n          {{ meal.restaurantName}}\n          <p>{{ meal.DateTime|date:'short' }}</p>\n          <ion-button style=\"margin-top: -7px;\" (click)=\"location(meal.Location)\">\n            <ion-icon name=\"location-outline\"></ion-icon>\n          </ion-button>\n        </ion-label>\n        <ion-text color=\"dark\"><b>Total : {{ meal.Total | currency:'ETB' }}</b></ion-text><br>\n        <ion-text style=\"font-weight: bold;\">{{meal.Driver}} is picking up your order </ion-text>\n      </ion-col>\n      <ion-col size=\"4\" class=\"border-bottom\">\n        <ion-label style=\"color: #f8f9fa;\n                       background-color: #17a2b8;\n                       border-radius: 5px;\n                       text-align: center;\">{{meal.OrderStatus}}</ion-label>\n        <ion-button fill=\"clear\" (click)=\"viewOrder(meal.id)\">\n          view order\n        </ion-button>\n        <button style=\"\n        background-color: #2185d0;\n        border-color: #2185d0;\n        color: #fff;\n        border-radius: 0.28571429rem;\n        margin: .25rem .5rem .25rem 0;\n      \" (click)=\"sendMessage(meal.DriverId,meal.CustomerId,meal.Driver)\">\n          Send message\n        </button>\n        <button style=\"border-radius: 12px;\" (click)=\"callToDriver(meal.driverPhonenumber)\">\n          <ion-icon name=\"call\"></ion-icon>\n        </button>\n      </ion-col>\n    </ion-row>\n  <ion-label class=\"message\" *ngIf=\"listOfOrderProcessing.length==0\">{{this.messageOrder}}</ion-label>\n  </ion-list>\n  <ion-list *ngIf=\"segment === 'Completed'\">\n    <ion-row *ngFor=\"let meal of listOfOrderCompeleted\" class=\"ion-padding meal-row\">\n      <ion-col size=\"8\" class=\"border-bottom\">\n        <ion-label>\n          {{ meal.restaurantName}}\n          <p>{{ meal.DateTime|date:'short' }}</p>\n          <ion-button style=\"margin-top: -7px;\" (click)=\"location(meal.Location)\">\n            <ion-icon name=\"location-outline\"></ion-icon>\n          </ion-button>\n        </ion-label>\n        <ion-text color=\"dark\"><b>Total : {{ meal.Total | currency:'ETB' }}</b></ion-text>\n      </ion-col>\n      <ion-col size=\"4\" class=\"border-bottom\">\n        <ion-label style=\"color: #f8f9fa;\n                         background-color: #17a2b8;\n                         border-radius: 5px;\n                         text-align: center;\">{{meal.OrderStatus}}</ion-label>\n        <ion-button fill=\"clear\" (click)=\"viewOrder(meal.id)\">\n          view order\n        </ion-button>\n      </ion-col>\n    </ion-row>\n    <ion-label class=\"message\" *ngIf=\"listOfOrderCompeleted.length==0\">{{this.messageOrder}}</ion-label>\n  </ion-list>\n  <ion-list *ngIf=\"segment === 'Cancelled'\">\n    <ion-row *ngFor=\"let meal of listOfOrderCancelled\" class=\"ion-padding meal-row\">\n      <ion-col size=\"8\" class=\"border-bottom\">\n        <ion-label>\n          {{ meal.restaurantName}}\n          <p>{{ meal.DateTime|date:'short'}}</p>\n          <ion-button style=\"margin-top: -7px;\" (click)=\"location(meal.Location)\">\n            <ion-icon name=\"location-outline\"></ion-icon>\n          </ion-button>\n        </ion-label>\n        <ion-text color=\"dark\"><b>Total : {{ meal.Total | currency:'ETB' }}</b></ion-text>\n      </ion-col>\n      <ion-col size=\"4\" class=\"border-bottom\">\n        <ion-label style=\"color: #f8f9fa;\n                           background-color: #17a2b8;\n                           border-radius: 5px;\n                           text-align: center;\">{{meal.OrderStatus}}</ion-label>\n        <ion-button fill=\"clear\" (click)=\"viewOrder(meal.id)\">\n          view order\n        </ion-button>\n      </ion-col>\n    </ion-row>\n   <ion-label class=\"message\" *ngIf=\"listOfOrderCancelled.length==0\">{{this.messageOrder}}</ion-label>\n  </ion-list>\n  <ion-fab horizontal=\"end\" vertical=\"bottom\" slot=\"fixed\">\n    <ion-fab-button color=\"light\" (click)=\"pageScroller()\">\n      <ion-icon md=\"chevron-up-outline\" ios=\"chevron-up-circle-outline\"></ion-icon>\n    </ion-fab-button>\n  </ion-fab>\n  <!-- <ion-infinite-scroll (ionInfinite)=\"loadMoreData($event)\" threshold=\"10px\">\n    <ion-infinite-scroll-content\n    loadingSpinner =\"bubbles\"\n    loadingText=\"loading more products...\"\n    >\n    </ion-infinite-scroll-content>\n  </ion-infinite-scroll> -->\n</ion-content>");
 
 /***/ }),
 
@@ -198,7 +198,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 let OrderPage = class OrderPage {
-    constructor(foodService, orderService, accountService, orderDetailsService, router, sharedService, alertCtrl, restaurantService, modalController, callNumber
+    constructor(foodService, orderService, accountService, orderDetailsService, router, sharedService, alertCtrl, restaurantService, modalController, callNumber, loadingController, toastController
     // private _Activatedroute:ActivatedRoute,
     ) {
         this.foodService = foodService;
@@ -211,8 +211,11 @@ let OrderPage = class OrderPage {
         this.restaurantService = restaurantService;
         this.modalController = modalController;
         this.callNumber = callNumber;
+        this.loadingController = loadingController;
+        this.toastController = toastController;
         this.listOfOrder = [];
         this.cart = [];
+        this.messageOrder = "Preparing your order ...";
         this.opts = {
             freeMode: true,
             slidesPerView: 4.6,
@@ -226,6 +229,7 @@ let OrderPage = class OrderPage {
         this.listOfOrderCancelled = [];
         this.isLoading = false;
         this.showLocationDetail = false;
+        this.currentPage = 1;
         this.restaurantService.getAllRestaurant().subscribe(res => {
             this.listOfRestaurant = res;
         });
@@ -234,30 +238,50 @@ let OrderPage = class OrderPage {
         this.pageTop.scrollToTop();
     }
     ngOnInit() {
-        // this.id = this._Activatedroute.snapshot.paramMap.get("id");
-        this.getRestaurant();
-        this.getFood();
-        this.getOrder();
-        this.getOrderDetails();
-        this.getProcessingOrder();
-        this.getCompeletedOrder();
-        this.getCancelledOrder();
-        //this.lp = new LocationPicker('map');
+        return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, function* () {
+            this.loader = yield this.loadingController.create({
+                message: 'Getting Products ...',
+                spinner: "bubbles",
+                animated: true
+            });
+            yield this.loader.present().then();
+            // this.id = this._Activatedroute.snapshot.paramMap.get("id");
+            this.getRestaurant();
+            this.getFood();
+            this.getOrder();
+            this.getOrderDetails();
+            this.getProcessingOrder();
+            this.getCompeletedOrder();
+            this.getCancelledOrder();
+            //this.lp = new LocationPicker('map');
+        });
     }
     getRestaurant() {
-        this.restaurantService.getAllRestaurant().subscribe(res => {
+        this.restaurantService.getAllRestaurant().subscribe((res) => Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, function* () {
+            yield this.loader.dismiss().then();
             this.listOfRestaurant = res;
-        });
+        }), (err) => Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, function* () {
+            yield this.loader.dismiss().then();
+            console.log(err);
+        }));
     }
     getFood() {
-        this.foodService.getAllFood().subscribe(res => {
+        this.foodService.getAllFood().subscribe((res) => Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, function* () {
+            yield this.loader.dismiss().then();
             this.listOfFood = res;
-        });
+        }), (err) => Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, function* () {
+            yield this.loader.dismiss().then();
+            console.log(err);
+        }));
     }
     getOrderDetails() {
-        this.orderDetailsService.getAllOrderDetail().subscribe(res => {
+        this.orderDetailsService.getAllOrderDetail().subscribe((res) => Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, function* () {
+            yield this.loader.dismiss().then();
             this.listOfOrderDetails = res;
-        });
+        }), (err) => Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, function* () {
+            yield this.loader.dismiss().then();
+            console.log(err);
+        }));
     }
     onScroll(ev) {
         const offset = ev.detail.scrollTop;
@@ -265,10 +289,11 @@ let OrderPage = class OrderPage {
     }
     getOrder() {
         this.listOfOrder = [];
-        this.orderService.getAllOrder().subscribe(res => {
+        this.orderService.getAllOrder().subscribe((res) => Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, function* () {
+            yield this.loader.dismiss().then();
             this.UserId = localStorage.getItem('userId');
             const result = res.filter(c => c.customer === this.UserId);
-            if (result.length > 0 && this.listOfRestaurant != undefined) {
+            if (result.length > 0) {
                 result.forEach(element => {
                     this.accountService.getAllAccount().subscribe(result => {
                         this.getStatusOfOrder(element);
@@ -294,18 +319,21 @@ let OrderPage = class OrderPage {
                 });
             }
             else {
-                this.refresh();
                 this.massge = true;
                 this.messageOrder = 'Preparing your order ...';
             }
-        });
+        }), (err) => Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, function* () {
+            yield this.loader.dismiss().then();
+            console.log(err);
+        }));
     }
     getProcessingOrder() {
-        this.orderService.getAllOrder().subscribe(res => {
+        this.orderService.getAllOrder().subscribe((res) => Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, function* () {
+            yield this.loader.dismiss().then();
             this.listOfOrderProcessing = [];
             this.UserId = localStorage.getItem("userId");
             let order = res.filter(c => c.orderStatuses.find(c => c.isChecked == false && c.val == "delivered") && c.customer == this.UserId);
-            if (order.length > 0 && this.listOfRestaurant != undefined) {
+            if (order.length > 0) {
                 order.forEach(element => {
                     if (element.driver !== "") {
                         this.accountService.getAllAccount().subscribe(result => {
@@ -343,18 +371,21 @@ let OrderPage = class OrderPage {
                 });
             }
             else {
-                this.refreshProcessingTask();
                 this.massge = true;
-                this.messageOrder = "Preparing your order ...";
+                this.messageProcessingOrder = "Preparing your order ...";
             }
-        });
+        }), (err) => Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, function* () {
+            yield this.loader.dismiss().then();
+            console.log(err);
+        }));
     }
     getCompeletedOrder() {
-        this.orderService.getAllOrder().subscribe(res => {
+        this.orderService.getAllOrder().subscribe((res) => Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, function* () {
+            yield this.loader.dismiss().then();
             this.listOfOrderCompeleted = [];
             this.UserId = localStorage.getItem("userId");
             let order = res.filter(c => c.orderStatuses.find(c => c.isChecked == true && c.val == "delivered") && c.customer == this.UserId);
-            if (order.length > 0 && this.listOfRestaurant != undefined) {
+            if (order.length > 0) {
                 order.forEach(element => {
                     this.accountService.getAllAccount().subscribe(result => {
                         let data = {
@@ -377,18 +408,21 @@ let OrderPage = class OrderPage {
                 });
             }
             else {
-                this.refreshCompleteTask();
                 this.massge = true;
-                this.messageOrder = "Preparing your order ...";
+                this.messageCompleteOrder = "Preparing your order ...";
             }
-        });
+        }), (err) => Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, function* () {
+            yield this.loader.dismiss().then();
+            console.log(err);
+        }));
     }
     getCancelledOrder() {
-        this.orderService.getAllOrder().subscribe(res => {
+        this.orderService.getAllOrder().subscribe((res) => Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, function* () {
+            yield this.loader.dismiss().then();
             this.listOfOrderCancelled = [];
             this.UserId = localStorage.getItem("userId");
             let order = res.filter(c => c.customerStatus == "false" && c.customer == this.UserId);
-            if (order.length > 0 && this.listOfRestaurant != undefined) {
+            if (order.length > 0) {
                 order.forEach(element => {
                     this.accountService.getAllAccount().subscribe(result => {
                         let data = {
@@ -411,11 +445,13 @@ let OrderPage = class OrderPage {
                 });
             }
             else {
-                this.refreshCancelTask();
                 this.massge = true;
-                this.messageOrder = "Preparing your order ...";
+                this.messageCancelOrder = "Preparing your order ...";
             }
-        });
+        }), (err) => Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, function* () {
+            yield this.loader.dismiss().then();
+            console.log(err);
+        }));
     }
     getStatusOfOrder(element) {
         this.a = 0;
@@ -537,7 +573,9 @@ OrderPage.ctorParameters = () => [
     { type: _ionic_angular__WEBPACK_IMPORTED_MODULE_10__["AlertController"] },
     { type: _Service_restaurant_service__WEBPACK_IMPORTED_MODULE_11__["RestaurantService"] },
     { type: _ionic_angular__WEBPACK_IMPORTED_MODULE_10__["ModalController"] },
-    { type: _ionic_native_call_number_ngx__WEBPACK_IMPORTED_MODULE_13__["CallNumber"] }
+    { type: _ionic_native_call_number_ngx__WEBPACK_IMPORTED_MODULE_13__["CallNumber"] },
+    { type: _ionic_angular__WEBPACK_IMPORTED_MODULE_10__["LoadingController"] },
+    { type: _ionic_angular__WEBPACK_IMPORTED_MODULE_10__["ToastController"] }
 ];
 OrderPage.propDecorators = {
     pageTop: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_3__["ViewChild"], args: ['pageTop',] }]
@@ -563,7 +601,7 @@ OrderPage = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ("ion-toolbar ion-icon {\n  font-size: 25px;\n}\n\nion-content {\n  position: absolute;\n  --background:#f8f9fa;\n  --padding-bottom: 50px;\n}\n\nion-content .orders {\n  margin-top: 58px;\n}\n\n.light-bg {\n  background: #ffffff;\n  z-index: 10;\n}\n\n.meal-row {\n  padding-bottom: 0px;\n}\n\n.border-bottom {\n  border-bottom: 1px solid var(--ion-color-step-150, rgba(0, 0, 0, 0.07));\n}\n\n#map {\n  width: 60%;\n  height: 280px;\n}\n\n.message {\n  padding-top: 83px;\n  padding-left: 12px;\n  color: #337ab7;\n  font-size: 27px;\n}\n\nion-slides {\n  padding-right: 0px;\n  margin-top: 34px;\n  margin-bottom: -34px;\n  background: #e9ecef;\n  top: calc(env(safe-area-inset-top) - 34px);\n}\n\n.sticky-row {\n  position: sticky;\n  top: calc(env(safe-area-inset-top) - -55px);\n  z-index: 2;\n  background: #e9ecef;\n  box-shadow: 0px 9px 11px -15px rgba(0, 0, 0, 0.75);\n  display: flex;\n  flex-direction: row;\n  align-items: flex-end;\n}\n\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi4uXFwuLlxcLi5cXG9yZGVyLnBhZ2Uuc2NzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFDQTtFQUVJLGVBQWU7QUFEbkI7O0FBSUE7RUFDRSxrQkFBa0I7RUFDbEIsb0JBQWE7RUFDYixzQkFBaUI7QUFEbkI7O0FBRkE7RUFLTSxnQkFBZ0I7QUFDdEI7O0FBRUE7RUFDSSxtQkFBbUI7RUFDbkIsV0FBVztBQUNmOztBQUNBO0VBQ0UsbUJBQW1CO0FBRXJCOztBQUFBO0VBQ0UsdUVBQXVFO0FBR3pFOztBQURBO0VBQ0UsVUFBVTtFQUNWLGFBQWE7QUFJZjs7QUFGQTtFQUNFLGlCQUFpQjtFQUNqQixrQkFBa0I7RUFDbEIsY0FBYztFQUNkLGVBQWU7QUFLakI7O0FBSEE7RUFDRSxrQkFBa0I7RUFDbEIsZ0JBQWdCO0VBQ2hCLG9CQUFvQjtFQUNwQixtQkFBbUI7RUFDbkIsMENBQTBDO0FBTTVDOztBQUpFO0VBQ0UsZ0JBQWdCO0VBQ2hCLDJDQUEyQztFQUMzQyxVQUFVO0VBQ1YsbUJBQW1CO0VBQ25CLGtEQUFrRDtFQUNsRCxhQUFhO0VBQ2IsbUJBQW1CO0VBQ25CLHFCQUFxQjtBQU96QiIsImZpbGUiOiJvcmRlci5wYWdlLnNjc3MiLCJzb3VyY2VzQ29udGVudCI6WyJcclxuaW9uLXRvb2xiYXIge1xyXG4gIGlvbi1pY29uIHtcclxuICAgIGZvbnQtc2l6ZTogMjVweDtcclxuICB9XHJcbn1cclxuaW9uLWNvbnRlbnQge1xyXG4gIHBvc2l0aW9uOiBhYnNvbHV0ZTtcclxuICAtLWJhY2tncm91bmQ6I2Y4ZjlmYTtcclxuICAtLXBhZGRpbmctYm90dG9tOiA1MHB4O1xyXG4gICAgLm9yZGVyc3tcclxuICAgICAgbWFyZ2luLXRvcDogNThweDtcclxuICAgIH1cclxuICB9XHJcbi5saWdodC1iZyB7XHJcbiAgICBiYWNrZ3JvdW5kOiAjZmZmZmZmO1xyXG4gICAgei1pbmRleDogMTA7XHJcbn1cclxuLm1lYWwtcm93IHtcclxuICBwYWRkaW5nLWJvdHRvbTogMHB4O1xyXG59XHJcbi5ib3JkZXItYm90dG9tIHtcclxuICBib3JkZXItYm90dG9tOiAxcHggc29saWQgdmFyKC0taW9uLWNvbG9yLXN0ZXAtMTUwLCByZ2JhKDAsIDAsIDAsIDAuMDcpKTtcclxufVxyXG4jbWFwIHtcclxuICB3aWR0aDogNjAlO1xyXG4gIGhlaWdodDogMjgwcHg7XHJcbn1cclxuLm1lc3NhZ2V7XHJcbiAgcGFkZGluZy10b3A6IDgzcHg7XHJcbiAgcGFkZGluZy1sZWZ0OiAxMnB4O1xyXG4gIGNvbG9yOiAjMzM3YWI3O1xyXG4gIGZvbnQtc2l6ZTogMjdweDtcclxufVxyXG5pb24tc2xpZGVzIHtcclxuICBwYWRkaW5nLXJpZ2h0OiAwcHg7XHJcbiAgbWFyZ2luLXRvcDogMzRweDtcclxuICBtYXJnaW4tYm90dG9tOiAtMzRweDtcclxuICBiYWNrZ3JvdW5kOiAjZTllY2VmO1xyXG4gIHRvcDogY2FsYyhlbnYoc2FmZS1hcmVhLWluc2V0LXRvcCkgLSAzNHB4KTtcclxuICB9XHJcbiAgLnN0aWNreS1yb3cge1xyXG4gICAgcG9zaXRpb246IHN0aWNreTtcclxuICAgIHRvcDogY2FsYyhlbnYoc2FmZS1hcmVhLWluc2V0LXRvcCkgLSAtNTVweCk7XHJcbiAgICB6LWluZGV4OiAyO1xyXG4gICAgYmFja2dyb3VuZDogI2U5ZWNlZjtcclxuICAgIGJveC1zaGFkb3c6IDBweCA5cHggMTFweCAtMTVweCByZ2JhKDAsIDAsIDAsIDAuNzUpO1xyXG4gICAgZGlzcGxheTogZmxleDtcclxuICAgIGZsZXgtZGlyZWN0aW9uOiByb3c7XHJcbiAgICBhbGlnbi1pdGVtczogZmxleC1lbmQ7XHJcbiAgfSJdfQ== */");
+/* harmony default export */ __webpack_exports__["default"] = ("ion-toolbar ion-icon {\n  font-size: 25px;\n}\n\nion-content {\n  position: absolute;\n  --background:#f8f9fa;\n  --padding-bottom: 50px;\n}\n\nion-content .orders {\n  margin-top: 58px;\n}\n\n.light-bg {\n  background: #ffffff;\n  z-index: 10;\n}\n\n.meal-row {\n  padding-bottom: 0px;\n}\n\n.border-bottom {\n  border-bottom: 1px solid var(--ion-color-step-150, rgba(0, 0, 0, 0.07));\n}\n\n#map {\n  width: 60%;\n  height: 280px;\n}\n\n.message {\n  padding-top: 83px;\n  padding-left: 12px;\n  color: #337ab7;\n  font-size: 27px;\n}\n\nion-slides {\n  padding-right: 0px;\n  margin-top: 34px;\n  margin-bottom: -34px;\n  background: #e9ecef;\n  top: calc(env(safe-area-inset-top) - 34px);\n}\n\n.sticky-row {\n  position: sticky;\n  top: calc(env(safe-area-inset-top) - -55px);\n  z-index: 2;\n  background: #e9ecef;\n  box-shadow: 0px 9px 11px -15px rgba(0, 0, 0, 0.75);\n  display: flex;\n  flex-direction: row;\n  align-items: flex-end;\n}\n\n.message ion-label {\n  padding-left: 88px;\n}\n\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi4uXFwuLlxcLi5cXG9yZGVyLnBhZ2Uuc2NzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFDQTtFQUVJLGVBQWU7QUFEbkI7O0FBSUE7RUFDRSxrQkFBa0I7RUFDbEIsb0JBQWE7RUFDYixzQkFBaUI7QUFEbkI7O0FBRkE7RUFLTSxnQkFBZ0I7QUFDdEI7O0FBRUE7RUFDSSxtQkFBbUI7RUFDbkIsV0FBVztBQUNmOztBQUNBO0VBQ0UsbUJBQW1CO0FBRXJCOztBQUFBO0VBQ0UsdUVBQXVFO0FBR3pFOztBQURBO0VBQ0UsVUFBVTtFQUNWLGFBQWE7QUFJZjs7QUFGQTtFQUNFLGlCQUFpQjtFQUNqQixrQkFBa0I7RUFDbEIsY0FBYztFQUNkLGVBQWU7QUFLakI7O0FBSEE7RUFDRSxrQkFBa0I7RUFDbEIsZ0JBQWdCO0VBQ2hCLG9CQUFvQjtFQUNwQixtQkFBbUI7RUFDbkIsMENBQTBDO0FBTTVDOztBQUpFO0VBQ0UsZ0JBQWdCO0VBQ2hCLDJDQUEyQztFQUMzQyxVQUFVO0VBQ1YsbUJBQW1CO0VBQ25CLGtEQUFrRDtFQUNsRCxhQUFhO0VBQ2IsbUJBQW1CO0VBQ25CLHFCQUFxQjtBQU96Qjs7QUFMQztFQUNDLGtCQUFrQjtBQVFwQiIsImZpbGUiOiJvcmRlci5wYWdlLnNjc3MiLCJzb3VyY2VzQ29udGVudCI6WyJcclxuaW9uLXRvb2xiYXIge1xyXG4gIGlvbi1pY29uIHtcclxuICAgIGZvbnQtc2l6ZTogMjVweDtcclxuICB9XHJcbn1cclxuaW9uLWNvbnRlbnQge1xyXG4gIHBvc2l0aW9uOiBhYnNvbHV0ZTtcclxuICAtLWJhY2tncm91bmQ6I2Y4ZjlmYTtcclxuICAtLXBhZGRpbmctYm90dG9tOiA1MHB4O1xyXG4gICAgLm9yZGVyc3tcclxuICAgICAgbWFyZ2luLXRvcDogNThweDtcclxuICAgIH1cclxuICB9XHJcbi5saWdodC1iZyB7XHJcbiAgICBiYWNrZ3JvdW5kOiAjZmZmZmZmO1xyXG4gICAgei1pbmRleDogMTA7XHJcbn1cclxuLm1lYWwtcm93IHtcclxuICBwYWRkaW5nLWJvdHRvbTogMHB4O1xyXG59XHJcbi5ib3JkZXItYm90dG9tIHtcclxuICBib3JkZXItYm90dG9tOiAxcHggc29saWQgdmFyKC0taW9uLWNvbG9yLXN0ZXAtMTUwLCByZ2JhKDAsIDAsIDAsIDAuMDcpKTtcclxufVxyXG4jbWFwIHtcclxuICB3aWR0aDogNjAlO1xyXG4gIGhlaWdodDogMjgwcHg7XHJcbn1cclxuLm1lc3NhZ2V7XHJcbiAgcGFkZGluZy10b3A6IDgzcHg7XHJcbiAgcGFkZGluZy1sZWZ0OiAxMnB4O1xyXG4gIGNvbG9yOiAjMzM3YWI3O1xyXG4gIGZvbnQtc2l6ZTogMjdweDtcclxufVxyXG5pb24tc2xpZGVzIHtcclxuICBwYWRkaW5nLXJpZ2h0OiAwcHg7XHJcbiAgbWFyZ2luLXRvcDogMzRweDtcclxuICBtYXJnaW4tYm90dG9tOiAtMzRweDtcclxuICBiYWNrZ3JvdW5kOiAjZTllY2VmO1xyXG4gIHRvcDogY2FsYyhlbnYoc2FmZS1hcmVhLWluc2V0LXRvcCkgLSAzNHB4KTtcclxuICB9XHJcbiAgLnN0aWNreS1yb3cge1xyXG4gICAgcG9zaXRpb246IHN0aWNreTtcclxuICAgIHRvcDogY2FsYyhlbnYoc2FmZS1hcmVhLWluc2V0LXRvcCkgLSAtNTVweCk7XHJcbiAgICB6LWluZGV4OiAyO1xyXG4gICAgYmFja2dyb3VuZDogI2U5ZWNlZjtcclxuICAgIGJveC1zaGFkb3c6IDBweCA5cHggMTFweCAtMTVweCByZ2JhKDAsIDAsIDAsIDAuNzUpO1xyXG4gICAgZGlzcGxheTogZmxleDtcclxuICAgIGZsZXgtZGlyZWN0aW9uOiByb3c7XHJcbiAgICBhbGlnbi1pdGVtczogZmxleC1lbmQ7XHJcbiAgfVxyXG4gLm1lc3NhZ2UgaW9uLWxhYmVsIHtcclxuICBwYWRkaW5nLWxlZnQ6IDg4cHg7XHJcbn0iXX0= */");
 
 /***/ })
 

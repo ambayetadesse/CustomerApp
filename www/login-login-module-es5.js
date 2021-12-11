@@ -105,6 +105,7 @@
 
             if (this.regform.valid) {
               this.authServices.getAllAccount().subscribe(function (res) {
+                console.log(res);
                 var result = res.filter(function (c) {
                   return c.email == email && c.password == password;
                 });

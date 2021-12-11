@@ -11,9 +11,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { environment } from '../environments/environment';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { AngularFireModule } from 'angularfire2';
-import { AngularFireDatabaseModule } from 'angularfire2/database';
-import { AngularFireAuthModule } from '@angular/fire/auth';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap'
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatDialogModule } from '@angular/material/dialog';
@@ -47,12 +44,7 @@ const config= {
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    AngularFireDatabaseModule,
     IonicModule.forRoot(),
-    AngularFireModule.initializeApp(config),
-    AngularFirestoreModule,
-    AngularFireAuthModule,
-    AngularFireDatabaseModule,
     NgbModule,
     BrowserAnimationsModule,
     MatDialogModule,

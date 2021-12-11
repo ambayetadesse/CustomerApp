@@ -1,6 +1,6 @@
 {
-  "appId": "io.ionic.starter",
-  "appName": "MTK-Delivery",
+  "appId": "io.ionic.MtkCustomerApp",
+  "appName": "MTK-CustomerApp",
   "bundledWebRuntime": false,
   "npmClient": "npm",
   "webDir": "www",

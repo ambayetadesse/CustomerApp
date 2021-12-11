@@ -70,38 +70,38 @@
       /* harmony import */
 
 
-      var src_environments_environment__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(
-      /*! src/environments/environment */
-      "AytR");
+      var src_environments_environment_prod__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(
+      /*! src/environments/environment.prod */
+      "cxbk");
 
       var RestaurantService = /*#__PURE__*/function () {
         function RestaurantService(http) {
           _classCallCheck(this, RestaurantService);
 
           this.http = http;
-          this.APIURL = src_environments_environment__WEBPACK_IMPORTED_MODULE_7__["environment"].apiURL;
+          this.APIURL = src_environments_environment_prod__WEBPACK_IMPORTED_MODULE_7__["environment"].apiURL;
         }
 
         _createClass(RestaurantService, [{
           key: "create",
           value: function create(val) {
-            return this.http.post(this.APIURL + '/Restaurant', val);
+            return this.http.post(this.APIURL + '/restaurant', val);
           }
         }, {
           key: "getAllRestaurant",
           value: function getAllRestaurant() {
-            var restaurant = this.http.get(this.APIURL + '/Restaurant');
+            var restaurant = this.http.get(this.APIURL + '/restaurant');
             return restaurant;
           }
         }, {
           key: "updateRestaurant",
           value: function updateRestaurant(val) {
-            return this.http.put(this.APIURL + '/Restaurant/', val);
+            return this.http.put(this.APIURL + '/restaurant/', val);
           }
         }, {
           key: "removeRestaurant",
           value: function removeRestaurant(id) {
-            return this.http["delete"](this.APIURL + '/Restaurant/' + id).toPromise();
+            return this.http["delete"](this.APIURL + '/restaurant/' + id).toPromise();
           }
         }, {
           key: "handleError",
