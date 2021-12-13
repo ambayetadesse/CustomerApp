@@ -35,11 +35,11 @@ export class OrderHistoryPage implements OnInit {
     private alertCtrl: AlertController,
     private orderService: OrderService,
     private fb: FormBuilder,
-    private router:Router,
-    private restaurantService:RestaurantService,
-    private orderDetailService:OrderDetailService,
-    private foodService:FoodService,
-    private sharedService:SharedService) { }
+    private router: Router,
+    private restaurantService: RestaurantService,
+    private orderDetailService: OrderDetailService,
+    private foodService: FoodService,
+    private sharedService: SharedService) { }
 
   ngOnInit() {
     this.regform = this.fb.group({
@@ -59,7 +59,7 @@ export class OrderHistoryPage implements OnInit {
     ///to get data form service
     this.cart = this.orderService.getOrders();
     this.status = this.sharedService.getStatus().value;
-    console.log(this.status);
+    //console.log(this.status);
     this.cartItemCount = this.orderService.getOrderItemCount();
     this.id = this.orderService.getRestaurantId().value;
     //console.log(this.id)
@@ -67,22 +67,22 @@ export class OrderHistoryPage implements OnInit {
     this.getFood();
     this.readNOId();
   }
-  getRestaurant(){
-    this.restaurantService.getAllRestaurant().subscribe(res=>{
+  getRestaurant() {
+    this.restaurantService.getAllRestaurant().subscribe(res => {
       this.listOfRestaurant = res;
     })
   }
-  getFood(){
-    this.foodService.getAllFood().subscribe(res=>{
+  getFood() {
+    this.foodService.getAllFood().subscribe(res => {
       this.listOfFood = res;
     })
   }
-  readNOId() {
+  async readNOId() {
     let No = 0;
-    this.orderService.getAllOrder().subscribe((result) => {
+    (await this.orderService.getAllOrder()).subscribe((result) => {
       if (result.length == 0) No = 1;
       else No = result.length + 1;
-      this.orderNo =  + No;
+      this.orderNo = + No;
     });
   }
   decreaseCartItem(product) {
@@ -109,29 +109,29 @@ export class OrderHistoryPage implements OnInit {
   order(cart) {
     this.Total = 0;
     cart.forEach(element => {
-      this.restaurantId =element.restaurantId
-      this.Total = this.Total+(element.Price*element.amount)
+      this.restaurantId = element.restaurantId
+      this.Total = this.Total + (element.Price * element.amount)
       let orderDetails = {
-          OrderId:this.orderNo,
-          Restaurant: element.restaurantId,
-          Food:element.id,
-          Qty: element.amount,
-          Price:element.Price
-         }
-         this.orderDetailService.create(orderDetails);
-       });
-     let order = {
+        OrderId: this.orderNo,
+        Restaurant: element.restaurantId,
+        Food: element.id,
+        Qty: element.amount,
+        Price: element.Price
+      }
+      this.orderDetailService.create(orderDetails);
+    });
+    let order = {
       DateTime: this.regform.get('DeliveryDate').value,
       Customer: localStorage.getItem("userId"),
-      Location:this.listOfRestaurant.find(c=>c.id==this.restaurantId).location,
+      Location: this.listOfRestaurant.find(c => c.id == this.restaurantId).location,
       OrderStatus: this.regform.get('transactionType').value,
       Total: this.Total,
-      orderNo:this.orderNo,
+      orderNo: this.orderNo,
       Driver: null,
-      Vehicle: null, 
-      orderLocation:null //or droupLocation
-     }
-     this.orderService.create(order);
+      Vehicle: null,
+      orderLocation: null //or droupLocation
+    }
+    this.orderService.create(order);
   }
   async presentAlertConfirm(product) {
     const alert = await this.alertCtrl.create({
@@ -149,25 +149,25 @@ export class OrderHistoryPage implements OnInit {
           text: 'OK',
           handler: () => {
             this.orderService.removeProduct(product);
-           }
+          }
         }
       ]
     });
     await alert.present();
   }
-backPage(){
-  if(this.status=="driver"){
-    this.router.navigate(["/menu/driver-home"]); 
+  backPage() {
+    if (this.status == "driver") {
+      this.router.navigate(["/menu/driver-home"]);
+    }
+    else if (this.status == "restaurant-home") {
+      this.router.navigate(["/menu/restaurant-home"]);
+    }
+    else if (this.status == "restaurant-history") {
+      this.router.navigate(["/menu/restaurant-history"]);
+    }
+    else {
+      this.router.navigate(["/menu/order"]);
+    }
+
   }
-  else if(this.status =="restaurant-home"){
-    this.router.navigate(["/menu/restaurant-home"]); 
-  }
-  else if(this.status =="restaurant-history"){
-    this.router.navigate(["/menu/restaurant-history"]);
-  }
-  else{
-    this.router.navigate(["/menu/order"]);
-  }
-  
-}
 }

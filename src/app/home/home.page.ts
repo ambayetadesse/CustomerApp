@@ -61,14 +61,14 @@ export class HomePage implements OnInit {
     private orderService: OrderService,
     private modelControler: ModalController,
     private accountService: AccountService) {
-    console.log(this.currentDate);
+    // console.log(this.currentDate);
     var date = new Date(this.currentDate);
     this.hours = date.getHours() > 12 ? date.getHours() - 12 : date.getHours();
     this.am_pm = date.getHours() >= 12 ? "pm" : "am";
     this.minutes = date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes();
-    console.log("hour == :" + this.hours + "  am-pm == " + this.am_pm + " minnutes == " + this.minutes);
+    //console.log("hour == :" + this.hours + "  am-pm == " + this.am_pm + " minnutes == " + this.minutes);
     let time = this.hours + ":" + this.minutes + " " + this.am_pm;
-    console.log(time);
+    // console.log(time);
   }
   ngOnInit() {
     this.regform = this.fb.group({
@@ -215,7 +215,7 @@ export class HomePage implements OnInit {
     else {
       this.statusOfRestaurant = "close";
     }
-    if(ele.status =="open"){
+    if (ele.status == "open") {
       this.statusOfRestaurant = "open";
     }
     else {

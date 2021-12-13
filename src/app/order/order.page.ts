@@ -71,11 +71,9 @@ export class OrderPage implements OnInit {
     private callNumber: CallNumber,
     private loadingController: LoadingController,
     private toastController: ToastController
-    // private _Activatedroute:ActivatedRoute,
   ) {
     this.getOrder();
   }
-
   async ngOnInit() {
     this.loader = await this.loadingController.create({
       message: 'Getting Products ...',
@@ -85,6 +83,7 @@ export class OrderPage implements OnInit {
     await this.loader.present().then();
     // this.id = this._Activatedroute.snapshot.paramMap.get("id");
     this.getRestaurant();
+    this.getAccount();
     this.getFood();
     this.getOrderDetails();
     this.getProcessingOrder();
@@ -94,11 +93,16 @@ export class OrderPage implements OnInit {
   }
   getRestaurant() {
     this.restaurantService.getAllRestaurant().subscribe(async res => {
-      await this.loader.dismiss().then();
+      // await this.loader.dismiss().then();
       this.listOfRestaurant = res;
     }, async (err) => {
       await this.loader.dismiss().then();
       console.log(err);
+    })
+  }
+  getAccount() {
+    this.accountService.getAllAccount().subscribe(res => {
+      this.listOfAccount = res;
     })
   }
   getFood() {
@@ -123,21 +127,20 @@ export class OrderPage implements OnInit {
     const offset = ev.detail.scrollTop;
     this.showLocationDetail = offset > 40;
   }
-  getOrder() {
-    this.listOfOrder = [];
-    this.orderService.getAllOrder().subscribe(async res => {
-      await this.loader.dismiss().then();
+  async getOrder() {
+    (await this.orderService.getAllOrder()).subscribe(async res => {
       this.UserId = localStorage.getItem('userId');
       const result = res.filter(c => c.customer === this.UserId);
       if (result.length > 0) {
+        this.listOfOrder = [];
         result.forEach(element => {
-          this.accountService.getAllAccount().subscribe(result => {
-            this.getStatusOfOrder(element);
-            const resName = this.listOfRestaurant.find(c => c.id === +element.restaurantId);
+          this.getStatusOfOrder(element);
+          if (this.listOfRestaurant != undefined && this.listOfAccount != undefined) {
+            const resName = this.listOfRestaurant.find(c => c.accountId === +element.restaurantId);
             const data = {
               id: element.id,
               DateTime: element.dateTime,
-              Customer: result.find(c => c.id === +element.customer).fullName,
+              Customer: this.listOfAccount.find(c => c.id === +element.customer).fullName,
               Location: element.location,
               OrderStatus: this.orderStatuses,
               Total: element.total,
@@ -148,10 +151,11 @@ export class OrderPage implements OnInit {
               restaurantName: resName.name
             };
             this.listOfOrder.push(data);
-            console.log(this.listOfOrder.length)
             this.listOfOrder.sort((a, b) => new Date(b.DateTime).getTime() - new Date(a.DateTime).getTime());
-            // this.viewOrder(element.id)
-          });
+          }
+          else {
+            this.refreshRestaurant();
+          }
         });
       }
       else {
@@ -163,8 +167,8 @@ export class OrderPage implements OnInit {
       console.log(err);
     });
   }
-  getProcessingOrder() {
-    this.orderService.getAllOrder().subscribe(async res => {
+  async getProcessingOrder() {
+    (await this.orderService.getAllOrder()).subscribe(async res => {
       await this.loader.dismiss().then();
       this.listOfOrderProcessing = [];
       this.UserId = localStorage.getItem("userId");
@@ -197,10 +201,9 @@ export class OrderPage implements OnInit {
                 CustomerId: element.customer,
                 Vehicle: element.vehicle,
                 orderLocation: element.orderLocation,
-                restaurantName: this.listOfRestaurant.find(c => c.id === +element.restaurantId).name
+                restaurantName: this.listOfRestaurant.find(c => c.accountId === +element.restaurantId).name
               }
               this.listOfOrderProcessing.push(data);
-              console.log(this.listOfOrderProcessing.length)
               this.listOfOrderProcessing.sort((a, b) => new Date(b.DateTime).getTime() - new Date(a.DateTime).getTime());
             })
           }
@@ -215,9 +218,9 @@ export class OrderPage implements OnInit {
       console.log(err);
     })
   }
-  getCompeletedOrder() {
-    this.orderService.getAllOrder().subscribe(async res => {
-      await this.loader.dismiss().then();
+  async getCompeletedOrder() {
+    (await this.orderService.getAllOrder()).subscribe(async res => {
+      //await this.loader.dismiss().then();
       this.listOfOrderCompeleted = [];
       this.UserId = localStorage.getItem("userId");
       let order = res.filter(c => c.orderStatuses.find(c => c.isChecked == true && c.val == "delivered") && c.customer == this.UserId)
@@ -234,12 +237,10 @@ export class OrderPage implements OnInit {
               Driver: element.driver,
               Vehicle: element.vehicle,
               orderLocation: element.orderLocation,
-              restaurantName: this.listOfRestaurant.find(c => c.id === +element.restaurantId).name
+              restaurantName: this.listOfRestaurant.find(c => c.accountId === +element.restaurantId).name
             }
             this.listOfOrderCompeleted.push(data);
-            console.log(this.listOfOrderCompeleted.length)
             this.listOfOrderCompeleted.sort((a, b) => new Date(b.DateTime).getTime() - new Date(a.DateTime).getTime());
-            console.log(this.listOfOrderCompeleted);
           })
         });
       }
@@ -252,9 +253,9 @@ export class OrderPage implements OnInit {
       console.log(err);
     })
   }
-  getCancelledOrder() {
-    this.orderService.getAllOrder().subscribe(async res => {
-      await this.loader.dismiss().then();
+  async getCancelledOrder() {
+    (await this.orderService.getAllOrder()).subscribe(async res => {
+      // await this.loader.dismiss().then();
       this.listOfOrderCancelled = [];
       this.UserId = localStorage.getItem("userId");
       let order = res.filter(c => c.customerStatus == "false" && c.customer == this.UserId)
@@ -271,12 +272,10 @@ export class OrderPage implements OnInit {
               Driver: element.driver,
               Vehicle: element.vehicle,
               orderLocation: element.orderLocation,
-              restaurantName: this.listOfRestaurant.find(c => c.id === +element.restaurantId).name
+              restaurantName: this.listOfRestaurant.find(c => c.accountId === +element.restaurantId).name
             }
             this.listOfOrderCancelled.push(data);
-            console.log(this.listOfOrderCancelled.length)
             this.listOfOrderCancelled.sort((a, b) => new Date(b.DateTime).getTime() - new Date(a.DateTime).getTime());
-            console.log(this.listOfOrderCancelled);
           })
         });
       }
@@ -311,7 +310,6 @@ export class OrderPage implements OnInit {
     this.isLoading = false;
     this.countItems = 0;
     this.cart = [];
-    // let orderNo = this.listOfOrder.find(c => c.id == id).orderNo;
     let orderDetails = this.listOfOrderDetails.filter(c => c.orderId == id);
     orderDetails.forEach(el => {
       let data = {
@@ -373,6 +371,13 @@ export class OrderPage implements OnInit {
       this.getOrder();
     });
   }
+  refreshRestaurant() {
+    setTimeout(() => {
+      this.getRestaurant();
+      this.getOrder();
+      this.getAccount();
+    })
+  }
   refreshProcessingTask() {
     setTimeout(() => {
       this.getProcessingOrder();
@@ -391,47 +396,13 @@ export class OrderPage implements OnInit {
   doRefresh(event) {
     setTimeout(() => {
       this.getOrder();
-      // this.getOrderDetails();
       this.getProcessingOrder();
       this.getCompeletedOrder();
       this.getCancelledOrder();
       event.target.complete();
     }, 2000);
   }
-  // async loadMoreData(ev:any){
-  //   const toast:HTMLIonToastElement = await this.toastController.create({
-  //     message:'No More Products',
-  //     animated:true,
-  //     duration:2000,
-  //     buttons:[
-  //       {
-  //         text:'Done',
-  //         role:'cancel',
-  //         icon:'close'
-  //       }
-  //     ]
-  //   });
-  //   if(ev == null){
-  //    this.currentPage = 1;
-  //   }else{
-  //     this.currentPage++;
-  //     this.listOfOrder =[];
-  //     this.orderService.getAllOrder()
-  //     .subscribe( async(prods:Order[])=>{
-  //       this.listOfOrder = this.listOfOrder.concat(prods);
-  //       this.listOfOrder = [...this.listOfOrder];
-  //       if(ev ==! null){
-  //         ev.target.complete();
-  //       }
-  //       if(prods.length<10){
-  //         await toast.present();
-  //         ev.target.disabled = true;
-  //       }
-  //     },async(err)=>{
-  //       console.log(err);
-  //     });
-  //   }
-  //  }
+
 }
 
 

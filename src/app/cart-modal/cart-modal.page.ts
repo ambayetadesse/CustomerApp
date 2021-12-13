@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AlertController, ModalController } from '@ionic/angular';
+import { AlertController, LoadingController, ModalController } from '@ionic/angular';
 import { BehaviorSubject } from 'rxjs';
 import { Food, Restaurant } from 'src/Table/table';
 import { FoodService } from '../Service/food.service';
@@ -33,6 +33,8 @@ export class CartModalPage implements OnInit {
   status: { val: string; isChecked: boolean; }[];
   statusRestaurant: { val: string; isChecked: boolean; }[];
   statusDriver: { val: string; isChecked: boolean; }[];
+  loader: any;
+  listOfOrder: any[];
   constructor(private modalCtrl: ModalController,
     private alertCtrl: AlertController,
     private orderService: OrderService,
@@ -41,7 +43,8 @@ export class CartModalPage implements OnInit {
     private restaurantService: RestaurantService,
     private orderDetailService: OrderDetailService,
     private foodService: FoodService,
-    private sharedService: SharedService) {
+    private sharedService: SharedService,
+    private loadingController: LoadingController) {
     this.statusDriver = [
       { val: 'picked', isChecked: false },
       { val: 'start moving', isChecked: false },
@@ -94,9 +97,9 @@ export class CartModalPage implements OnInit {
       this.listOfFood = res;
     });
   }
-  readNOId() {
+  async readNOId() {
     let No = 0;
-    this.orderService.getAllOrder().subscribe((result) => {
+    (await this.orderService.getAllOrder()).subscribe((result) => {
       if (result.length === 0) { No = 1; }
       else { No = result.length + 1; }
       this.orderNo = + No;
@@ -129,7 +132,7 @@ export class CartModalPage implements OnInit {
     this.sharedService.status.next('cart-modal');
     this.router.navigate(['/menu/location']);
   }
-  order(cart) {
+  async order(cart) {
     this.Total = 0;
     cart.forEach(element => {
       this.restaurantId = element.restaurantId;
@@ -149,9 +152,11 @@ export class CartModalPage implements OnInit {
       customerStatus: 'true',
       statuses: this.status
     };
-    this.orderService.create(order).subscribe(async res => {
-      alert(res.toString());
-      this.orderService.getAllOrder().subscribe(res => {
+    (await this.orderService.create(order)).subscribe(async res => {
+      //alert(res.toString());
+      this.getOrder();
+      (await this.orderService.getAllOrder()).subscribe(async res => {
+        console.log(res);
         cart.forEach(element => {
           this.restaurantId = element.restaurantId;
           this.Total = this.Total + (element.Price * element.amount);
@@ -161,15 +166,26 @@ export class CartModalPage implements OnInit {
             qty: element.amount,
             price: element.price
           };
-          this.orderDetailService.create(orderDetails).subscribe(res => {
-            alert(res.toString());
+          this.orderDetailService.create(orderDetails).subscribe(async res => {
+            // alert(res.toString());
+            this.presentAlert('Add order succesfuly');
+            this.router.navigate(['/menu/order']);
+          }, async (err) => {
+            await this.loader.dismiss().then();
+            console.log(err)
           });
-          this.presentAlert('Add order succesfuly');
-          this.router.navigate(['/menu/order']);
         });
+      }, async (err) => {
+        await this.loader.dismiss().theen();
+        console.log(err);
       });
     });
 
+  }
+  async getOrder() {
+    (await this.orderService.getAllOrder()).subscribe(async res => {
+      this.listOfOrder = res;
+    })
   }
   async presentAlert(message) {
     const alert = await this.alertCtrl.create({

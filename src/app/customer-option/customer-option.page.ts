@@ -14,24 +14,24 @@ import { OrderService } from '../Service/order.service';
 export class CustomerOptionPage implements OnInit {
   @Input() public data;
   @Input() public id;
-  listOfOrder:Order[];
+  listOfOrder: Order[];
   isLoading: boolean;
   countItems: number;
   cart: any[];
   listOfOrderDetails: OrderDetail[];
   listOfFood: Food[];
-  constructor( private modalControler:ModalController,
-    private orderService:OrderService,
+  constructor(private modalControler: ModalController,
+    private orderService: OrderService,
     private foodService: FoodService,
     private orderDetailsService: OrderDetailService,
-    private router:Router) { }
+    private router: Router) { }
 
-  ngOnInit() {
-   this.orderService.getAllOrder().subscribe(res=>{
-     this.listOfOrder = res;
-   })
-   this.getFood();
-   this.getOrderDetails();
+  async ngOnInit() {
+    (await this.orderService.getAllOrder()).subscribe(res => {
+      this.listOfOrder = res;
+    })
+    this.getFood();
+    this.getOrderDetails();
   }
   getFood() {
     this.foodService.getAllFood().subscribe(res => {
@@ -43,31 +43,31 @@ export class CustomerOptionPage implements OnInit {
       this.listOfOrderDetails = res;
     })
   }
-  reOrder(){
+  reOrder() {
 
   }
-  CancelOrder(){
-   let order = this.listOfOrder.find(c=>c.id==this.data.id);
-   let data ={
-    id: order.id,
-    RestaurantId: order.restaurantId,
-    DateTime: order.dateTime,
-    Customer: order.customer,
-    Location:order.location,
-    OrderStatus: order.orderStatuses,
-    Total: order.total,
-    Driver: order.driver,
-    Vehicle: order.vehicle,
-    orderLocation: order.orderLocation,
-    restaurantStatus:order.restaurantStatuses,
-    customerStatus:"false",
-    status:order.statuses
-   }
-   this.orderService.updateOrder(data).subscribe(res=>{
-     alert(res.toString());
-   })
+  CancelOrder() {
+    let order = this.listOfOrder.find(c => c.id == this.data.id);
+    let data = {
+      id: order.id,
+      RestaurantId: order.restaurantId,
+      DateTime: order.dateTime,
+      Customer: order.customer,
+      Location: order.location,
+      OrderStatus: order.orderStatuses,
+      Total: order.total,
+      Driver: order.driver,
+      Vehicle: order.vehicle,
+      orderLocation: order.orderLocation,
+      restaurantStatus: order.restaurantStatuses,
+      customerStatus: "false",
+      status: order.statuses
+    }
+    this.orderService.updateOrder(data).subscribe(res => {
+      alert(res.toString());
+    })
   }
-  viewOrder(id){
+  viewOrder(id) {
     this.isLoading = false;
     this.countItems = 0;
     this.cart = [];
@@ -97,7 +97,7 @@ export class CustomerOptionPage implements OnInit {
     this.router.navigate(["/menu/order-history"]);
     this.modalControler.dismiss();
   }
-  close(){
+  close() {
     this.modalControler.dismiss();
-    }
+  }
 }

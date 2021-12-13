@@ -20,11 +20,11 @@ export class OrderService {
   amount: number;
   private order = [];
   private orderItemCount = new BehaviorSubject(0);
-  create(val: any) {
-    return this.http.post(this.APIURL + '/order', val);
+  async create(val: any) {
+    return await this.http.post(this.APIURL + '/order', val);
   }
-  getAllOrder(): Observable<any[]> {
-    return this.http.get<any>(this.APIURL + '/order');
+  async getAllOrder(): Promise<Observable<any[]>> {
+    return await this.http.get<any>(this.APIURL + '/order');
   }
 
   updateOrder(val: any) {
