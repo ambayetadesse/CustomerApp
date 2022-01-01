@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { SharedService } from './shared.service';
 import { environment } from 'src/environments/environment.prod';
+import { Order } from 'src/Table/table';
 
 @Injectable({
   providedIn: 'root'
@@ -23,25 +24,15 @@ export class OrderService {
   async create(val: any) {
     return await this.http.post(this.APIURL + '/order', val);
   }
-  async getAllOrder(): Promise<Observable<any[]>> {
-    return await this.http.get<any>(this.APIURL + '/order');
+   getAllOrder(): Observable<Order[]> {
+    return  this.http.get<Order[]>(this.APIURL + '/order');
   }
-
   updateOrder(val: any) {
     return this.http.put(this.APIURL + '/order/', val);
   }
   removeOrder(id) {
     return this.http.delete(this.APIURL + '/order/' + id).toPromise();
   }
-
-  // create(orderObj) {
-  //   let values = this.orderCollectionList.add(orderObj)
-  //     .then((docRef) => {
-  //       this.sharedService.orderId.next(docRef.id);
-  //     })
-  //   return values;
-  // }
-
   getOrderBy(id) {
     return this.http.get<any>(this.APIURL + '/order' + id);
   }

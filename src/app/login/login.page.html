@@ -19,19 +19,23 @@
 										<ion-input type="text" formControlName="email" [required]
 											placeholder="Enter your email">
 										</ion-input>
+										<small class="form-text text-muted"
+											*ngIf="!regform.get('email').valid && regform.get('email').touched"></small>
 									</ion-item>
 									<ion-item>
 										<ion-icon name="lock-closed"></ion-icon>&nbsp;&nbsp;
 										<ion-input placeholder="Enter your password"
 											[type]="fieldTextType ? 'text' : 'password'" formControlName="password"
 											[required]></ion-input>
+										<small class="form-text text-muted"
+											*ngIf="!regform.get('password').valid && regform.get('password').touched"></small>
 										<i class="fa" [ngClass]="{
 						  'fa-eye-slash': !fieldTextType,
 						  'fa-eye': fieldTextType
 						}" (click)="toggleFieldTextType()"></i>
 									</ion-item>
-									<button style="margin-top: 12px ;text-align:center" (click)="signIn()"
-										class="btn btn-lg btn-primary btn-block mb-1" type="submit">
+									<button style="margin-top: 12px ;text-align:center;   border-top-left-radius: 20px;
+    border-top-right-radius: 20px;" (click)="signIn()" class="btn btn-lg btn-primary btn-block mb-1" type="submit">
 										Login
 									</button>
 									<ion-item>

@@ -2,8 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Platform } from '@ionic/angular';
 import { AccountService } from '../Service/account.service';
-import { Account, Location } from '../../Table/table';
-import { alertController } from '@ionic/core';
+import { Account } from '../../Table/table';
 
 @Component({
   selector: 'app-account-details',
@@ -18,13 +17,13 @@ export class AccountDetailsPage implements OnInit {
   active: any;
   type: any;
   constructor(private fb: FormBuilder, private platform: Platform,
-              private accountService: AccountService) { }
+    private accountService: AccountService) { }
   ngOnInit() {
     const id = localStorage.getItem('userId');
     this.accountService.getAllAccount().subscribe(res => {
-      this.locationId = res.find(c=>c.id==+id).Location;
-      this.active = res.find(c=>c.id==+id).active;
-      this.type = res.find(c=>c.id ==+id).type;
+      this.locationId = res.find(c => c.id == +id).locationId;
+      this.active = res.find(c => c.id == +id).active;
+      this.type = res.find(c => c.id == +id).type;
       this.regform.get('FullName').setValue(res.find(c => c.id === +id).fullName);
       this.regform.get('phonenumber').setValue(res.find(c => c.id === +id).phonenumber);
       this.regform.get('email').setValue(res.find(c => c.id === +id).email);
@@ -42,18 +41,18 @@ export class AccountDetailsPage implements OnInit {
       this.usePicker = true;
     }
   }
-  SaveAccount(){
+  SaveAccount() {
     var data = {
-      id:localStorage.getItem('userId'),
+      id: localStorage.getItem('userId'),
       email: this.regform.get('email').value,
-      phonenumber:this.regform.get('phonenumber').value,
+      phonenumber: this.regform.get('phonenumber').value,
       password: this.regform.get('password').value,
       fullName: this.regform.get('FullName').value,
-      locationId:this.locationId,
+      locationId: this.locationId,
       active: this.active,
       type: this.type
     }
-    this.accountService.updateAccount(data).subscribe(res=>{
+    this.accountService.updateAccount(data).subscribe(res => {
       // alert(res.toString());
     })
     alert("successfully Updated");

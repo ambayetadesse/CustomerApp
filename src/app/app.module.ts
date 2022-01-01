@@ -1,6 +1,5 @@
 
 import { RouteReuseStrategy } from '@angular/router';
-import { AngularFirestoreModule } from 'angularfire2/firestore';
 import { HttpClientModule } from '@angular/common/http';
 import { ErrorHandler, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
@@ -9,7 +8,6 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { environment } from '../environments/environment';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap'
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -25,16 +23,7 @@ import { CallNumber } from '@ionic-native/call-number/ngx';
 // geolocation and native-geocoder
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { NativeGeocoder } from '@ionic-native/native-geocoder/ngx';
-// import { AgmCoreModule, GoogleMapsAPIWrapper } from '@agm/core';
-const config= {
-  apiKey: "AIzaSyDJ0I6Nu7J3wlns9EWmKIEMNuR_pVKmwaY",
-  authDomain: "mtk-delivery.firebaseapp.com",
-  projectId: "mtk-delivery",
-  storageBucket: "mtk-delivery.appspot.com",
-  messagingSenderId: "683827920990",
-  appId: "1:683827920990:web:014c718f855977b94eb4cf",
-  measurementId: "G-H6XJDHS7VQ"
-}
+
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
@@ -50,7 +39,6 @@ const config= {
     MatDialogModule,
     HttpClientModule,
     DxLookupModule,
-  
     // AgmCoreModule.forRoot({
     //   apiKey: 'AIzaSyDJ0I6Nu7J3wlns9EWmKIEMNuR_pVKmwaY',
     //   libraries: ['places']
@@ -65,7 +53,7 @@ const config= {
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     { provide: ErrorHandler, useClass: AppErrorHandler },
     File,
-    SocialSharing,FileOpener
+    SocialSharing, FileOpener
   ],
   bootstrap: [AppComponent]
 })

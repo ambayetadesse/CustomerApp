@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AlertController, ModalController, Platform } from '@ionic/angular';
+import { AlertController, LoadingController, ModalController, Platform } from '@ionic/angular';
 import { AuthService } from '../Service/auth.service';
 
 @Component({
@@ -18,20 +18,19 @@ export class LoginPage implements OnInit {
 		private alertCtrl: AlertController, private fb: FormBuilder,
 		private modalController: ModalController,
 		private platform: Platform) { }
-
 	ngOnInit() {
 		this.regform = this.fb.group({
-			email: [""],
-			password: [""]
+			email: ["",Validators.compose([Validators.required,Validators.email])],
+			password: ["",Validators.required]
 		})
 	}
 	signIn() {
 		let email = this.regform.get("email").value;
 		let password = this.regform.get("password").value;
 		if (this.regform.valid) {
-			this.authServices.getAllAccount().subscribe(res => {
-				console.log(res)
-				let result = res.filter(c => c.email == email && c.password == password);
+			this.authServices.getAllAccount().subscribe(async res => {
+				//console.log(res)
+				let result = await res.filter(c => c.email == email && c.password == password);
 				if (result.length > 0) {
 					localStorage.setItem("userId", result[0].id);
 					localStorage.setItem("fullName", result[0].fullName);
@@ -68,6 +67,9 @@ export class LoginPage implements OnInit {
 				}
 			})
 		}
+		else {
+			this.errorAlert();
+		}
 	}
 	ionViewDidEnter() {
 		this.subscription = this.platform.backButton.subscribe(() => {
@@ -84,6 +86,15 @@ export class LoginPage implements OnInit {
 			header: 'Login',
 			// subHeader: 'Subtitle',
 			message: message,
+			buttons: ['OK']
+		});
+		await alert.present();
+	}
+	async errorAlert() {
+		const alert = await this.alertCtrl.create({
+			cssClass: 'my-custom-class',
+			header: 'Error',
+			message: 'Please Enter All field',
 			buttons: ['OK']
 		});
 		await alert.present();

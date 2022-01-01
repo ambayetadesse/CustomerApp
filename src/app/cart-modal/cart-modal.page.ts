@@ -141,6 +141,7 @@ export class CartModalPage implements OnInit {
     const order = {
       restaurantId: res.accountId.toString(),
       dateTime: this.regform.get('DeliveryDate').value,
+      deliveryTime: this.regform.get('DeliveryTime').value,
       customer: localStorage.getItem('userId'),
       location: res.location, // to insert loging user (customer) of location
       orderStatuses: this.statusDriver,
@@ -153,10 +154,10 @@ export class CartModalPage implements OnInit {
       statuses: this.status
     };
     (await this.orderService.create(order)).subscribe(async res => {
-      //alert(res.toString());
+     //alert(res.toString());
       this.getOrder();
       (await this.orderService.getAllOrder()).subscribe(async res => {
-        console.log(res);
+        //  console.log(res);
         cart.forEach(element => {
           this.restaurantId = element.restaurantId;
           this.Total = this.Total + (element.Price * element.amount);
@@ -167,8 +168,7 @@ export class CartModalPage implements OnInit {
             price: element.price
           };
           this.orderDetailService.create(orderDetails).subscribe(async res => {
-            // alert(res.toString());
-            this.presentAlert('Add order succesfuly');
+           console.log(res.toString());
             this.router.navigate(['/menu/order']);
           }, async (err) => {
             await this.loader.dismiss().then();
@@ -179,12 +179,13 @@ export class CartModalPage implements OnInit {
         await this.loader.dismiss().theen();
         console.log(err);
       });
+      this.presentAlert('Add order succesfuly');
     });
 
   }
   async getOrder() {
     (await this.orderService.getAllOrder()).subscribe(async res => {
-      this.listOfOrder = res;
+      this.listOfOrder = await res;
     })
   }
   async presentAlert(message) {

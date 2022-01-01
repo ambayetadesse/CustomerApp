@@ -1,8 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
-import { AlertController, IonItemSliding, Platform } from '@ionic/angular';
-import { Location, Restaurant } from 'src/Table/table';
-import { LocationService } from '../Service/location.service';
+import { Platform } from '@ionic/angular';
+import { Restaurant } from 'src/Table/table';
 import LocationPicker from "location-picker";
 import { SharedService } from '../Service/shared.service';
 import { Router } from '@angular/router';
@@ -23,7 +21,7 @@ interface Marker {
   styleUrls: ['./location.page.scss'],
 })
 export class LocationPage implements OnInit {
-  @ViewChild('map',{read:ElementRef,static:false}) mapElement: ElementRef;
+  @ViewChild('map', { read: ElementRef, static: false }) mapElement: ElementRef;
   latitude: number;
   longitude: number;
   usePicker: boolean;
@@ -31,7 +29,7 @@ export class LocationPage implements OnInit {
   lp: LocationPicker;
   status: any;
   RestaurantLocation: any;
-  location:boolean = false;
+  location: boolean = false;
   map = null;
   directionsService = new google.maps.DirectionsService;
   directionsDisplay = new google.maps.DirectionsRenderer;
@@ -70,29 +68,29 @@ export class LocationPage implements OnInit {
     private sharedService: SharedService,
     private router: Router,
     private platform: Platform,
-    private restaurantService:RestaurantService) {
+    private restaurantService: RestaurantService) {
   }
-//  getRestaurant(){
-//    this.restaurantService.getAllRestaurant().subscribe(res=>{
-//      this.listOfRestaurant = res;
-//      res.forEach(ele=>{
-//        let postions ={
-//          lat:ele.Location.lat,
-//          lng:ele.Location.lon
-//        }
-//        let data ={
-//         position:postions,
-//         title:ele.Name
-//        }
-//        this.markers.push(data);
-//       })
-//    })
-//  }
+  //  getRestaurant(){
+  //    this.restaurantService.getAllRestaurant().subscribe(res=>{
+  //      this.listOfRestaurant = res;
+  //      res.forEach(ele=>{
+  //        let postions ={
+  //          lat:ele.Location.lat,
+  //          lng:ele.Location.lon
+  //        }
+  //        let data ={
+  //         position:postions,
+  //         title:ele.Name
+  //        }
+  //        this.markers.push(data);
+  //       })
+  //    })
+  //  }
   loadMap() {
     // create a new map by passing HTMLElement
     const mapEle: HTMLElement = document.getElementById('map');
     // create LatLng object
-    const myLatLng = {lat: 8.98339179692712, lng: 38.773790006329726};
+    const myLatLng = { lat: 8.98339179692712, lng: 38.773790006329726 };
     // create map
     this.map = new google.maps.Map(mapEle, {
       center: myLatLng,
@@ -109,46 +107,46 @@ export class LocationPage implements OnInit {
     this.markers.forEach(marker => {
       this.addMarker(marker);
     });
-    
+
   }
 
   addMarker(marker: Marker) {
     return new google.maps.Marker({
       position: marker.position,
       map: this.map,
-        icon: {
-          url: './assets/imgs/truck_pin.svg',
-          anchor: new google.maps.Point(35,10),
-          scaledSize: new google.maps.Size(100, 100)
-        },
+      icon: {
+        url: './assets/imgs/truck_pin.svg',
+        anchor: new google.maps.Point(35, 10),
+        scaledSize: new google.maps.Size(100, 100)
+      },
       title: marker.title
     });
   }
   ngOnInit() {
-   //this.getRestaurant();
+    //this.getRestaurant();
     if ((this.platform.is('mobile') && !this.platform.is('hybrid')) ||
       this.platform.is('desktop')
     ) {
       this.usePicker = true;
     }
     this.status = this.sharedService.status.value;
-    if(this.status == "driver-home" || this.status == "restaurant-home" || this.status =="order" || this.status =="restaurant-history"){
-      this.location=false;
+    if (this.status == "driver-home" || this.status == "restaurant-home" || this.status == "order" || this.status == "restaurant-history") {
+      this.location = false;
       this.loadMap();
     }
-    else{
+    else {
       this.setLocation()
-      this.location=true;
+      this.location = true;
     }
-  // console.log(this.status);
+    // console.log(this.status);
     this.RestaurantLocation = this.sharedService.RestaurantLocation.value;
-    let pos ={
-      lat:this.RestaurantLocation.latitude,
-      lng:this.RestaurantLocation.longtude
+    let pos = {
+      lat: this.RestaurantLocation.latitude,
+      lng: this.RestaurantLocation.longtude
     }
-    let data ={
-      position:pos,
-      title:null
+    let data = {
+      position: pos,
+      title: null
     }
     this.markers.push(data);
     console.log(this.RestaurantLocation);
@@ -164,12 +162,12 @@ export class LocationPage implements OnInit {
     this.sharedService.location.next(data)
     this.router.navigate(["/menu/" + this.status]);
   }
-  showMap(){
-    const location = new google.maps.LatLng(-17.824858,31.853828);
-    const options={
-      center:location,
-      zoom:15,
-      disableDefaultUI:true
+  showMap() {
+    const location = new google.maps.LatLng(-17.824858, 31.853828);
+    const options = {
+      center: location,
+      zoom: 15,
+      disableDefaultUI: true
     }
     this.map = new google.maps.Map(this.mapElement.nativeElement, options);
   }
@@ -179,7 +177,7 @@ export class LocationPage implements OnInit {
     }, {
       zoom: 15 // You can set any google map options here, zoom defaults to 15
     });
-   }
+  }
   getMarkerPosition() {
     const latLng = this.map.getCenter()
     return { lat: latLng.lat(), lng: latLng.lng() }

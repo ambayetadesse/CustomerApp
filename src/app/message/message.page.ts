@@ -27,8 +27,8 @@ export class MessagePage implements OnInit {
     this.getMessage();
    }
   getMessage(){
-    this.messageService.getAllMessage().subscribe(res=>{
-      let messages = res.filter(c=>c.userId==localStorage.getItem('userId') && c.driverId==this.driverId);
+    this.messageService.getAllMessage().subscribe(async res=>{
+      let messages = await res.filter(c=>c.userId==localStorage.getItem('userId') && c.driverId==this.driverId);
       this.listOfMessage = messages.sort((a,b)=> new Date(a.date).getTime() - new Date(b.date).getTime());
       this.currentUser  = localStorage.getItem("userId");
     })
@@ -44,7 +44,8 @@ export class MessagePage implements OnInit {
    this.listOfMessage.push(data);
    this.listOfMessage.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
   this.messageService.create(data).subscribe(res=>{
-    alert(res.toString());
+    console.log(res.toString());
+    this.getMessage();
   });
   this.newMsg = '';
   setTimeout(() => {

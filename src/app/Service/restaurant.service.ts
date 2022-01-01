@@ -5,6 +5,7 @@ import { NotFoundError } from '../common/not-found-error';
 import { AppError } from '../common/app-error';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment.prod';
+import { Restaurant } from 'src/Table/table';
 
 @Injectable({
   providedIn: 'root'
@@ -16,8 +17,8 @@ export class RestaurantService {
   create(val: any) {
     return this.http.post(this.APIURL + '/restaurant', val);
   }
-  getAllRestaurant(): Observable<any[]> {
-    var restaurant = this.http.get<any>(this.APIURL + '/restaurant')
+  getAllRestaurant(): Observable<Restaurant[]> {
+    var restaurant = this.http.get<Restaurant[]>(this.APIURL + '/restaurant')
     return restaurant;
   }
   updateRestaurant(val: any) {

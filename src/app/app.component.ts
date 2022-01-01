@@ -1,9 +1,7 @@
-import { Router } from '@angular/router';
-import { Component, OnInit, ViewChild } from '@angular/core';
-import {  AlertController, NavController, Platform } from '@ionic/angular';
+import { Component, OnInit } from '@angular/core';
+import { Platform } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-root',
@@ -17,10 +15,7 @@ export class AppComponent implements OnInit {
   constructor(
     private platform: Platform,
     private splashScreen: SplashScreen,
-    private statusBar: StatusBar,
-    private router: Router,
-    private alertCtrl: AlertController,
-    private modalService: NgbModal
+    private statusBar: StatusBar
   ) {
     this.initializeApp();
   }
@@ -30,11 +25,11 @@ export class AppComponent implements OnInit {
       this.splashScreen.hide();
     });
   }
-  
+
   ngOnInit() {
     const path = window.location.pathname.split('folder/')[1];
     if (path !== undefined) {
     }
- }
- 
+  }
+
 }

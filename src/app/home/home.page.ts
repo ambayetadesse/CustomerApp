@@ -1,16 +1,14 @@
-import { HttpClient } from '@angular/common/http';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { Category, Food, Restaurant } from 'src/Table/table';
 import { CategoryService } from '../Service/category.service';
 import { FoodService } from '../Service/food.service';
 import { OrderService } from '../Service/order.service';
-import { AccountService } from '../Service/account.service';
 import { RestaurantService } from '../Service/restaurant.service';
 import { SharedService } from '../Service/shared.service';
 import { BehaviorSubject } from 'rxjs';
-import { IonContent, ModalController } from '@ionic/angular';
-import { FormBuilder, Validators } from '@angular/forms';
+import { IonContent } from '@ionic/angular';
+import { FormBuilder } from '@angular/forms';
 @Component({
   selector: 'app-home',
   templateUrl: './home.page.html',
@@ -46,6 +44,7 @@ export class HomePage implements OnInit {
   am_pm: string;
   minutes: string | number;
   statusOfRestaurant: string;
+  showScroll: boolean = false;
   public pageScroller() {
     this.pageTop.scrollToTop();
   }
@@ -57,18 +56,13 @@ export class HomePage implements OnInit {
     private catagoryService: CategoryService,
     private router: Router,
     private sharedService: SharedService,
-    private http: HttpClient,
-    private orderService: OrderService,
-    private modelControler: ModalController,
-    private accountService: AccountService) {
-    // console.log(this.currentDate);
+    private orderService: OrderService) {
     var date = new Date(this.currentDate);
     this.hours = date.getHours() > 12 ? date.getHours() - 12 : date.getHours();
     this.am_pm = date.getHours() >= 12 ? "pm" : "am";
     this.minutes = date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes();
-    //console.log("hour == :" + this.hours + "  am-pm == " + this.am_pm + " minnutes == " + this.minutes);
     let time = this.hours + ":" + this.minutes + " " + this.am_pm;
-    // console.log(time);
+    console.log(this.currentDate);
   }
   ngOnInit() {
     this.regform = this.fb.group({
@@ -77,13 +71,12 @@ export class HomePage implements OnInit {
     this.cartItemCount = this.orderService.getCartItemCount();
     this.cart = this.orderService.getCart();
     this.getAllRestaurant();
-    //this.getCatagory();
     this.getRestaurant();
     this.getFood();
   }
-  getCatagory() {
-    this.catagoryService.getAllCategory().subscribe(res => {
-      this.categoriesList = res;
+  async getCatagory() {
+    this.catagoryService.getAllCategory().subscribe(async res => {
+      this.categoriesList = await res;
       res.forEach(element => {
         this.listOfRestaurants.forEach(ele => {
           if (ele.categoryId)
@@ -100,11 +93,10 @@ export class HomePage implements OnInit {
         }
         this.listOfCatagory.push(data);
         this.count = 0;
-        // console.log(this.listOfCatagory);
       });
     })
   }
-  selectMenu(event) {
+  async selectMenu(event) {
     this.listOfRestaurant = [];
     this.categoryIds = event.detail.value;
     if (this.categoryIds.length > 0) {
@@ -122,8 +114,8 @@ export class HomePage implements OnInit {
             }
           }
           if (this.count == 1) {
-            this.catagoryService.getAllCategory().subscribe(result => {
-              this.categoriesList = result;
+            this.catagoryService.getAllCategory().subscribe(async result => {
+              this.categoriesList = await result;
               this.category = [];
               for (let i = 0; i < ele.categoryId.length; i++) {
                 const data = {
@@ -156,10 +148,10 @@ export class HomePage implements OnInit {
       })
     }
     else {
-      this.restaurantService.getAllRestaurant().subscribe(res => {
-        res.forEach(ele => {
-          this.catagoryService.getAllCategory().subscribe(result => {
-            this.categoriesList = result;
+      this.restaurantService.getAllRestaurant().subscribe(async res => {
+        await res.forEach(ele => {
+          this.catagoryService.getAllCategory().subscribe(async result => {
+            this.categoriesList = await result;
             this.category = [];
             for (let i = 0; i < ele.categoryId.length; i++) {
               const data = {
@@ -191,7 +183,7 @@ export class HomePage implements OnInit {
       });
     }
   }
-  getStatusRestaurant(ele) {
+  async getStatusRestaurant(ele) {
     //starting time work in restaurant
     var start_date = new Date(ele.startWorkingHour);
     var start_hours = start_date.getHours() > 12 ? start_date.getHours() - 12 : start_date.getHours();
@@ -222,16 +214,16 @@ export class HomePage implements OnInit {
       this.statusOfRestaurant = "close";
     }
   }
-  getAllRestaurant() {
-    this.restaurantService.getAllRestaurant().subscribe(res => {
-      this.listOfRestaurants = res;
+  async getAllRestaurant() {
+    this.restaurantService.getAllRestaurant().subscribe(async res => {
+      this.listOfRestaurants = await res;
     });
   }
-  getRestaurant() {
-    this.restaurantService.getAllRestaurant().subscribe(res => {
-      res.forEach(ele => {
-        this.catagoryService.getAllCategory().subscribe(result => {
-          this.categoriesList = result;
+  async getRestaurant() {
+    this.restaurantService.getAllRestaurant().subscribe(async res => {
+      await res.forEach(ele => {
+        this.catagoryService.getAllCategory().subscribe(async result => {
+          this.categoriesList = await result;
           this.category = [];
           for (let i = 0; i < ele.categoryId.length; i++) {
             const data = {
@@ -283,9 +275,9 @@ export class HomePage implements OnInit {
       });
     });
   }
-  getFood() {
-    this.foodService.getAllFood().subscribe(res => {
-      this.listOfFood = res;
+  async getFood() {
+    this.foodService.getAllFood().subscribe(async res => {
+      this.listOfFood = await res;
     })
   }
   // Dummy refresher function
@@ -302,6 +294,7 @@ export class HomePage implements OnInit {
   onScroll(ev) {
     const offset = ev.detail.scrollTop;
     this.showLocationDetail = offset > 40;
+    this.showScroll = offset > 300
   }
   filter(query) {
     this.filteredItemsSearch = (query.target.value) ?
@@ -313,10 +306,10 @@ export class HomePage implements OnInit {
   }
   selectOpenClose(ev) {
     this.listOfRestaurant = [];
-    this.restaurantService.getAllRestaurant().subscribe(res => {
-      res.forEach(ele => {
-        this.catagoryService.getAllCategory().subscribe(result => {
-          this.categoriesList = result;
+    this.restaurantService.getAllRestaurant().subscribe(async res => {
+      await res.forEach(ele => {
+        this.catagoryService.getAllCategory().subscribe(async result => {
+          this.categoriesList = await result;
           this.category = [];
           for (let i = 0; i < ele.categoryId.length; i++) {
             const data = {

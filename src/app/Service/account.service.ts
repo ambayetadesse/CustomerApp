@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment.prod';
+import { Account } from 'src/Table/table';
 import { AppError } from '../common/app-error';
 import { BadInput } from '../common/bad-input';
 import { NotFoundError } from '../common/not-found-error';
@@ -19,8 +20,8 @@ export class AccountService {
   create(val: any) {
     return this.http.post(this.APIURL + '/account', val);
   }
-  getAllAccount(): Observable<any[]> {
-    return this.http.get<any>(this.APIURL + '/account', this.params);
+  getAllAccount(): Observable<Account[]> {
+    return this.http.get<Account[]>(this.APIURL + '/account', this.params);
   }
   updateAccount(val: any) {
     return this.http.put(this.APIURL + '/account/', val);

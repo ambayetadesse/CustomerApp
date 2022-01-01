@@ -45,9 +45,9 @@ export class MenuPage implements OnInit {
     }
     this.ListOfMenu1 = [
       { title: 'driver', url: '/driver', icon: 'bus' },
-      { title: 'order', url: '/order', icon: 'cart' },
+      { title: 'Customer Orders', url: '/order', icon: 'cart' },
       { title: 'location', url: '/location', icon: 'locate' },
-      { title: 'home', url: '/home', icon: 'home' },
+      { title: 'Customer Home', url: '/home', icon: 'home' },
       { title: 'profile', url: '/profile', icon: 'person' }
     ];
     this.getRoute();
@@ -56,7 +56,7 @@ export class MenuPage implements OnInit {
   getAccount() {
     this.accountService.getAllAccount().subscribe(async res => {
       this.listOfAccount = res;
-      this.base64textString = res.find(c => c.id == localStorage.getItem("userId")).photo;
+      this.base64textString = res.find(c => c.id == +localStorage.getItem("userId")).photo;
     }, async (err) => {
       await this.loader.dismiss().then();
       console.log(err);
@@ -82,7 +82,7 @@ export class MenuPage implements OnInit {
                 let rol = this.ListOfMenu1.filter(c => c.title == isFound[0].compName)[0];
                 if (rol) {
                   let y = {
-                    title: isFound[0].compName,
+                    title: isFound[0].description,
                     url: rol.url,
                     icon: rol.icon
                   }

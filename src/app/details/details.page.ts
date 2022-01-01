@@ -1,10 +1,8 @@
 import { DOCUMENT } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
 import { Component, ElementRef, Inject, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AlertController, IonContent, IonList, IonSlides, isPlatform, ModalController, ToastController } from '@ionic/angular';
+import { IonContent, IonList, IonSlides, isPlatform, ModalController, ToastController } from '@ionic/angular';
 import { BehaviorSubject } from 'rxjs';
-import { Food } from 'src/Table/table';
 import { CartModalPage } from '../cart-modal/cart-modal.page';
 import { CategoryService } from '../Service/category.service';
 import { FoodService } from '../Service/food.service';
@@ -21,7 +19,7 @@ export class DetailsPage implements OnInit {
   data = null;
   opts = {
     freeMode: true,
-    slidesPerView: 4.6,
+    slidesPerView: 2.5,
     slidesOffsetBefore: 100,
     slidesOffsetAfter: 100
   };
@@ -53,22 +51,21 @@ export class DetailsPage implements OnInit {
   resId: any;
   category: any;
   constructor(private foodService: FoodService,
-              private Activatedroute: ActivatedRoute,
-              private restaurantservice: RestaurantService,
-              private categoryService: CategoryService,
-              private router: Router,
-              private modalCtrl: ModalController,
-              private orderService: OrderService,
-              private sharedService: SharedService,
-              private alertController: AlertController,
-              public toastController: ToastController,
-              @Inject(DOCUMENT) private document: Document) { 
-                this.restaurantservice.getAllRestaurant().subscribe(res => {
-                  this.listOfRestaurant = res;
-                  this.name = res.find(c => c.id === this.resId).name;
-                  this.picture = res.find(c => c.id === this.resId).photo;
-                });
-              }
+    private Activatedroute: ActivatedRoute,
+    private restaurantservice: RestaurantService,
+    private categoryService: CategoryService,
+    private router: Router,
+    private modalCtrl: ModalController,
+    private orderService: OrderService,
+    private sharedService: SharedService,
+    public toastController: ToastController,
+    @Inject(DOCUMENT) private document: Document) {
+    this.restaurantservice.getAllRestaurant().subscribe(res => {
+      this.listOfRestaurant = res;
+      this.name = res.find(c => c.id === this.resId).name;
+      this.picture = res.find(c => c.id === this.resId).photo;
+    });
+  }
   ngOnInit() {
     this.dayFinished.push(this.Activatedroute.snapshot.paramMap.get('id'));
     this.cart = this.orderService.getCart();
@@ -84,94 +81,94 @@ export class DetailsPage implements OnInit {
     this.getFood();
     this.getCategory();
   }
-  getFood() {
-    this.foodService.getAllFood().subscribe(res => {
+  async getFood() {
+    this.foodService.getAllFood().subscribe(async res => {
       this.getCheckDisable_selecet(res);
-      this.listOfFood = res.filter(c => c.restaurantId === (this.resId).toString());
-      this.restaurantservice.getAllRestaurant().subscribe(listOfRes => {
-      const restaurant = listOfRes.find(c => c.id === this.resId && c.status === "close");
-      if (restaurant) {
-        this.listOfFood.forEach(ele => {
-          for (let i = 0 ; i <= this.listOfFood.length; i++){
-            const data = {
-              index: i,
-              item: ele.id
-            };
-            this.checkIndex.push(data);
-          }
-          if (this.dayFinished.includes(ele)) {
-            this.dayFinished.splice(this.dayFinished.indexOf(ele), 1);
-          }
-          else {
-            this.dayFinished.push(ele);
-          }
-        });
-      }
+      this.listOfFood = await res.filter(c => c.restaurantId === (this.resId).toString());
+      this.restaurantservice.getAllRestaurant().subscribe(async listOfRes => {
+        const restaurant = await listOfRes.find(c => c.id === this.resId && c.status === "close");
+        if (restaurant) {
+          this.listOfFood.forEach(ele => {
+            for (let i = 0; i <= this.listOfFood.length; i++) {
+              const data = {
+                index: i,
+                item: ele.id
+              };
+              this.checkIndex.push(data);
+            }
+            if (this.dayFinished.includes(ele)) {
+              this.dayFinished.splice(this.dayFinished.indexOf(ele), 1);
+            }
+            else {
+              this.dayFinished.push(ele);
+            }
+          });
+        }
       });
     });
   }
-  getCheckDisable_selecet(res){
+  async getCheckDisable_selecet(res) {
     this.listOfFood = res;
-    for(var j = 0 ; j < this.cart.length; j++){
-    for (let i = 0; i < this.listOfFood.length; i++) {
-      if (this.cart[j].id == res[i].id) {
-        this.listOfFood[i].isSelect = true;
-        const data = {
-          index: i,
-          item: this.listOfFood[i].id
-        };
-        this.checkIndex.push(data);
-       // To check select or unselect 
-        if (this.checkIndex !== undefined) {
-          this.checkIndex.forEach(ele => {
-            const found = this.listOfFood.find(c => c.id === ele.item);
-            if (ele.item === res.id) {
-              this.listOfFood[ele.index].isSelect = true;
-            }
-            else if (found !== undefined) {
-              const index = this.listOfFood.findIndex(c => c.id === ele.item);
-              this.listOfFood[index].isSelect = true;
-            }
-           });
-        }
-      }
-      else {
-        this.listOfFood[i].isSelect = false;
-      }
-    }
-  }
-  // To check disabled or enable product list
-    if(this.cart.length !== 0){
-      for(var i = 0 ; i < this.cart.length; i++){
-        for(var j = 0; j < res.length; j++){
-         if(this.cart[i].id == res[j].id) {
-          this.dayFinished.push(res[j]);
-         }
-        }
-      }
-    }
-  }
-  getCategory() {
-    this.categoryService.getAllCategory().subscribe(res => {
-      this.restaurantservice.getAllRestaurant().subscribe(listOfRestaurant => {
-      const restaurant = listOfRestaurant.find(c => c.id === this.resId).categoryId;
-      if (restaurant !== undefined){
-        for (let i = 0 ; i < restaurant.length; i++){
-        const category = res.find(c => c.categoryName === restaurant[i]);
-        const data = {
-            id: category.id,
-            categoryName: restaurant[i]
+    for (var j = 0; j < this.cart.length; j++) {
+      for (let i = 0; i < this.listOfFood.length; i++) {
+        if (this.cart[j].id == res[i].id) {
+          this.listOfFood[i].isSelect = true;
+          const data = {
+            index: i,
+            item: this.listOfFood[i].id
           };
-        this.listOfCategory.push(data);
-        console.log(this.listOfCategory);
-         }
+          this.checkIndex.push(data);
+          // To check select or unselect 
+          if (this.checkIndex !== undefined) {
+            this.checkIndex.forEach(ele => {
+              const found = this.listOfFood.find(c => c.id === ele.item);
+              if (ele.item === res.id) {
+                this.listOfFood[ele.index].isSelect = true;
+              }
+              else if (found !== undefined) {
+                const index = this.listOfFood.findIndex(c => c.id === ele.item);
+                this.listOfFood[index].isSelect = true;
+              }
+            });
+          }
+        }
+        else {
+          this.listOfFood[i].isSelect = false;
+        }
       }
-     });
+    }
+    // To check disabled or enable product list
+    if (this.cart.length !== 0) {
+      for (var i = 0; i < this.cart.length; i++) {
+        for (var j = 0; j < res.length; j++) {
+          if (this.cart[i].id == res[j].id) {
+            this.dayFinished.push(res[j]);
+          }
+        }
+      }
+    }
+  }
+  async getCategory() {
+    this.categoryService.getAllCategory().subscribe(res => {
+      this.restaurantservice.getAllRestaurant().subscribe(async listOfRestaurant => {
+        const restaurant = await listOfRestaurant.find(c => c.id === this.resId).categoryId;
+        if (restaurant !== undefined) {
+          for (let i = 0; i < restaurant.length; i++) {
+            const category = await res.find(c => c.categoryName === restaurant[i]);
+            const data = {
+              id: category.id,
+              categoryName: restaurant[i]
+            };
+            this.listOfCategory.push(data);
+            console.log(this.listOfCategory);
+          }
+        }
+      });
     });
   }
-  getRestaurant() {
-    this.restaurantservice.getAllRestaurant().subscribe(res => {
-      this.listOfRestaurant = res;
+  async getRestaurant() {
+    this.restaurantservice.getAllRestaurant().subscribe(async res => {
+      this.listOfRestaurant = await res;
       this.name = res.find(c => c.id === this.resId).name;
       this.picture = res.find(c => c.id === this.resId).photo;
     });
@@ -184,9 +181,9 @@ export class DetailsPage implements OnInit {
   }
 
   selectCategory(index, category) {
-    this.foodService.getAllFood().subscribe(res => {
-      this.listOfFood = res.filter(c => c.categoryId === category && c.restaurantId === (this.resId).toString());
-     if (this.listOfFood.length > 0) {
+    this.foodService.getAllFood().subscribe(async res => {
+      this.listOfFood = await res.filter(c => c.categoryId === category && c.restaurantId === (this.resId).toString());
+      if (this.listOfFood.length > 0) {
         this.checkIndex.forEach(ele => {
           const item = this.listOfFood.find(c => c.id === ele.item);
           if (item !== undefined) {
@@ -237,20 +234,20 @@ export class DetailsPage implements OnInit {
     }
     else {
       //To Check the first index of cart order to equal withselect item list
-      if(this.cart[0].restaurantId == product.restaurantId){
-        if(index == 0){
-          this.getAddToCart(product, index);
-        }
-        else{
-        if (this.resId === +product.restaurantId) {
+      if (this.cart[0].restaurantId == product.restaurantId) {
+        if (index == 0) {
           this.getAddToCart(product, index);
         }
         else {
-          this.presentAlert('Switching Restaurant is not allowed');
+          if (this.resId === +product.restaurantId) {
+            this.getAddToCart(product, index);
+          }
+          else {
+            this.presentAlert('Switching Restaurant is not allowed');
+          }
         }
       }
-      }
-      else{
+      else {
         this.presentAlert('Switching Restaurant is not allowed');
       }
     }
@@ -264,7 +261,7 @@ export class DetailsPage implements OnInit {
           item: product.id
         };
         this.checkIndex.push(data);
-       // console.log(this.checkIndex);
+        // console.log(this.checkIndex);
         if (this.checkIndex !== undefined) {
           this.checkIndex.forEach(ele => {
             const found = this.listOfFood.find(c => c.id === ele.item);
@@ -275,7 +272,7 @@ export class DetailsPage implements OnInit {
               const index = this.listOfFood.findIndex(c => c.id === ele.item);
               this.listOfFood[index].isSelect = true;
             }
-           });
+          });
         }
       }
       else {

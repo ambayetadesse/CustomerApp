@@ -5,6 +5,7 @@ import { AppError } from '../common/app-error';
 import { BadInput } from '../common/bad-input';
 import { NotFoundError } from '../common/not-found-error';
 import { environment } from 'src/environments/environment.prod';
+import { OrderDetail } from 'src/Table/table';
 
 @Injectable({
   providedIn: 'root'
@@ -17,8 +18,8 @@ export class OrderDetailService {
   create(val: any) {
     return this.http.post(this.APIURL + '/orderdetail', val);
   }
-  getAllOrderDetail(): Observable<any[]> {
-    return this.http.get<any>(this.APIURL + '/orderdetail');
+  getAllOrderDetail(): Observable<OrderDetail[]> {
+    return this.http.get<OrderDetail[]>(this.APIURL + '/orderdetail');
   }
   updateOrderDetail(val: any) {
     return this.http.put(this.APIURL + '/orderdetail/', val);

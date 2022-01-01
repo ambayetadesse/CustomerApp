@@ -57,15 +57,15 @@
     <ion-searchbar (keyup)="filter($event)" [(ngModel)]="term" showCancelButton="never"
       placeholder="Dishes, restaurants or cuisines"></ion-searchbar>
   </ion-row>
-  
-<ion-item lines="none">
-  <ion-text color="dark"><b style="padding-left: 10px">Restaurant </b></ion-text>
-  <ion-label></ion-label>
-  <ion-select interface="popover" (ionChange)="selectOpenClose($event)" placeholder="Open or Close">
-    <ion-select-option value="open">Open</ion-select-option>
-    <ion-select-option value="close">Close</ion-select-option>
-  </ion-select>
-</ion-item>
+
+  <ion-item lines="none">
+    <ion-text color="dark"><b style="padding-left: 10px">Restaurant </b></ion-text>
+    <ion-label></ion-label>
+    <ion-select interface="popover" (ionChange)="selectOpenClose($event)" placeholder="Open or Close">
+      <ion-select-option value="open">Open</ion-select-option>
+      <ion-select-option value="close">Close</ion-select-option>
+    </ion-select>
+  </ion-item>
   <ion-row class="meal-row" *ngFor="let item of listOfRestaurant |filter:term "
     (click)="openLink(item.accountId,item.id)">
     <ion-col size="6" class="border-bottom">
@@ -85,9 +85,10 @@
         <ion-icon name="location-outline"></ion-icon> {{ item.Location }}
       </span> [ngStyle]="{'background-color':person.country === 'UK' ? 'green' : 'red' }"-->
       <ion-row>
-      <button style="border-radius: 5px;margin: .25rem .5rem .25rem 0;" [ngClass]="{'green' :item.status==='open', 'red': item.status==='close'}">
-        {{item.status}}
-      </button>
+        <button style="border-radius: 5px;margin: .25rem .5rem .25rem 0;"
+          [ngClass]="{'green' :item.status==='open', 'red': item.status==='close'}">
+          {{item.status}}
+        </button>
         <div *ngFor="let catagories of item.Category">
           <button style="
               background-color: #2185d0;
@@ -102,7 +103,8 @@
       </ion-row>
     </ion-col>
   </ion-row>
-  <ion-fab horizontal="end" vertical="bottom" slot="fixed">
+  <ion-fab horizontal="end" vertical="bottom" slot="fixed"
+    [ngClass]="{'location-visible': showScroll, 'location-hidden': !showScroll}">
     <ion-fab-button color="light" (click)="pageScroller()">
       <ion-icon md="chevron-up-outline" ios="chevron-up-circle-outline"></ion-icon>
     </ion-fab-button>

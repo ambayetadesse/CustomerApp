@@ -32,7 +32,7 @@ export class ProfilePage implements OnInit {
     this.accountService.getAllAccount().subscribe(async res => {
       this.listOfAccount = res;
       this.base64textString = res.find(c => c.id == +localStorage.getItem("userId")).photo;
-      this.fullName = res.find(c => c.id == localStorage.getItem("userId")).FullName
+      this.fullName = res.find(c => c.id == +localStorage.getItem("userId")).fullName
     }, async (error) => {
       await this.loader.dismiss().then();
       console.log(error);

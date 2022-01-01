@@ -85,7 +85,7 @@
         </button>
       </ion-col>
     </ion-row>
-  <ion-label class="message" *ngIf="listOfOrderProcessing.length==0">{{this.messageOrder}}</ion-label>
+    <ion-label class="message" *ngIf="listOfOrderProcessing.length==0">{{this.messageOrder}}</ion-label>
   </ion-list>
   <ion-list *ngIf="segment === 'Completed'">
     <ion-row *ngFor="let meal of listOfOrderCompeleted" class="ion-padding meal-row">
@@ -133,13 +133,8 @@
         </ion-button>
       </ion-col>
     </ion-row>
-   <ion-label class="message" *ngIf="listOfOrderCancelled.length==0">{{this.messageOrder}}</ion-label>
+    <ion-label class="message" *ngIf="listOfOrderCancelled.length==0">{{this.messageOrder}}</ion-label>
   </ion-list>
-  <ion-fab horizontal="end" vertical="bottom" slot="fixed">
-    <ion-fab-button color="light" (click)="pageScroller()">
-      <ion-icon md="chevron-up-outline" ios="chevron-up-circle-outline"></ion-icon>
-    </ion-fab-button>
-  </ion-fab>
   <!-- <ion-infinite-scroll (ionInfinite)="loadMoreData($event)" threshold="10px">
     <ion-infinite-scroll-content
     loadingSpinner ="bubbles"
@@ -147,4 +142,10 @@
     >
     </ion-infinite-scroll-content>
   </ion-infinite-scroll> -->
+  <ion-fab horizontal="end" vertical="bottom" slot="fixed"
+    [ngClass]="{'location-visible': showScroll, 'location-hidden': !showScroll}">
+    <ion-fab-button color="light" (click)="pageScroller()">
+      <ion-icon md="chevron-up-outline" ios="chevron-up-circle-outline"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 </ion-content>

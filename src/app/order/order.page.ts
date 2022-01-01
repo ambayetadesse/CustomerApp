@@ -1,13 +1,13 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { Account, OrderDetail, Restaurant } from 'src/Table/table';
+import { Account, Order, OrderDetail, Restaurant } from 'src/Table/table';
 import { AccountService } from '../Service/account.service';
 import { FoodService } from '../Service/food.service';
 import { OrderDetailService } from '../Service/order-detail.service';
 import { OrderService } from '../Service/order.service';
 import LocationPicker from "location-picker";
 import { SharedService } from '../Service/shared.service';
-import { AlertController, IonContent, LoadingController, ModalController, ToastController } from '@ionic/angular';
+import { IonContent, LoadingController, ModalController, ToastController } from '@ionic/angular';
 import { RestaurantService } from '../Service/restaurant.service';
 import { CustomerOptionPage } from '../customer-option/customer-option.page';
 import { CallNumber } from '@ionic-native/call-number/ngx';
@@ -23,7 +23,7 @@ export class OrderPage implements OnInit {
   name: any;
   listOfOrder: any[] = [];
   listOfAccount: Account[];
-  listOfOrderDetails: OrderDetail[];
+  listOfOrderDetails: OrderDetail[]=[];
   cart: any[] = [];
   lp: LocationPicker;
   UserId: string;
@@ -55,6 +55,10 @@ export class OrderPage implements OnInit {
   messageProcessingOrder: string;
   messageCompleteOrder: string;
   messageCancelOrder: string;
+  showScroll: boolean = false;
+  listAllOfOrder:Order[];
+  listArrayOfProduct: Order[] = [];
+  displayedlist: Order[] = [];
   public pageScroller() {
     this.pageTop.scrollToTop();
   }
@@ -65,23 +69,22 @@ export class OrderPage implements OnInit {
     private orderDetailsService: OrderDetailService,
     private router: Router,
     private sharedService: SharedService,
-    private alertCtrl: AlertController,
     private restaurantService: RestaurantService,
     private modalController: ModalController,
     private callNumber: CallNumber,
     private loadingController: LoadingController,
-    private toastController: ToastController
+    private toastController:ToastController
   ) {
-    this.getOrder();
+  // this.getOrder();
   }
   async ngOnInit() {
     this.loader = await this.loadingController.create({
-      message: 'Getting Products ...',
+      message: 'loading ...',
       spinner: "bubbles",
       animated: true
     });
     await this.loader.present().then();
-    // this.id = this._Activatedroute.snapshot.paramMap.get("id");
+    this.getOrder();
     this.getRestaurant();
     this.getAccount();
     this.getFood();
@@ -89,35 +92,39 @@ export class OrderPage implements OnInit {
     this.getProcessingOrder();
     this.getCompeletedOrder();
     this.getCancelledOrder();
-    //this.lp = new LocationPicker('map');
   }
-  getRestaurant() {
+  async getRestaurant() {
     this.restaurantService.getAllRestaurant().subscribe(async res => {
-      // await this.loader.dismiss().then();
-      this.listOfRestaurant = res;
+       await this.loader.dismiss().then();
+      this.listOfRestaurant = await res;
+      //console.log(res)
     }, async (err) => {
       await this.loader.dismiss().then();
       console.log(err);
     })
   }
-  getAccount() {
-    this.accountService.getAllAccount().subscribe(res => {
-      this.listOfAccount = res;
+  async getAccount() {
+    this.accountService.getAllAccount().subscribe(async res => {
+      await this.loader.dismiss().then();
+      this.listOfAccount = await res;
+      //console.log(res)
     })
   }
-  getFood() {
+  async getFood() {
     this.foodService.getAllFood().subscribe(async res => {
       await this.loader.dismiss().then();
-      this.listOfFood = res;
+      this.listOfFood = await res;
+      //console.log(res)
     }, async (err) => {
       await this.loader.dismiss().then();
       console.log(err);
     })
   }
-  getOrderDetails() {
-    this.orderDetailsService.getAllOrderDetail().subscribe(async res => {
+  async getOrderDetails() {
+    this.orderDetailsService.getAllOrderDetail().subscribe(async (orderDetail) => {
       await this.loader.dismiss().then();
-      this.listOfOrderDetails = res;
+      this.listOfOrderDetails = await orderDetail;
+      //console.log(orderDetail)
     }, async (err) => {
       await this.loader.dismiss().then();
       console.log(err);
@@ -126,9 +133,11 @@ export class OrderPage implements OnInit {
   onScroll(ev) {
     const offset = ev.detail.scrollTop;
     this.showLocationDetail = offset > 40;
+    this.showScroll = offset > 300
   }
-  async getOrder() {
-    (await this.orderService.getAllOrder()).subscribe(async res => {
+   getOrder() {
+     this.orderService.getAllOrder().subscribe(async res => {
+       await this.loader.dismiss().then();
       this.UserId = localStorage.getItem('userId');
       const result = res.filter(c => c.customer === this.UserId);
       if (result.length > 0) {
@@ -146,7 +155,7 @@ export class OrderPage implements OnInit {
               Total: element.total,
               Driver: element.driver,
               Vehicle: element.vehicle,
-              orderNo: element.orderNo,
+              // orderNo: element.orderNo,
               orderLocation: element.orderLocation,
               restaurantName: resName.name
             };
@@ -168,17 +177,17 @@ export class OrderPage implements OnInit {
     });
   }
   async getProcessingOrder() {
-    (await this.orderService.getAllOrder()).subscribe(async res => {
+     this.orderService.getAllOrder().subscribe(async res => {
       await this.loader.dismiss().then();
       this.listOfOrderProcessing = [];
       this.UserId = localStorage.getItem("userId");
-      let order = res.filter(c => c.orderStatuses.find(c => c.isChecked == false && c.val == "delivered") && c.customer == this.UserId)
+      let order = await res.filter(c => c.orderStatuses.find(c => c.isChecked == false && c.val == "delivered") && c.customer == this.UserId)
       if (order.length > 0) {
         order.forEach(element => {
           if (element.driver !== "") {
             this.accountService.getAllAccount().subscribe(result => {
-              let customerName = result.find(c => c.id == element.customer);
-              let driver = result.find(c => c.id == element.driver);
+              let customerName = result.find(c => c.id == +element.customer);
+              let driver = result.find(c => c.id == +element.driver);
               this.getStatusOfOrder(element);
               if (driver) {
                 this.driverPhone = driver.phonenumber;
@@ -219,18 +228,18 @@ export class OrderPage implements OnInit {
     })
   }
   async getCompeletedOrder() {
-    (await this.orderService.getAllOrder()).subscribe(async res => {
+    this.orderService.getAllOrder().subscribe(async res => {
       //await this.loader.dismiss().then();
       this.listOfOrderCompeleted = [];
       this.UserId = localStorage.getItem("userId");
-      let order = res.filter(c => c.orderStatuses.find(c => c.isChecked == true && c.val == "delivered") && c.customer == this.UserId)
+      let order = await res.filter(c => c.orderStatuses.find(c => c.isChecked == true && c.val == "delivered") && c.customer == this.UserId)
       if (order.length > 0) {
         order.forEach(element => {
           this.accountService.getAllAccount().subscribe(result => {
             let data = {
               id: element.id,
               DateTime: element.dateTime,
-              Customer: result.find(c => c.id == element.customer).fullName,
+              Customer: result.find(c => c.id == +element.customer).fullName,
               Location: element.location,
               OrderStatus: "Completed",
               Total: element.total,
@@ -254,18 +263,18 @@ export class OrderPage implements OnInit {
     })
   }
   async getCancelledOrder() {
-    (await this.orderService.getAllOrder()).subscribe(async res => {
+    this.orderService.getAllOrder().subscribe(async res => {
       // await this.loader.dismiss().then();
       this.listOfOrderCancelled = [];
       this.UserId = localStorage.getItem("userId");
-      let order = res.filter(c => c.customerStatus == "false" && c.customer == this.UserId)
+      let order = await res.filter(c => c.customerStatus == "false" && c.customer == this.UserId)
       if (order.length > 0) {
         order.forEach(element => {
           this.accountService.getAllAccount().subscribe(result => {
             let data = {
               id: element.id,
               DateTime: element.dateTime,
-              Customer: result.find(c => c.id == element.customer).fullName,
+              Customer: result.find(c => c.id == +element.customer).fullName,
               Location: element.location,
               OrderStatus: "Cancelled",
               Total: element.total,
@@ -288,7 +297,7 @@ export class OrderPage implements OnInit {
       console.log(err);
     })
   }
-  getStatusOfOrder(element) {
+  async getStatusOfOrder(element) {
     this.a = 0;
     for (let i = 0; i < element.orderStatuses.length; i++) {
       if (element.orderStatuses[i].isChecked == false) {
@@ -402,7 +411,38 @@ export class OrderPage implements OnInit {
       event.target.complete();
     }, 2000);
   }
-
+  async loadMoreData(ev: any) {
+    const toast: HTMLIonToastElement = await this.toastController.create({
+      message: 'No More Datas',
+      animated: true,
+      duration: 2000,
+      buttons: [
+        {
+          text: 'Done',
+          role: 'cancel',
+          icon: 'close'
+        }
+      ]
+    });
+    if (ev == null) {
+      this.currentPage = 1;
+    } else {
+      this.currentPage++;
+      this.orderService.getAllOrder().subscribe(async (prods: Order[]) => {
+          this.listArrayOfProduct = this.listArrayOfProduct.concat(prods);
+          // this.listOfOrder = [...this.listArrayOfProduct];
+          if (ev == ! null) {
+            ev.target.complete();
+          }
+          if (prods.length < 10) {
+            await toast.present();
+            ev.target.disabled = true;
+          }
+        }, async (err) => {
+          console.log(err);
+        });
+    }
+  }
 }
 
 
