@@ -43,8 +43,7 @@ export class CartModalPage implements OnInit {
     private restaurantService: RestaurantService,
     private orderDetailService: OrderDetailService,
     private foodService: FoodService,
-    private sharedService: SharedService,
-    private loadingController: LoadingController) {
+    private sharedService: SharedService) {
     this.statusDriver = [
       { val: 'picked', isChecked: false },
       { val: 'start moving', isChecked: false },

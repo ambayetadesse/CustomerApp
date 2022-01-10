@@ -1,5 +1,4 @@
-export class Table {
-}
+
 export class Restaurant {
     id: number;
     name: string;
@@ -27,7 +26,6 @@ export class RestMenu {
     deliveryTime: string;
     avaliable: string;
     favourite: string;
-
 }
 export class Driver {
     id: number;
