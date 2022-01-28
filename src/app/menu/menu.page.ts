@@ -45,10 +45,11 @@ export class MenuPage implements OnInit {
     }
     this.ListOfMenu1 = [
       { title: 'driver', url: '/driver', icon: 'bus' },
-      { title: 'Customer Orders', url: '/order', icon: 'cart' },
+      { title: 'Customer Orders', url: '/order', icon: 'basket' },
       { title: 'location', url: '/location', icon: 'locate' },
       { title: 'Customer Home', url: '/home', icon: 'home' },
-      { title: 'profile', url: '/profile', icon: 'person' }
+      { title: 'profile', url: '/profile', icon: 'person' },
+      { title: 'Cart', url: '/cart', icon: 'cart' }
     ];
     this.getRoute();
     this.getAccount();
@@ -65,13 +66,13 @@ export class MenuPage implements OnInit {
   getRoute() {
     this.functionalityService.getAllFunctionality().subscribe(async result => {
       this.listOfFunctionality = result;
-      // console.log(result)
+      //console.log(result)
       if (result.length > 0) {
         this.roleType = localStorage.getItem("roleType");
         this.userName = localStorage.getItem("fullName");
         //console.log(this.userName)
         this.userRoleService.getAllUserRole().subscribe(async res => {
-          // console.log(res)
+          //console.log(res)
           let result = res.filter(c => c.userId == this.roleType);
           let active = localStorage.getItem("active");
           if (result.length > 0 && active == "true") {
@@ -87,6 +88,7 @@ export class MenuPage implements OnInit {
                     icon: rol.icon
                   }
                   this.pageList.push(y);
+                  //  console.log(this.pageList)
                 }
               }
             });

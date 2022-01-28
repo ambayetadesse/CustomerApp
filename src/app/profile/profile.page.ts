@@ -39,13 +39,13 @@ export class ProfilePage implements OnInit {
     })
   }
   account() {
-    this.router.navigate(["/account-details"]);
+    this.router.navigate(["/menu/account-details"]);
   }
   setting() {
-    this.router.navigate(["/setting"]);
+    this.router.navigate(["/menu/setting"]);
   }
   contact() {
-    this.router.navigate(["/contact"]);
+    this.router.navigate(["/menu/contact"]);
   }
   async logout(): Promise<void> {
     localStorage.setItem("userId", null);

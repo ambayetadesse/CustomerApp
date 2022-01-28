@@ -26,7 +26,7 @@ const routes: Routes = [
         path: 'cart-modal',
         loadChildren: () => import('../cart-modal/cart-modal.module').then(m => m.CartModalPageModule)
       },
-    
+
       {
         path: 'login',
         loadChildren: () => import('../login/login.module').then(m => m.LoginPageModule)
@@ -37,7 +37,27 @@ const routes: Routes = [
       },
       {
         path: 'profile',
-        loadChildren: () => import('../profile/profile.module').then( m => m.ProfilePageModule)
+        loadChildren: () => import('../profile/profile.module').then(m => m.ProfilePageModule)
+      },
+      {
+        path: 'profile',
+        loadChildren: () => import('../profile/profile.module').then(m => m.ProfilePageModule)
+      },
+      {
+        path: 'account-details',
+        loadChildren: () => import('../account-details/account-details.module').then(m => m.AccountDetailsPageModule)
+      },
+      {
+        path: 'setting',
+        loadChildren: () => import('../setting/setting.module').then(m => m.SettingPageModule)
+      },
+      {
+        path: 'contact',
+        loadChildren: () => import('../contact/contact.module').then(m => m.ContactPageModule)
+      },
+      {
+        path: 'cart',
+        loadChildren: () => import('../cart/cart.module').then(m => m.CartPageModule)
       },
       {
         path: '',

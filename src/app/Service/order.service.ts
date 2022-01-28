@@ -3,14 +3,21 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { SharedService } from './shared.service';
 import { environment } from 'src/environments/environment.prod';
-import { Order } from 'src/Table/table';
+import { Cart, Order } from 'src/Table/table';
+import { CartService } from './cart.service';
+import { CartItemService } from './cart-item.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class OrderService {
+  currentDate: any;
+  cartId: string;
   constructor(private http: HttpClient,
-    private sharedService: SharedService) {
+    private sharedService: SharedService,
+    private cartService: CartService,
+    private cart_itemService: CartItemService) {
+    this.getAllCart();
   }
   readonly APIURL = environment.apiURL;
   private cart = [];
@@ -24,8 +31,8 @@ export class OrderService {
   async create(val: any) {
     return await this.http.post(this.APIURL + '/order', val);
   }
-   getAllOrder(): Observable<Order[]> {
-    return  this.http.get<Order[]>(this.APIURL + '/order');
+  getAllOrder(): Observable<Order[]> {
+    return this.http.get<Order[]>(this.APIURL + '/order');
   }
   updateOrder(val: any) {
     return this.http.put(this.APIURL + '/order/', val);
@@ -57,6 +64,13 @@ export class OrderService {
   getOrderStatus() {
     return this.orderStatus;
   }
+  getAllCart() {
+    this.cartService.getAllCart().subscribe(res => {
+      if (res.length > 0) {
+        this.cartId = res[0].id;
+      }
+    })
+  }
   addOrder(items) {
     this.order = [];
     this.amount = 0;
@@ -86,6 +100,7 @@ export class OrderService {
     this.orderItemCount.next(this.orderItemCount.value + this.amount);
   }
   addProduct(product) {
+    console.log(product);
     let added = false;
     for (const p of this.cart) {
       if (p.id === product.id) {
@@ -97,6 +112,22 @@ export class OrderService {
     if (!added) {
       product.amount = 1;
       this.cart.push(product);
+      let data = {
+        foodId: product.id,
+        cartId: this.cartId,
+        price: product.price,
+        discount: 0,
+        quantity: product.amount,
+        createdAt: product.cookingTime,
+        updatedAt: this.currentDate,
+        content: ""
+      }
+      this.cart_itemService.create(data).subscribe(res => {
+        console.log(res.toString());
+      });
+    }
+    else {
+      this.updateCartItem(product);
     }
     this.cartItemCount.next(this.cartItemCount.value + 1);
   }
@@ -105,8 +136,10 @@ export class OrderService {
     for (const [index, p] of this.cart.entries()) {
       if (p.id === product.id) {
         p.amount -= 1;
+        this.updateCartItem(product.id);
         if (p.amount === 0) {
           this.cart.splice(index, 1);
+          this.removeCartItem(product)
         }
       }
     }
@@ -118,7 +151,28 @@ export class OrderService {
       if (p.id === product.id) {
         this.cartItemCount.next(this.cartItemCount.value - p.amount);
         this.cart.splice(index, 1);
+        this.removeCartItem(product);
       }
     }
+  }
+  updateCartItem(product) {
+    let data = {
+      foodId: product.id,
+      cartId: this.cartId,
+      price: product.price,
+      discount: 0,
+      quantity: product.amount,
+      createdAt: product.cookingTime,
+      updatedAt: this.currentDate,
+      content: ""
+    }
+    this.cart_itemService.updateCartItem(data).subscribe(res => {
+      console.log(res.toString());
+    });
+  }
+  removeCartItem(product) {
+    this.cart_itemService.removeCartItem(product.id).then(res => {
+      console.log(res.toString());
+    })
   }
 }

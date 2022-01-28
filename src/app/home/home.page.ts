@@ -62,7 +62,7 @@ export class HomePage implements OnInit {
     this.am_pm = date.getHours() >= 12 ? "pm" : "am";
     this.minutes = date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes();
     let time = this.hours + ":" + this.minutes + " " + this.am_pm;
-    console.log(this.currentDate);
+    // console.log(this.currentDate);
   }
   ngOnInit() {
     this.regform = this.fb.group({

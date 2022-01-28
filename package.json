@@ -50,6 +50,7 @@
     "blob-util": "^2.0.2",
     "bootstrap": "^4.5.0",
     "call-number": "^1.0.1",
+    "cors-anywhere": "^0.4.4",
     "devextreme": "21.1.4",
     "devextreme-angular": "21.1.4",
     "devextreme-aspnet-data-nojquery": "^2.8.2",

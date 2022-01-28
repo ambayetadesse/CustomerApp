@@ -136,3 +136,24 @@ export class message {
     userId: string
     driverId: string
 }
+export class Cart {
+    id: string;
+    userId: string
+    restaurantId: string; // Restaurant
+    token: string;//payment gateway
+    status: any //(New , Cart ,checkout , paid , complete and Abandoned(canceled))
+    createdAt: Date
+    updatedAt: Date;
+    content: string;
+}
+export class Cart_Item {
+    id: string;
+    foodId: string;//foreign key from product table
+    cartId: string;//foriegn key from cart table
+    price: number;
+    discount: number;
+    quantity: number;
+    createdAt: Date;
+    updatedAt: Date;
+    content: string
+}

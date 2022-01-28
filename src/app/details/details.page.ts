@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { IonContent, IonList, IonSlides, isPlatform, ModalController, ToastController } from '@ionic/angular';
 import { BehaviorSubject } from 'rxjs';
 import { CartModalPage } from '../cart-modal/cart-modal.page';
+import { CartService } from '../Service/cart.service';
 import { CategoryService } from '../Service/category.service';
 import { FoodService } from '../Service/food.service';
 import { OrderService } from '../Service/order.service';
@@ -50,6 +51,8 @@ export class DetailsPage implements OnInit {
   dayFinished = [];
   resId: any;
   category: any;
+  count: number = 0;
+  currentDate = new Date().toISOString();
   constructor(private foodService: FoodService,
     private Activatedroute: ActivatedRoute,
     private restaurantservice: RestaurantService,
@@ -59,6 +62,7 @@ export class DetailsPage implements OnInit {
     private orderService: OrderService,
     private sharedService: SharedService,
     public toastController: ToastController,
+    private cartService: CartService,
     @Inject(DOCUMENT) private document: Document) {
     this.restaurantservice.getAllRestaurant().subscribe(res => {
       this.listOfRestaurant = res;
@@ -160,7 +164,7 @@ export class DetailsPage implements OnInit {
               categoryName: restaurant[i]
             };
             this.listOfCategory.push(data);
-            console.log(this.listOfCategory);
+            //   console.log(this.listOfCategory);
           }
         }
       });
@@ -231,11 +235,13 @@ export class DetailsPage implements OnInit {
   addToCart(product, index: number) {
     if (this.cart.length === 0) {
       this.getAddToCart(product, index);
+      this.count = 0;
     }
     else {
       //To Check the first index of cart order to equal withselect item list
       if (this.cart[0].restaurantId == product.restaurantId) {
         if (index == 0) {
+          this.count++;
           this.getAddToCart(product, index);
         }
         else {
@@ -285,6 +291,9 @@ export class DetailsPage implements OnInit {
     else {
       this.dayFinished.push(product);
     }
+    if (this.count == 0) {
+      this.AddCart();
+    }
     this.orderService.addProduct(product);
   }
   async presentAlert(message) {
@@ -309,5 +318,16 @@ export class DetailsPage implements OnInit {
     });
     modal.present();
   }
-
+  AddCart() {
+    let dataOfCart = {
+      userId: localStorage.getItem("userId"),
+      restaurantId: (this.resId).toString(),
+      createdAt: this.currentDate,
+      updatedAt: this.currentDate,
+      content: "add order"
+    }
+    this.cartService.create(dataOfCart).subscribe((result) => {
+      console.log(result)
+    });
+  }
 }

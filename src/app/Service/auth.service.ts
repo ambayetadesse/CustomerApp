@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import * as firebase from 'firebase';
 import { Observable } from 'rxjs';
@@ -11,7 +11,13 @@ export class AuthService {
   readonly APIURL = environment.apiURL;
   constructor(private http: HttpClient) {
   }
+  httpOptions = {
+    headers: new HttpHeaders({
+      'Content-Type': 'application/x-www-form-urlencoded',
+      'Access-Control-Allow-Origin': '*',
+    }),
+  };
   getAllAccount(): Observable<any[]> {
-    return this.http.get<any>(this.APIURL + '/account');
+    return this.http.get<any>(this.APIURL + '/account', this.httpOptions);
   }
 }

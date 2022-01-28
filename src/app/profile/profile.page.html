@@ -28,17 +28,17 @@
   </ion-grid>
   <ion-label style="margin-left: 94px;
   font-weight: bold;">{{this.fullName}}</ion-label>
-  <ion-item lines="none" (click)="account()">
+  <ion-item lines="none" (click)="account()" detail>
     <ion-icon color="primary" name="person-outline"></ion-icon>
     <ion-label>&nbsp;&nbsp;&nbsp;Account details</ion-label>
   </ion-item>
-  <ion-item lines="none" (click)="setting()">
+  <ion-item lines="none" (click)="setting()" detail>
     <ion-icon color="primary" name="settings-outline"></ion-icon>
     <ion-label>&nbsp;&nbsp;&nbsp;Settings</ion-label>
   </ion-item>
-  <ion-item lines="none" (click)="contact()">
-    <ion-icon color="primary" name="call-sharp"></ion-icon>
-    <ion-label>&nbsp;&nbsp;&nbsp;Contact Us</ion-label>
+  <ion-item lines="none" (click)="contact()" detail>
+    <ion-icon color="primary" name="help-circle-sharp"></ion-icon>
+    <ion-label>&nbsp;&nbsp;&nbsp;Help</ion-label>
   </ion-item>
   <ion-button (click)="logout()">loginout</ion-button>
 </ion-content>
