@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AlertController } from '@ionic/angular';
-import { Cart, Cart_Item, Food, Restaurant } from 'src/Table/table';
+import { Cart, Cart_Item, Food, Order, Restaurant } from 'src/Table/table';
 import { CartItemService } from '../Service/cart-item.service';
 import { CartService } from '../Service/cart.service';
 import { FoodService } from '../Service/food.service';
@@ -27,7 +27,7 @@ export class CartPage implements OnInit {
   orderDetailService: any;
   router: any;
   loader: any;
-  listOfOrder: import("d:/MTK Project/Mtk-Delivery-API/CustomerApp/src/Table/table").Order[];
+  listOfOrder: Order[];
   constructor(private orderService: OrderService, private cartService: CartService,
     private cartItemService: CartItemService, private foodService: FoodService,
     private alertCtrl: AlertController, private restaurantService: RestaurantService) {
